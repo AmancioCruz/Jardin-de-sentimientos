@@ -21,8 +21,8 @@ export async function iniciarGestionSesion() {
 
     try {
         const usuario = await haySesionActiva();
-        const destino = (seccion !== seccionesApp.inicioSesion)
-            ? seccion 
+        const destino = (seccion !== seccionesApp.inicioSesion || seccion !== seccionesApp.registro)
+            ? seccion
             : seccionesApp.inicio;
 
         componenteMenu(usuario);

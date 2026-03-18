@@ -16,6 +16,16 @@ export const IniciarSesionAuth = async (correo, contra) => {
     }
 };
 
+export const RegistrarUsuarioAuth = async (correo, contra) => {
+    try {
+        const credencialesUsuario = await createUserWithEmailAndPassword(
+            configuracionesFirebase.auth, correo, contra);
+        return credencialesUsuario.user.uid;
+    } catch (error) {
+        return error;
+    }
+}
+
 export const CerrarSesionAuth = async () => {
     try {
         await signOut(configuracionesFirebase.auth);

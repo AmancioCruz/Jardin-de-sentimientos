@@ -45,7 +45,6 @@
 .campo-registro {
     margin-bottom: var(--espacio-m);
     position: relative;
-    /* Para posicionar iconos */
 }
 
 .etiqueta-campo {
@@ -62,19 +61,16 @@
     justify-content: center;
 }
 
-/* Inputs con padding para icono */
 .campo-registro input,
 .campo-registro select {
     width: 100%;
     padding: var(--espacio-m) var(--espacio-l) var(--espacio-m) var(--espacio-xl);
-    /* Más padding izquierdo para icono */
     font-size: var(--tamano-texto-m);
     border: 1px solid var(--borde);
     border-radius: var(--radio-borde);
     background: var(--fondo);
 }
 
-/* Icono posicionado */
 .campo-registro i {
     position: absolute;
     left: var(--espacio-s);
@@ -83,16 +79,12 @@
     color: var(--texto-sutil);
     font-size: var(--tamano-texto-m);
     pointer-events: none;
-    /* No interfiere con clicks */
 }
 
-/* Ajuste para selects (icono diferente posición) */
 .campo-registro select {
     padding-left: var(--espacio-l);
-    /* Sin espacio extra para icono */
 }
 
-/* Foto de perfil */
 .imagen-seleccionada {
     width: 200px;
     height: 200px;
@@ -102,7 +94,6 @@
     margin: 0 auto var(--espacio-m);
 }
 
-/* El label se ve como botón */
 .btn-seleccionar {
     display: inline-flex;
     align-items: center;
@@ -110,7 +101,6 @@
     cursor: pointer;
 }
 
-/* El input está oculto */
 .btn-seleccionar input[type="file"] {
     display: none;
 }
@@ -142,7 +132,6 @@
 .label-terminos input {
     width: auto;
     padding: var(--espacio-s);
-    /* Reset padding para checkbox */
 }
 
 .enlace-terminos,

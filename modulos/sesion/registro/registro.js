@@ -6,6 +6,7 @@ import { construirElemento } from "../../../utilidades/constructor_elementos.js"
  * @returns {Elemento} Formulario de registro listo para montar
  */
 export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, eventoFoto }) {
+    const urlImagen = 'https://firebasestorage.googleapis.com/v0/b/jardin-de-sentimientos-b248a.firebasestorage.app/o/default_perfil.png?alt=media&token=ac962713-75be-4c20-a0ad-21d15adeba71';
     return construirElemento({
         tipo: 'div',
         atributos: {
@@ -94,7 +95,7 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                                         atributos: {
                                             id: 'imagen-seleccionada',
                                             class: 'imagen-seleccionada',
-                                            src: '../../../recursos/imagenes/default.webp',
+                                            src: urlImagen,
                                             alt: ''
                                         }
                                     },
@@ -115,7 +116,7 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                                                     name: 'foto-perfil',
                                                     id: 'foto-perfil',  // id que conecta con label
                                                     accept: 'image/*',
-                                                    hidden: true  // oculto
+                                                    hidden: true,  // oculto
                                                 },
                                                 eventos: {
                                                     change: (e) => {

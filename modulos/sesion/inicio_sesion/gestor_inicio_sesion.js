@@ -17,7 +17,7 @@ async function manejarInicioSesion(datos) {
     actualizarSesion(true);
     componenteMenu(usuarioActual);
     componenteInformacionUsuario(usuarioActual.nombre);
-    mostrarPantalla(seccionesApp.inicio, usuarioActual)
+    mostrarPantalla(seccionesApp.inicio, usuarioActual);
 }
 
 function manejarRecuperacion() {
