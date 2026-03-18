@@ -1,0 +1,168 @@
+/* estilos/componentes/botones.css */
+/* Botones reutilizables de la aplicación */
+
+/* ===== BOTÓN BASE (selector universal) ===== */
+[class^="btn-"] {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-s);
+  border: none;
+  font-weight: 600;
+  transition: all .2s ease;
+}
+
+/* Estados comunes para todos los botones */
+[class^="btn-"]:active {
+  transform: scale(.98);
+}
+
+[class^="btn-"]:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* ===== VARIANTES DE COLOR ===== */
+
+/* Primario (acento) */
+.btn-primario {
+  background: var(--acento);
+  color: #fff;
+  padding: var(--espacio-m) var(--espacio-l);
+  border-radius: var(--radio-borde);
+  font-size: var(--tamano-texto-m);
+}
+
+.btn-primario:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+}
+
+/* Secundario (verde) */
+.btn-secundario {
+  background: var(--superficie);
+  color: var(--verde);
+  border: 2px solid var(--borde);
+  padding: var(--espacio-m) var(--espacio-l);
+  border-radius: var(--radio-borde);
+  font-size: var(--tamano-texto-m);
+}
+
+.btn-secundario:hover {
+  border-color: var(--verde);
+  color: var(--verde-claro);
+}
+
+/* Peligro (rojo) */
+.btn-peligro {
+  background: transparent;
+  color: #DC2626;
+  border: 2px solid #DC2626;
+  padding: var(--espacio-m) var(--espacio-l);
+  border-radius: var(--radio-borde);
+}
+
+.btn-peligro:hover {
+  background: #FEF2F2;
+}
+
+/* Fantasma (transparente) - usado en info usuario */
+.btn-fantasma {
+  background: rgba(255, 255, 255, .15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, .3);
+  padding: var(--espacio-s) var(--espacio-m);
+  border-radius: var(--radio-borde);
+  font-size: var(--tamano-texto-s);
+}
+
+.btn-fantasma:hover {
+  background: rgba(255, 255, 255, .25);
+}
+
+/* ===== MODIFICADORES DE TAMAÑO ===== */
+
+.btn-pequeno {
+  padding: var(--espacio-s) var(--espacio-m);
+  font-size: var(--tamano-texto-s);
+}
+
+.btn-grande {
+  padding: var(--espacio-l) var(--espacio-xl);
+  font-size: var(--tamano-texto-l);
+}
+
+/* ===== MODIFICADORES DE ANCHO ===== */
+
+.btn-ancho {
+  width: 100%;
+}
+
+/* ===== BOTONES DE ESTADO (pantalla inicio) ===== */
+
+.btn-estado {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-m);
+  padding: var(--espacio-m) var(--espacio-l);
+  background: var(--superficie);
+  border: 2px solid var(--borde);
+  border-radius: var(--radio-borde);
+  font-size: var(--tamano-texto-m);
+  font-weight: 500;
+}
+
+.btn-estado:hover {
+  transform: translateY(-2px);
+  border-color: var(--verde-claro);
+}
+
+/* Variantes de estado por tipo */
+.btn-jardin:hover {
+  background: #dcfce7;
+  border-color: #22c55e;
+}
+
+.btn-respiraciones:hover {
+  background: #fee2e2;
+  border-color: #ef4444;
+}
+
+.btn-pizarra:hover {
+  background: #fef9c3;
+  border-color: #eab308;
+}
+
+.btn-estado .estado-icono {
+  font-size: 2rem;
+}
+
+.btn-estado .estado-texto {
+  font-weight: 500;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (min-width: 768px) {
+  
+  /* Botones estándar más grandes en PC */
+  .btn-primario,
+  .btn-secundario,
+  .btn-peligro {
+    padding: var(--espacio-m) var(--espacio-xl);
+  }
+  
+  /* Botones de estado en columna en PC */
+  .btn-estado {
+    flex-direction: column;
+    padding: var(--espacio-xl) var(--espacio-l);
+  }
+  
+  .btn-estado .estado-icono {
+    font-size: 3rem;
+  }
+}

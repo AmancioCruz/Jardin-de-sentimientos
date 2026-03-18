@@ -1,0 +1,151 @@
+/* ===== BOX SIZING ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== HTML ===== */
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -moz-tab-size: 4;
+  tab-size: 4;
+}
+
+/* ===== BODY ===== */
+body {
+  min-height: 100vh;
+  width: 100%;
+  font-family: var(--fuente);
+  background: var(--fondo);
+  color: var(--texto);
+  line-height: 1.6;
+  transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== MEDIOS RESPONSIVOS ===== */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===== FORMULARIOS ===== */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* ===== LISTAS ===== */
+ul,
+ol {
+  list-style: none;
+}
+
+/* ===== ENLACES ===== */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ===== TABLAS ===== */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* ===== CITAS ===== */
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+  content: '';
+  content: none;
+}
+
+/* ===== TIPOGRAFÍA ===== */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+p {
+  overflow-wrap: break-word;
+}
+
+/* ===== ESTADOS ===== */
+[hidden] {
+  display: none !important;
+}
+
+[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== FOCUS ACCESIBLE ===== */
+:focus-visible {
+  outline: 2px solid var(--verde);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ===== SELECCIÓN DE TEXTO ===== */
+::selection {
+  background-color: var(--verde-claro);
+  color: var(--superficie);
+}
+
+/* ===== SCROLL SUAVE ===== */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ===== REDUCIR ANIMACIONES ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

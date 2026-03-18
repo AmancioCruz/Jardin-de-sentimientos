@@ -1,0 +1,208 @@
+/* ===== REGISTRO ===== */
+
+#contenedor-registro {
+    width: 100%;
+    min-height: 100%;
+    padding: var(--espacio-s);
+}
+
+.formulario-registro-completo {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: var(--espacio-xl);
+    margin-bottom: var(--espacio-m);
+    background: var(--superficie);
+    border-radius: var(--radio-borde);
+}
+
+.titulo-formulario {
+    text-align: center;
+    margin-bottom: var(--espacio-s);
+    color: var(--verde);
+    font-size: var(--tamano-texto-xl);
+    font-weight: 600;
+}
+
+.subtitulo-formulario {
+    text-align: center;
+    color: var(--texto-sutil);
+    font-size: var(--tamano-texto-s);
+    margin-bottom: var(--espacio-l);
+    padding-bottom: var(--espacio-m);
+    border-bottom: 1px solid var(--borde);
+}
+
+.subtitulo-seccion {
+    font-size: var(--tamano-texto-l);
+    color: var(--texto);
+    margin: var(--espacio-l) 0 var(--espacio-m);
+    font-weight: 600;
+    border-left: 4px solid var(--acento);
+    padding-left: var(--espacio-m);
+}
+
+.campo-registro {
+    margin-bottom: var(--espacio-m);
+    position: relative;
+    /* Para posicionar iconos */
+}
+
+.etiqueta-campo {
+    display: block;
+    font-size: var(--tamano-texto-s);
+    font-weight: 500;
+    margin-bottom: var(--espacio-xs);
+}
+
+.campo-archivo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Inputs con padding para icono */
+.campo-registro input,
+.campo-registro select {
+    width: 100%;
+    padding: var(--espacio-m) var(--espacio-l) var(--espacio-m) var(--espacio-xl);
+    /* Más padding izquierdo para icono */
+    font-size: var(--tamano-texto-m);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-borde);
+    background: var(--fondo);
+}
+
+/* Icono posicionado */
+.campo-registro i {
+    position: absolute;
+    left: var(--espacio-s);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--texto-sutil);
+    font-size: var(--tamano-texto-m);
+    pointer-events: none;
+    /* No interfiere con clicks */
+}
+
+/* Ajuste para selects (icono diferente posición) */
+.campo-registro select {
+    padding-left: var(--espacio-l);
+    /* Sin espacio extra para icono */
+}
+
+/* Foto de perfil */
+.imagen-seleccionada {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 3px solid var(--acento);
+    display: block;
+    margin: 0 auto var(--espacio-m);
+}
+
+/* El label se ve como botón */
+.btn-seleccionar {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--espacio-s);
+    cursor: pointer;
+}
+
+/* El input está oculto */
+.btn-seleccionar input[type="file"] {
+    display: none;
+}
+
+/* Select */
+.select-preferencia {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg ' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--espacio-l) center;
+}
+
+/* Términos */
+.terminos-registro {
+    margin: var(--espacio-l) 0;
+    padding: var(--espacio-m) 0;
+    border-top: 1px solid var(--borde);
+    border-bottom: 1px solid var(--borde);
+}
+
+.label-terminos {
+    display: flex;
+    align-items: center;
+    gap: var(--espacio-s);
+    font-size: var(--tamano-texto-s);
+    cursor: pointer;
+}
+
+.label-terminos input {
+    width: auto;
+    padding: var(--espacio-s);
+    /* Reset padding para checkbox */
+}
+
+.enlace-terminos,
+.enlace-inicio-sesion {
+    color: var(--acento);
+    text-decoration: none;
+}
+
+.inicio-sesion {
+    text-align: center;
+    margin-top: var(--espacio-l);
+    font-size: var(--tamano-texto-s);
+    color: var(--texto-sutil);
+}
+
+/* TABLET */
+@media (min-width:768px) {
+    #contenedor-registro {
+        padding: var(--espacio-s);
+    }
+
+    .formulario-registro-completo {
+        padding: var(--espacio-xl);
+    }
+}
+
+/* PC */
+@media (min-width:1200px) {
+    #contenedor-registro {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: var(--espacio-xl);
+    }
+
+    .formulario-registro-completo {
+        max-width: 700px;
+        width: 100%;
+        padding: var(--espacio-xl);
+    }
+
+    .fila-doble {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--espacio-m);
+    }
+
+    .imagen-seleccionada {
+        width: 50%;
+        height: auto;
+        margin: 0;
+    }
+
+    .campo-archivo{
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: var(--espacio-xl);
+    }
+
+    .campo-archivo .btn-primario{
+        width: 100%;
+    }
+}

@@ -1,0 +1,126 @@
+/* ===== LOGIN ===== */
+
+#contenedo-inicio-sesion {
+    width: 90%;
+    max-width: 400px;
+    padding: var(--espacio-l);
+    background: var(--superficie);
+    border-radius: var(--radio-borde);
+    transition: background 1s ease-in-out;
+}
+
+.formulario-inicio-sesion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espacio-l);
+}
+
+.titulo-formulario {
+    font-size: var(--tamano-texto-xl);
+    font-weight: 600;
+    color: var(--verde);
+    text-align: center;
+    margin-bottom: var(--espacio-m);
+}
+
+.campo {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.campo i {
+    position: absolute;
+    left: var(--espacio-s);
+    color: var(--texto-sutil);
+    font-size: var(--tamano-texto-m);
+}
+
+.campo input {
+    width: 100%;
+    padding: var(--espacio-m) var(--espacio-m) var(--espacio-m) var(--espacio-xl);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-borde);
+    font-size: var(--tamano-texto-m);
+    background: var(--fondo);
+    font-family: inherit;
+}
+
+.campo input:focus {
+    outline: 2px solid var(--verde-claro);
+    outline-offset: -2px;
+}
+
+.opciones {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--tamano-texto-s);
+}
+
+.opciones label {
+    display: flex;
+    align-items: center;
+    gap: var(--espacio-xs);
+    color: var(--texto-sutil);
+    cursor: pointer;
+}
+
+.opciones input[type="checkbox"] {
+    accent-color: var(--verde);
+}
+
+.enlace-olvide {
+    color: var(--verde-claro);
+    text-decoration: none;
+}
+
+.btn-primario {
+    padding: var(--espacio-m);
+    background: var(--verde);
+    color: #fff;
+    border: none;
+    border-radius: var(--radio-borde);
+    font-size: var(--tamano-texto-m);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s;
+}
+
+.btn-primario:active {
+    background: var(--verde-claro);
+}
+
+.btn-ancho {
+    width: 100%;
+}
+
+.registro {
+    text-align: center;
+    font-size: var(--tamano-texto-s);
+    color: var(--texto-sutil);
+}
+
+.enlace-registro {
+    color: var(--verde-claro);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* PC/TABLET */
+@media (min-width:768px) {
+    #contenedo-inicio-sesion {
+        background: var(--fondo);
+        align-items: center;
+    }
+
+    .formulario-inicio-sesion {
+        width: 100%;
+        max-width: 400px;
+        background: var(--superficie);
+        padding: var(--espacio-xl);
+        border-radius: var(--radio-borde);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+}
+

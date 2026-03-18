@@ -1,0 +1,11 @@
+/* ===== base ===== */
+@import url('base/reset.css');
+@import url('base/utilidades.css');
+@import url('base/variables.css');
+@import url('base/componentes.css');
+@import url('base/modulos.css');
+@import url('base/layout_base.css');
+
+/* ===== componenete ===== */
+@import url('componentes/botones.css');
+

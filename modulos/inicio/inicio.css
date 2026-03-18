@@ -1,0 +1,106 @@
+/* ===== INICIO ===== */
+
+.inicio-contenedor {
+    width: 100%;
+    min-height: 100%;
+    padding: var(--espacio-xl);
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    gap: var(--espacio-xl);
+}
+
+.inicio-titulo {
+    font-size: var(--tamano-texto-xl);
+    color: var(--verde);
+    font-weight: 600;
+    text-align: center;
+    margin: 0; 
+}
+
+.inicio-eleccion {
+    width: 100%;
+    max-width: 600px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: var(--espacio-l);
+}
+
+.inicio-subtitulo {
+    font-size: var(--tamano-texto-l);
+    color: var(--texto);
+    font-weight: 500;
+    text-align: center;
+    margin: 0;
+}
+
+.evaluacion-rapida {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espacio-m);
+    width: 100%;
+    max-width: 400px;
+}
+
+.btn-estado {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center; 
+    gap: var(--espacio-m);
+    padding: var(--espacio-m) var(--espacio-l);
+    background: var(--superficie);
+    border: 2px solid var(--borde);
+    border-radius: var(--radio-borde);
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.btn-estado:hover {
+    transform: translateY(-2px);
+    border-color: var(--verde-claro);
+}
+
+.estado-icono {
+    font-size: 2rem;
+}
+
+.estado-texto {
+    font-size: var(--tamano-texto-m);
+    color: var(--texto);
+    font-weight: 500;
+}
+
+/* Tablet y PC */
+@media (min-width: 768px) {
+    .inicio-contenedor {
+        padding: var(--espacio-xl);
+        gap: var(--espacio-xxl);
+    }
+
+    .inicio-eleccion {
+        max-width: 800px;
+    }
+
+    .evaluacion-rapida {
+        flex-direction: row;
+        justify-content: center;
+        max-width: none;
+        gap: var(--espacio-l);
+    }
+
+    .btn-estado {
+        width: auto;
+        flex: 1;
+        max-width: 180px;
+        flex-direction: column;
+        padding: var(--espacio-xl) var(--espacio-l);
+    }
+
+    .estado-icono {
+        font-size: 3rem;
+    }
+}

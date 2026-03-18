@@ -1,0 +1,26 @@
+
+.info-usuario {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-m);
+  color: #fff;
+}
+
+.nombre-usuario {
+  color: #fff;
+  font-size: var(--tamano-texto-s);
+  font-weight: 600;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .nombre-usuario {
+    display: block;
+  }
+}
+
+@media (min-width:1200px) {
+  .nombre-usuario {
+    font-size: var(--tamano-texto-m);
+  }
+}
