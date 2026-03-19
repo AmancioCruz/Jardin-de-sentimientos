@@ -2,6 +2,7 @@ import { crearRegistro } from "./registro.js";
 import { mostrarPantalla, registrarPantalla } from "../../../nucleo/gestor_pantallas.js";
 import { seccionesApp } from "../../../nucleo/sistema_estados.js";
 import { registrarUsuario } from "../../../servicios/coordinador_servicios.js";
+import { componenteTerminos } from "../../../componentes/terminos/gestor_terminos.js";
 
 
 async function manejarRegistro(datos) {
@@ -15,8 +16,9 @@ async function manejarRegistro(datos) {
     window.location.reload();
 }
 
-function manejarTerminos(datos) {
-    console.log(datos)
+function manejarTerminos() {
+    console.log('terminos');
+    componenteTerminos();
 }
 
 function manejarFotografia(e) {

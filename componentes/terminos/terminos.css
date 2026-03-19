@@ -1,0 +1,65 @@
+/* CONTENEDOR GENERAL */
+.consentimiento-contenedor {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    z-index: 100;
+    overflow-y: auto;
+    background: var(--fondo);
+}
+
+/* TARJETA */
+.card-consentimiento {
+    width: 100%;
+    max-width: 720px;
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-borde);
+    padding: var(--espacio-xl);
+}
+
+/* TÍTULO */
+.consentimiento-titulo {
+    font-size: var(--tamano-texto-xl);
+    font-weight: 600;
+    margin-bottom: var(--espacio-s);
+    color: var(--verde);
+}
+
+/* SUBTEXTO / PROYECTO */
+.consentimiento-proyecto {
+    font-size: var(--tamano-texto-s);
+    color: var(--texto-sutil);
+    margin-bottom: var(--espacio-l);
+}
+
+/* SECCIONES */
+.consentimiento-seccion {
+    margin-bottom: var(--espacio-l);
+    padding-top: var(--espacio-s);
+    border-top: 1px solid var(--borde);
+}
+
+/* PRIMERA SECCIÓN SIN BORDE */
+.consentimiento-seccion:first-of-type {
+    border-top: none;
+    padding-top: 0;
+}
+
+/* TÍTULOS DE SECCIÓN */
+.consentimiento-seccion h3 {
+    font-size: var(--tamano-texto-m);
+    font-weight: 600;
+    margin-bottom: var(--espacio-xs);
+    color: var(--texto);
+}
+
+/* TEXTO */
+.consentimiento-seccion p {
+    font-size: var(--tamano-texto-s);
+    color: var(--texto-sutil);
+    line-height: 1.5;
+    white-space: pre-line;
+}

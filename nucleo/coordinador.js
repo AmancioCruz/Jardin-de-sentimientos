@@ -13,21 +13,29 @@ export async function iniciarGestionSesion() {
     console.log('iniciando la gestion');
     const { habiaSesion, seccion } = inicializarDesdeLocalStorage();
 
+    if (seccion === seccionesApp.registro) {
+        mostrarPantalla(seccionesApp.registro);
+        return;
+    }
+
     if (!habiaSesion) {
-        console.log('no hay sesion activa');
         mostrarPantalla(seccionesApp.inicioSesion);
         return;
     }
 
     try {
         const usuario = await haySesionActiva();
-        const destino = (seccion !== seccionesApp.inicioSesion || seccion !== seccionesApp.registro)
+
+        const destino = (seccion &&
+            seccion !== seccionesApp.inicioSesion &&
+            seccion !== seccionesApp.registro)
             ? seccion
             : seccionesApp.inicio;
 
         componenteMenu(usuario);
         componenteInformacionUsuario(usuario.nombre);
         mostrarPantalla(destino, usuario);
+
     } catch {
         mostrarPantalla(seccionesApp.inicioSesion);
     }

@@ -1,3 +1,6 @@
+.espacio-inferior-m{
+  margin-bottom: var(--espacio-m);
+}
 /* ===== LAYOUT ===== */
 .centrar-flex {
   display: flex;

@@ -1,8 +1,9 @@
 /* ===== REGISTRO ===== */
 
-#contenedor-registro {
+.contenedor-registro {
     width: 100%;
     min-height: 100%;
+    min-width: 350px;
     padding: var(--espacio-s);
 }
 
@@ -54,7 +55,7 @@
     margin-bottom: var(--espacio-xs);
 }
 
-.campo-archivo{
+.campo-archivo {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -88,8 +89,7 @@
 .imagen-seleccionada {
     width: 200px;
     height: 200px;
-    object-fit: cover;
-    border: 3px solid var(--acento);
+    object-fit: contain;
     display: block;
     margin: 0 auto var(--espacio-m);
 }
@@ -149,10 +149,6 @@
 
 /* TABLET */
 @media (min-width:768px) {
-    #contenedor-registro {
-        padding: var(--espacio-s);
-    }
-
     .formulario-registro-completo {
         padding: var(--espacio-xl);
     }
@@ -160,11 +156,10 @@
 
 /* PC */
 @media (min-width:1200px) {
-    #contenedor-registro {
+    .contenedor-registro {
         display: flex;
         align-items: flex-start;
         justify-content: center;
-        padding: var(--espacio-xl);
     }
 
     .formulario-registro-completo {
@@ -185,13 +180,13 @@
         margin: 0;
     }
 
-    .campo-archivo{
+    .campo-archivo {
         flex-direction: row;
         justify-content: flex-start;
         gap: var(--espacio-xl);
     }
 
-    .campo-archivo .btn-primario{
+    .campo-archivo .btn-primario {
         width: 100%;
     }
 }

@@ -73,7 +73,7 @@ export function crearInicioSesion({ alEnviar, alOlvideContrasena, alIrARegistro 
                         ]
                     },
                     // Opciones (recordar y olvidé contraseña)
-                    {
+                    /*{
                         tipo: 'div',
                         atributos: { class: 'opciones' },
                         hijos: [
@@ -95,7 +95,7 @@ export function crearInicioSesion({ alEnviar, alOlvideContrasena, alIrARegistro 
                                 hijos: ['¿Olvidaste tu contraseña?']
                             }
                         ]
-                    },
+                    },*/
                     // Botón submit
                     {
                         tipo: 'button',
