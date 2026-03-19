@@ -81,6 +81,17 @@
   background: rgba(255, 255, 255, .25);
 }
 
+.btn-enviar {
+  width: 100%;
+  padding: var(--espacio-m);
+  border: none;
+  border-radius: var(--radio-borde);
+  background: var(--verde);
+  color: white;
+  font-size: var(--tamano-texto-m);
+  cursor: pointer;
+}
+
 /* ===== MODIFICADORES DE TAMAÑO ===== */
 
 .btn-pequeno {
@@ -148,20 +159,20 @@
 /* ===== RESPONSIVE ===== */
 
 @media (min-width: 768px) {
-  
+
   /* Botones estándar más grandes en PC */
   .btn-primario,
   .btn-secundario,
   .btn-peligro {
     padding: var(--espacio-m) var(--espacio-xl);
   }
-  
+
   /* Botones de estado en columna en PC */
   .btn-estado {
     flex-direction: column;
     padding: var(--espacio-xl) var(--espacio-l);
   }
-  
+
   .btn-estado .estado-icono {
     font-size: 3rem;
   }
