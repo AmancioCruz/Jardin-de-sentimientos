@@ -12,12 +12,11 @@ function _registrarPantalla(clave, config) {
 
 export function registrarPantalla(clave, config) {
     if (!config?.constructor || typeof config.constructor !== 'function') {
-        console.error(`Error: constructor inválido para "${clave}"`);
+        console.error(`Error: constructor invalido para "${clave}"`);
         return;
     }
 
     _registrarPantalla(clave, config);
-    console.log(`✓ Pantalla registrada: ${clave}`);
 }
 
 export function mostrarPantalla(clave, usuario = null) {
@@ -36,40 +35,24 @@ export function mostrarPantalla(clave, usuario = null) {
     }
 
     _mostrarPantalla(clave);
-    console.log(pantallasRegistradas)
 }
 
 function _mostrarPantalla(clave) {
     const config = pantallasRegistradas.get(clave);
 
     if (!config || typeof config.constructor !== 'function') {
-        console.error(`Error: "${clave}" no válida`);
+        console.error(`Error: "${clave}" no valida`);
         return;
     }
 
+    /* Esta funcion arma la pantalla activa y la monta dentro del main.
+       Solo cambia el contenido interno para mantener fija la estructura base de la app. */
     const elemento = config.constructor(config.dependencias);
 
     if (elemento instanceof Elemento) {
         actualizarSeccion(clave);
         elemento.montar(contenedores.contenido, true);
     } else {
-        console.error(`"${clave}" no retornó un Elemento válido`);
+        console.error(`"${clave}" no retorno un Elemento valido`);
     }
 }
-
-/*
-export function actualizarPantalla(clave, nuevasDependencias) {
-    const config = pantallasRegistradas.get(clave);
-
-    if (!config) {
-        console.error(`No existe pantalla "${clave}"`);
-        return;
-    }
-
-    _registrarPantalla(clave, {
-        constructor: config.constructor,
-        dependencias: nuevasDependencias
-    });
-
-    console.log(`Pantalla actualizada: ${clave}`);
-}*/

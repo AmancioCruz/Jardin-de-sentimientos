@@ -1,32 +1,38 @@
-import { configuracionesFirebase } from "./firebase_config.js"
-import { ref, set, get, child, onValue }
-    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { configuracionesFirebase } from "./firebase_config.js";
+import { ref, set, get } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
 export async function obtenerDatosUsuario(usuario) {
-    const referencia = ref(configuracionesFirebase.basedatos, 'usuarios/' + usuario.uid);
+    try {
+        const referencia = ref(configuracionesFirebase.basedatos, `usuarios/${usuario.uid}`);
+        const resultado = await get(referencia);
 
-    const resultado = await get(referencia);
+        if (resultado.exists()) {
+            return resultado.val();
+        }
 
-    if (resultado.exists()) {
-        const userData = resultado.val();
-        return userData;
-    } else {
-        console.log("No se encontraron datos para este usuario.");
         return null;
+    } catch (error) {
+        /* Si la base niega lectura devolvemos null para no romper el armado del usuario.
+           Asi la app puede seguir mostrando la sesion aunque falte informacion opcional. */
+        if (error?.code === "PERMISSION_DENIED") {
+            console.warn(`Sin permisos para leer usuarios/${usuario.uid} en Realtime Database.`);
+            return null;
+        }
+
+        console.error("Error al obtener los datos del usuario:", error);
+        throw error;
     }
 }
 
 export async function registrarDatosUsuario(uid, datos) {
     try {
         const referencia = ref(configuracionesFirebase.basedatos, `usuarios/${uid}`);
-        const fecha = new Date();
+        const fecha = new Date().toISOString().split("T")[0];
 
-        const formato = fecha.toISOString().split("T")[0];
         await set(referencia, {
             ...datos,
-            creado: formato
+            creado: fecha
         });
-        console.log('Usuario registrado:', uid);
     } catch (error) {
         console.error('Error al registrar el usuario:', error);
         throw error;

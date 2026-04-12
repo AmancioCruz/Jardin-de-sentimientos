@@ -3,29 +3,32 @@ import { RegistrarUsuarioAuth } from "./autenticacion.js";
 import { registrarDatosUsuario } from "./base_datos.js";
 
 export async function registrarUsuario(datosUsuario) {
-    const { foto, nombre, correo, programa, semestre, contraseña, sonido, tema, terminos } = datosUsuario;
+    const { foto, nombre, correo, programa, semestre, sonido, tema, terminos, contrasena } = datosUsuario;
 
     try {
+        /* Este flujo crea primero la cuenta en Auth.
+           Con el uid resultante se guarda foto y despues el perfil completo en la base. */
+        const uid = await RegistrarUsuarioAuth(correo, contrasena);
+        if (!uid || typeof uid !== "string") {
+            throw new Error("No se pudo obtener un UID valido para el usuario.");
+        }
 
-        //registramos al usuairo y nos da el user uid
-        const uid = await RegistrarUsuarioAuth(correo, contraseña);
-
-        //subimos la foto de perfil a storage, se crea la carpeta con el user uid
-        const extension = foto.name.split('.').pop(); 
+        const extension = foto.name.split('.').pop();
         await subirImagen(`usuarios/${uid}/perfil.${extension}`, foto);
 
-        //registramos al usuario con todos sus datos
         await registrarDatosUsuario(uid, {
-            nombre: nombre,
-            correo: correo,
-            programa: programa,
-            semestre: semestre,
+            nombre,
+            correo,
+            programa,
+            semestre,
             configuraciones: {
-                sonido: sonido,
-                tema: tema
+                sonido,
+                tema
             },
-            terminos: terminos
-        })
+            terminos
+        });
+
+        return uid;
     } catch (error) {
         console.error('Error registro de usuario:', error.message);
         throw error;

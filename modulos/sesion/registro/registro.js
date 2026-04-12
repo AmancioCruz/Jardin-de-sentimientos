@@ -1,12 +1,8 @@
 import { construirElemento } from "../../../utilidades/constructor_elementos.js";
 
-/**
- * Crea formulario de registro completo
- * @param {Object} callbacks - { alEnviar, alVerTerminos, alIrAInicioSesion }
- * @returns {Elemento} Formulario de registro listo para montar
- */
 export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, eventoFoto }) {
-    const urlImagen = 'https://firebasestorage.googleapis.com/v0/b/jardin-de-sentimientos-b248a.firebasestorage.app/o/default_perfil.png?alt=media&token=ac962713-75be-4c20-a0ad-21d15adeba71';
+    const urlImagen = './recursos/imagenes/default.webp';
+
     return construirElemento({
         tipo: 'div',
         atributos: {
@@ -17,7 +13,7 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
             {
                 tipo: 'form',
                 atributos: {
-                    class: 'formulario-registro-completo',
+                    class: 'formulario-app tarjeta-app tarjeta-app--elevada formulario-registro-completo',
                     id: 'form-registro',
                     'aria-label': 'Formulario de registro'
                 },
@@ -25,6 +21,9 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                     submit: (e) => {
                         e.preventDefault();
                         const formData = new FormData(e.target);
+
+                        /* Este bloque convierte el formulario en un objeto simple
+                           para que el gestor solo reciba datos listos para registrar. */
                         const datos = {
                             foto: formData.get('foto-perfil'),
                             nombre: formData.get('nombre'),
@@ -33,47 +32,33 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                             semestre: formData.get('semestre'),
                             sonido: formData.get('sonido'),
                             tema: formData.get('tema'),
-                            contraseña: formData.get('contraseña'),
-                            confirmarContraseña: formData.get('confirmar-contraseña'),
-                            terminos: formData.get('terminos') === 'on'
+                            contrasena: formData.get('contrasena'),
+                            confirmarContrasena: formData.get('confirmar-contrasena'),
+                            terminos: true
                         };
 
-                        // Validar contraseñas
-                        if (datos.contraseña !== datos.confirmarContraseña) {
+                        if (datos.contrasena !== datos.confirmarContrasena) {
                             alert('Las contraseñas no coinciden');
                             return;
                         }
 
-                        // Validar términos
-                        if (!datos.terminos) {
-                            alert('Debes aceptar los términos y condiciones');
-                            return;
-                        }
-
                         if (alEnviar && typeof alEnviar === 'function') {
-                            const { confirmarContraseña, ...datosEnvio } = datos;
+                            const { confirmarContrasena, ...datosEnvio } = datos;
                             alEnviar(datosEnvio);
                         }
                     }
                 },
                 hijos: [
-                    // Título y subtítulo
                     {
                         tipo: 'h2',
                         atributos: { class: 'titulo-formulario' },
                         hijos: ['Crear cuenta']
                     },
-
-
-                    // ===== INFORMACIÓN PERSONAL =====
                     {
                         tipo: 'h3',
                         atributos: { class: 'subtitulo-seccion' },
                         hijos: ['Información personal']
                     },
-
-                    // Foto de perfil
-                    // Foto de perfil - SOLO ESTA PARTE CAMBIA
                     {
                         tipo: 'div',
                         atributos: { class: 'campo-registro' },
@@ -96,27 +81,25 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                                             id: 'imagen-seleccionada',
                                             class: 'imagen-seleccionada',
                                             src: urlImagen,
-                                            alt: ''
+                                            alt: 'Foto de perfil seleccionada'
                                         }
                                     },
-                                    // LABEL como botón, input oculto dentro
                                     {
                                         tipo: 'label',
                                         atributos: {
                                             class: 'btn-primario btn-seleccionar',
-                                            for: 'foto-perfil'  // conecta con el input
+                                            for: 'foto-perfil'
                                         },
                                         hijos: [
                                             { tipo: 'span', hijos: ['Seleccionar foto'] },
-                                            // Input oculto dentro del label
                                             {
                                                 tipo: 'input',
                                                 atributos: {
                                                     type: 'file',
                                                     name: 'foto-perfil',
-                                                    id: 'foto-perfil',  // id que conecta con label
+                                                    id: 'foto-perfil',
                                                     accept: 'image/*',
-                                                    hidden: true,  // oculto
+                                                    hidden: true,
                                                 },
                                                 eventos: {
                                                     change: (e) => {
@@ -132,8 +115,6 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                             }
                         ]
                     },
-
-                    // Nombre completo
                     {
                         tipo: 'div',
                         atributos: { class: 'campo-registro' },
@@ -157,7 +138,7 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                                             type: 'text',
                                             name: 'nombre',
                                             id: 'nombre',
-                                            placeholder: 'Ej: María González',
+                                            placeholder: 'Ej: Maria Gonzalez',
                                             autocomplete: 'name',
                                             required: true
                                         }
@@ -166,8 +147,6 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                             }
                         ]
                     },
-
-                    // Correo electrónico
                     {
                         tipo: 'div',
                         atributos: { class: 'campo-registro' },
@@ -200,8 +179,6 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                             }
                         ]
                     },
-
-                    // Programa académico
                     {
                         tipo: 'div',
                         atributos: { class: 'campo-registro' },
@@ -234,8 +211,6 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                             }
                         ]
                     },
-
-                    // Semestre
                     {
                         tipo: 'div',
                         atributos: { class: 'campo-registro' },
@@ -271,41 +246,21 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                                                 },
                                                 hijos: ['Selecciona tu semestre']
                                             },
-                                            {
-                                                tipo: 'option',
-                                                atributos: { value: '1° semestre' },
-                                                hijos: ['1° semestre']
-                                            },
-                                            {
-                                                tipo: 'option',
-                                                atributos: { value: '2° semestre' },
-                                                hijos: ['2° semestre']
-                                            },
-                                            {
-                                                tipo: 'option',
-                                                atributos: { value: '3° semestre' },
-                                                hijos: ['3° semestre']
-                                            },
-                                            {
-                                                tipo: 'option',
-                                                atributos: { value: '4° semestre' },
-                                                hijos: ['4° semestre']
-                                            }
+                                            { tipo: 'option', atributos: { value: '1 semestre' }, hijos: ['1 semestre'] },
+                                            { tipo: 'option', atributos: { value: '2 semestre' }, hijos: ['2 semestre'] },
+                                            { tipo: 'option', atributos: { value: '3 semestre' }, hijos: ['3 semestre'] },
+                                            { tipo: 'option', atributos: { value: '4 semestre' }, hijos: ['4 semestre'] }
                                         ]
                                     }
                                 ]
                             }
                         ]
                     },
-
-                    // ===== PREFERENCIAS INICIALES =====
                     {
                         tipo: 'h3',
                         atributos: { class: 'subtitulo-seccion' },
                         hijos: ['Preferencias iniciales']
                     },
-
-                    // Sonido ambiente
                     {
                         tipo: 'div',
                         atributos: { class: 'campo-registro' },
@@ -327,32 +282,14 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                                     autocomplete: 'off'
                                 },
                                 hijos: [
-                                    {
-                                        tipo: 'option',
-                                        atributos: { value: 'lluvia', selected: true },
-                                        hijos: ['Lluvia']
-                                    },
-                                    {
-                                        tipo: 'option',
-                                        atributos: { value: 'bosque' },
-                                        hijos: ['Bosque']
-                                    },
-                                    {
-                                        tipo: 'option',
-                                        atributos: { value: 'olas' },
-                                        hijos: ['Olas']
-                                    },
-                                    {
-                                        tipo: 'option',
-                                        atributos: { value: 'silencio' },
-                                        hijos: ['Silencio']
-                                    }
+                                    { tipo: 'option', atributos: { value: 'lluvia', selected: true }, hijos: ['Lluvia'] },
+                                    { tipo: 'option', atributos: { value: 'bosque' }, hijos: ['Bosque'] },
+                                    { tipo: 'option', atributos: { value: 'olas' }, hijos: ['Olas'] },
+                                    { tipo: 'option', atributos: { value: 'silencio' }, hijos: ['Silencio'] }
                                 ]
                             }
                         ]
                     },
-
-                    // Tema visual
                     {
                         tipo: 'div',
                         atributos: { class: 'campo-registro' },
@@ -374,29 +311,17 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                                     autocomplete: 'off'
                                 },
                                 hijos: [
-                                    {
-                                        tipo: 'option',
-                                        atributos: { value: 'claro' },
-                                        hijos: ['Claro']
-                                    },
-                                    {
-                                        tipo: 'option',
-                                        atributos: { value: 'oscuro', selected: true },
-                                        hijos: ['Oscuro']
-                                    }
+                                    { tipo: 'option', atributos: { value: 'claro' }, hijos: ['Claro'] },
+                                    { tipo: 'option', atributos: { value: 'oscuro', selected: true }, hijos: ['Oscuro'] }
                                 ]
                             }
                         ]
                     },
-
-                    // ===== INFORMACIÓN DE ACCESO =====
                     {
                         tipo: 'h3',
                         atributos: { class: 'subtitulo-seccion' },
-                        hijos: ['Información de acceso']
+                                hijos: ['Información de acceso']
                     },
-
-                    // Contraseña
                     {
                         tipo: 'div',
                         atributos: { class: 'campo-registro' },
@@ -405,7 +330,7 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                                 tipo: 'label',
                                 atributos: {
                                     class: 'etiqueta-campo',
-                                    for: 'contraseña'
+                                    for: 'contrasena'
                                 },
                                 hijos: ['Contraseña *']
                             },
@@ -422,8 +347,8 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                                                 tipo: 'input',
                                                 atributos: {
                                                     type: 'password',
-                                                    name: 'contraseña',
-                                                    id: 'contraseña',
+                                                    name: 'contrasena',
+                                                    id: 'contrasena',
                                                     placeholder: 'Mínimo 8 caracteres',
                                                     autocomplete: 'new-password',
                                                     minlength: 8,
@@ -436,8 +361,6 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                             }
                         ]
                     },
-
-                    // Confirmar contraseña
                     {
                         tipo: 'div',
                         atributos: { class: 'campo-registro' },
@@ -446,7 +369,7 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                                 tipo: 'label',
                                 atributos: {
                                     class: 'etiqueta-campo',
-                                    for: 'confirmar-contraseña'
+                                    for: 'confirmar-contrasena'
                                 },
                                 hijos: ['Confirmar contraseña *']
                             },
@@ -463,8 +386,8 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                                                 tipo: 'input',
                                                 atributos: {
                                                     type: 'password',
-                                                    name: 'confirmar-contraseña',
-                                                    id: 'confirmar-contraseña',
+                                                    name: 'confirmar-contrasena',
+                                                    id: 'confirmar-contrasena',
                                                     placeholder: 'Repite la contraseña',
                                                     autocomplete: 'new-password',
                                                     minlength: 8,
@@ -477,49 +400,29 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                             }
                         ]
                     },
-
-                    // ===== TÉRMINOS LEGALES =====
                     {
                         tipo: 'div',
-                        atributos: { class: 'terminos-registro' },
+                        atributos: { class: 'terminos-registro texto-formulario' },
                         hijos: [
+                            { tipo: 'span', hijos: ['Al crear la cuenta aceptas los '] },
                             {
-                                tipo: 'label',
-                                atributos: { class: 'label-terminos' },
-                                hijos: [
-                                    {
-                                        tipo: 'input',
-                                        atributos: {
-                                            type: 'checkbox',
-                                            name: 'terminos',
-                                            id: 'terminos',
-                                            autocomplete: 'off',
-                                            required: true
+                                tipo: 'a',
+                                atributos: {
+                                    href: '#',
+                                    class: 'enlace-app enlace-terminos'
+                                },
+                                eventos: {
+                                    click: (e) => {
+                                        e.preventDefault();
+                                        if (alVerTerminos && typeof alVerTerminos === 'function') {
+                                            alVerTerminos();
                                         }
-                                    },
-                                    { tipo: 'span', hijos: ['Acepto los'] },
-                                    {
-                                        tipo: 'a',
-                                        atributos: {
-                                            href: '#',
-                                            class: 'enlace-terminos'
-                                        },
-                                        eventos: {
-                                            click: (e) => {
-                                                e.preventDefault();
-                                                if (alVerTerminos && typeof alVerTerminos === 'function') {
-                                                    alVerTerminos();
-                                                }
-                                            }
-                                        },
-                                        hijos: ['términos y condiciones']
                                     }
-                                ]
+                                },
+                                hijos: ['términos y condiciones']
                             }
                         ]
                     },
-
-                    // Botón de registro
                     {
                         tipo: 'button',
                         atributos: {
@@ -529,18 +432,16 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                         },
                         hijos: ['Crear cuenta']
                     },
-
-                    // Enlace a inicio de sesión
                     {
                         tipo: 'div',
-                        atributos: { class: 'inicio-sesion' },
+                        atributos: { class: 'inicio-sesion texto-formulario' },
                         hijos: [
                             { tipo: 'span', hijos: ['¿Ya tienes una cuenta? '] },
                             {
                                 tipo: 'a',
                                 atributos: {
                                     href: '#',
-                                    class: 'enlace-inicio-sesion',
+                                    class: 'enlace-app enlace-inicio-sesion',
                                     id: 'link-inicio-sesion'
                                 },
                                 eventos: {

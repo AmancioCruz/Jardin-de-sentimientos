@@ -1,6 +1,6 @@
 import { configuracionesFirebase } from "./firebase_config.js";
 import { onAuthStateChanged }
-    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 import { obtenerDatosUsuario } from "./base_datos.js";
 import { obtenerFotoPerfil } from "./almacenamiento.js";
 import { Usuario } from "../utilidades/modelos/usuario.js";
@@ -10,8 +10,12 @@ export function haySesionActiva() {
     return new Promise((resolve, reject) => {
         onAuthStateChanged(configuracionesFirebase.auth, async (usuarioFirebase) => {
             if (usuarioFirebase) {
-                const usuario = await construirUsuario(usuarioFirebase);
-                resolve(usuario);
+                try {
+                    const usuario = await construirUsuario(usuarioFirebase);
+                    resolve(usuario);
+                } catch (error) {
+                    reject(error);
+                }
             } else {
                 reject(null);
             }

@@ -1,12 +1,15 @@
 import { construirElemento } from "../../utilidades/constructor_elementos.js";
 import { seccionesApp } from "../../nucleo/sistema_estados.js";
 
-/**
- * Crea el menú de navegación lateral
- * @param {Object} callbacks - { alHacerClick }
- * @returns {Elemento} Menú de navegación listo para montar
- */
-export function crearMenuNavegacion({alHacerClick}) {
+export function crearMenuNavegacion({ alHacerClick }) {
+    /* El menu concentra las rutas principales que ya existen en la app.
+       Cada opcion delega la navegacion al callback para no acoplar este componente al gestor. */
+    const opciones = [
+        { etiqueta: "Inicio", seccion: seccionesApp.inicio },
+        { etiqueta: "Perfil", seccion: seccionesApp.perfil },
+        { etiqueta: "Bitácora", seccion: seccionesApp.bitacora }
+    ];
+
     return construirElemento({
         tipo: 'nav',
         atributos: {
@@ -16,91 +19,25 @@ export function crearMenuNavegacion({alHacerClick}) {
             {
                 tipo: 'ul',
                 atributos: { class: 'menu-navegacion' },
-                hijos: [
-                    {
-                        tipo: 'li',
-                        hijos: [
-                            {
-                                tipo: 'a',
-                                atributos: {
-                                    href: '#'
-                                },
-                                eventos: {
-                                    click: (e) => {
-                                        console.log(e.target);
-                                        e.preventDefault();
-                                        if (alHacerClick && typeof alHacerClick === 'function') {
-                                            alHacerClick(seccionesApp.inicio);
-                                        }
+                hijos: opciones.map(({ etiqueta, seccion }) => ({
+                    tipo: 'li',
+                    hijos: [
+                        {
+                            tipo: 'a',
+                            atributos: { href: '#' },
+                            eventos: {
+                                click: (e) => {
+                                    e.preventDefault();
+                                    if (alHacerClick && typeof alHacerClick === 'function') {
+                                        alHacerClick(seccion);
                                     }
-                                },
-                                hijos: ['Inicio']
-                            }
-                        ]
-                    },
-                    {
-                        tipo: 'li',
-                        hijos: [
-                            {
-                                tipo: 'a',
-                                atributos: {
-                                    href: '#'
-                                },
-                                eventos: {
-                                    click: (e) => {
-                                        e.preventDefault();
-                                        if (alHacerClick && typeof alHacerClick === 'function') {
-                                            alHacerClick(seccionesApp.perfil );
-                                        }
-                                    }
-                                },
-                                hijos: ['Perfil']
-                            }
-                        ]
-                    },
-                    {
-                        tipo: 'li',
-                        hijos: [
-                            {
-                                tipo: 'a',
-                                atributos: {
-                                    href: '#'
-                                },
-                                eventos: {
-                                    click: (e) => {
-                                        e.preventDefault();
-                                        if (alHacerClick && typeof alHacerClick === 'function') {
-                                            alHacerClick(seccionesApp.bitacora );
-                                        }
-                                    }
-                                },
-                                hijos: ['Bitacora']
-                            }
-                        ]
-                    },
-                    {
-                        tipo: 'li',
-                        hijos: [
-                            {
-                                tipo: 'a',
-                                atributos: {
-                                    href: '#'
-                                },
-                                eventos: {
-                                    click: (e) => {
-                                        e.preventDefault();
-                                        if (alHacerClick && typeof alHacerClick === 'function') {
-                                            alHacerClick(seccionesApp.sisco );
-                                        }
-                                    }
-                                },
-                                hijos: ['Evaluaciones']
-                            }
-                        ]
-                    }
-                ]
+                                }
+                            },
+                            hijos: [etiqueta]
+                        }
+                    ]
+                }))
             }
         ]
     });
 }
-

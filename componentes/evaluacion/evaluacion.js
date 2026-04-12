@@ -1,10 +1,8 @@
-import { construirElemento } from "../../utilidades/constructor_elementos.js"
+import { construirElemento } from "../../utilidades/constructor_elementos.js";
 
 const evaluacion = {
-    titulo: "Evaluación ",
-
+    titulo: "Evaluación",
     instruccion: "Del 1 al 5, ¿qué tanto te identificas con cada afirmación?",
-
     escala: {
         minimo: 1,
         maximo: 5,
@@ -13,7 +11,6 @@ const evaluacion = {
             derecha: "Mucho"
         }
     },
-
     preguntas: [
         {
             id: "estres",
@@ -35,7 +32,6 @@ const evaluacion = {
 };
 
 export function crearEvaluacion(config = {}, alEnviar) {
-    // Merge de configuración con defaults
     const datos = {
         titulo: config.titulo || evaluacion.titulo,
         instruccion: config.instruccion || evaluacion.instruccion,
@@ -43,7 +39,6 @@ export function crearEvaluacion(config = {}, alEnviar) {
         preguntas: config.preguntas || evaluacion.preguntas
     };
 
-    // Crear preguntas Likert
     const elementosPreguntas = datos.preguntas.map(pregunta =>
         crearPreguntaLikert(
             pregunta.texto,
@@ -52,127 +47,99 @@ export function crearEvaluacion(config = {}, alEnviar) {
         )
     );
 
-    // Crear formulario completo
     const formulario = componenteFormularioEvaluacion({
         titulo: datos.titulo,
         instruccion: datos.instruccion,
         preguntas: elementosPreguntas,
-        alEnviar: alEnviar
+        alEnviar
     });
 
-    // Envolver en contenedor
     return contenedorEvaluacion(formulario);
 }
 
+const contenedorEvaluacion = (contenido) => construirElemento({
+    tipo: 'div',
+    atributos: { class: 'contenedor-evaluacion' },
+    hijos: Array.isArray(contenido) ? contenido : [contenido]
+});
 
+const componenteFormularioEvaluacion = ({ titulo, instruccion, preguntas, alEnviar }) => construirElemento({
+    tipo: 'form',
+    atributos: { class: 'formulario-app tarjeta-app tarjeta-app--elevada formulario-evaluacion' },
+    eventos: {
+        submit: (e) => {
+            e.preventDefault();
 
-const contenedorEvaluacion = (contenido) => {
-    return construirElemento(
-        {
-            tipo: 'div',
-            atributos: { class: 'contenedor-evaluacion' },
-            hijos: Array.isArray(contenido) ? contenido : [contenido]
+            const formData = new FormData(e.target);
+            const respuestas = {};
+
+            for (let [key, value] of formData.entries()) {
+                respuestas[key] = Number(value);
+            }
+
+            if (Object.keys(respuestas).length < preguntas.length) {
+                alert('Por favor responde todas las preguntas');
+                return;
+            }
+
+            if (alEnviar && typeof alEnviar === 'function') {
+                alEnviar(respuestas);
+            }
         }
-    )
-}
-
-const datosformulario = {
-    titulo: 'Evaluación rápida',
-    instruccion: ' Del 1 al 5, ¿qué tanto te identificas con cada afirmación?'
-}
-
-const componenteFormularioEvaluacion = ({ titulo, instruccion, preguntas, alEnviar }) => {
-    return construirElemento({
-        tipo: 'form',
-        atributos: { class: 'formulario-evaluacion' },
-        eventos: {
-            submit: (e) => {
-                e.preventDefault();
-
-                const formData = new FormData(e.target);
-                const respuestas = {};
-
-                for (let [key, value] of formData.entries()) {
-                    respuestas[key] = Number(value);
-                }
-
-                const totalPreguntas = preguntas.length;
-                const totalRespuestas = Object.keys(respuestas).length;
-
-                if (totalRespuestas < totalPreguntas) {
-                    alert('Por favor responde todas las preguntas');
-                    return;
-                }
-
-                if (alEnviar && typeof alEnviar === 'function') {
-                    alEnviar(respuestas);
-                }
-            }
+    },
+    hijos: [
+        {
+            tipo: 'h2',
+            atributos: { class: 'titulo-formulario titulo-evaluacion' },
+            hijos: [titulo]
         },
-        hijos: [
-            {
-                tipo: 'h2',
-                atributos: { class: 'titulo-evaluacion' },
-                hijos: [titulo]
-            },
-            {
-                tipo: 'p',
-                atributos: { class: 'instruccion-evaluacion' },
-                hijos: [instruccion]
-            },
-            ...preguntas,
-            {
-                tipo: 'div',
-                atributos: { class: 'acciones-evaluacion' },
-                hijos: [
-                    {
-                        tipo: 'button',
-                        atributos: {
-                            type: 'submit',
-                            class: 'btn-enviar'
-                        },
-                        hijos: ['Continuar']
-                    }
-                ]
-            }
-        ]
-    });
-};
-
-const crearPreguntaLikert = (textoPregunta, opcionesLikert, escala) => {
-    return construirElemento(
+        {
+            tipo: 'p',
+            atributos: { class: 'instruccion-evaluacion' },
+            hijos: [instruccion]
+        },
+        ...preguntas,
         {
             tipo: 'div',
-            atributos: { class: 'pregunta-evaluacion' },
+            atributos: { class: 'acciones-evaluacion' },
             hijos: [
                 {
-                    tipo: 'p',
-                    atributos: { class: 'texto-pregunta' },
-                    hijos: [textoPregunta]
-                },
-                {
-                    tipo: 'div',
-                    atributos: { class: 'likert-numerico' },
-                    hijos: opcionesLikert
-                },
-                {
-                    tipo: 'div',
-                    atributos: { class: 'likert-extremos' },
-                    hijos: [
-                        {
-                            tipo: 'span',
-                            hijos: [escala.de]
-                        },
-                        {
-                            tipo: 'span',
-                            hijos: [escala.a]
-                        }
-                    ]
+                    tipo: 'button',
+                    atributos: {
+                        type: 'submit',
+                        class: 'btn-primario btn-ancho'
+                    },
+                    hijos: ['Continuar']
                 }
             ]
         }
-    )
-}
+    ]
+});
+
+const crearPreguntaLikert = (textoPregunta, opcionesLikert, escala) => construirElemento({
+    tipo: 'div',
+    atributos: { class: 'pregunta-evaluacion' },
+    hijos: [
+        {
+            tipo: 'p',
+            atributos: { class: 'texto-pregunta' },
+            hijos: [textoPregunta]
+        },
+        {
+            tipo: 'div',
+            atributos: { class: 'likert-numerico' },
+            hijos: opcionesLikert
+        },
+        {
+            tipo: 'div',
+            atributos: { class: 'likert-extremos' },
+            hijos: [
+                { tipo: 'span', hijos: [escala.de] },
+                { tipo: 'span', hijos: [escala.a] }
+            ]
+        }
+    ]
+});
 
 const crearOpcionesLikert = (nombre, cantidad = 5) => {
     const opciones = [];
@@ -180,25 +147,23 @@ const crearOpcionesLikert = (nombre, cantidad = 5) => {
     for (let i = 0; i < cantidad; i++) {
         const valor = i + 1;
 
-        opciones.push(
-            construirElemento({
-                tipo: 'label',
-                hijos: [
-                    {
-                        tipo: 'input',
-                        atributos: {
-                            type: 'radio',
-                            name: nombre,
-                            value: String(valor)
-                        }
-                    },
-                    {
-                        tipo: 'span',
-                        hijos: [String(valor)]
+        opciones.push(construirElemento({
+            tipo: 'label',
+            hijos: [
+                {
+                    tipo: 'input',
+                    atributos: {
+                        type: 'radio',
+                        name: nombre,
+                        value: String(valor)
                     }
-                ]
-            })
-        );
+                },
+                {
+                    tipo: 'span',
+                    hijos: [String(valor)]
+                }
+            ]
+        }));
     }
 
     return opciones;

@@ -1,0 +1,91 @@
+/* Formularios reutilizables: campos, etiquetas, selects y textos de ayuda. */
+.formulario-app {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-l);
+  padding: clamp(1.35rem, 4vw, 2.2rem);
+}
+
+.grupo-campo,
+.campo-registro {
+  width: 100%;
+  position: relative;
+  margin-bottom: var(--espacio-m);
+}
+
+.etiqueta-campo {
+  display: block;
+  font-size: var(--tamano-texto-s);
+  font-weight: 700;
+  margin-bottom: var(--espacio-xs);
+  color: var(--texto);
+}
+
+/* El grid evita que los iconos se salgan del input en pantallas pequenas. */
+.campo {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  align-items: center;
+  width: 100%;
+  border: 1px solid var(--borde);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.84);
+  overflow: hidden;
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.campo i,
+.campo svg {
+  width: 1rem;
+  height: 1rem;
+  margin: 0 auto;
+  color: var(--texto-sutil);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.campo input,
+.campo select,
+.campo textarea,
+.select-preferencia {
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.95rem 1rem 0.95rem 0.25rem;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  font-size: var(--tamano-texto-m);
+  line-height: 1.2;
+}
+
+.select-preferencia {
+  border: 1px solid var(--borde);
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.84);
+  padding-left: 1rem;
+  padding-right: 2.5rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2366756f' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+
+.campo:focus-within,
+.select-preferencia:focus {
+  border-color: rgba(31, 111, 91, 0.45);
+  box-shadow: 0 0 0 4px rgba(31, 111, 91, 0.10);
+  background-color: #fff;
+}
+
+.texto-formulario {
+  text-align: center;
+  font-size: var(--tamano-texto-s);
+  color: var(--texto-sutil);
+}
+
+.fila-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-s);
+}

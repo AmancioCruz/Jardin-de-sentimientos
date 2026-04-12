@@ -1,0 +1,57 @@
+/* Tarjetas reutilizables para formularios, perfil, evaluaciones y modales. */
+.tarjeta-app {
+  width: 100%;
+  background: linear-gradient(180deg, var(--superficie) 0%, var(--superficie-suave) 100%);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-grande);
+  box-shadow: var(--sombra-suave);
+}
+
+.tarjeta-app--elevada {
+  box-shadow: var(--sombra-media);
+}
+
+.tarjeta-app--scroll {
+  overflow: auto;
+}
+
+/* Titulos comunes: mantienen una jerarquia visual igual en toda la app. */
+.titulo-formulario,
+.titulo-seccion,
+.titulo-pantalla {
+  color: var(--verde);
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -0.03em;
+}
+
+.titulo-formulario {
+  font-size: var(--tamano-texto-2xl);
+}
+
+.titulo-pantalla {
+  font-size: clamp(1.5rem, 4vw, var(--tamano-texto-2xl));
+}
+
+.subtitulo-seccion {
+  font-size: var(--tamano-texto-l);
+  color: var(--verde);
+  margin: var(--espacio-xl) 0 var(--espacio-m);
+  font-weight: 800;
+  padding-left: var(--espacio-m);
+  border-left: 4px solid var(--acento);
+}
+
+.texto-secundario {
+  color: var(--texto-sutil);
+  font-size: var(--tamano-texto-s);
+}
+
+.enlace-app {
+  color: var(--acento);
+  font-weight: 700;
+}
+
+.enlace-app:hover {
+  color: var(--acento-fuerte);
+}

@@ -1,32 +1,23 @@
-/* ===== EVALUACIÓN ===== */
-
 .contenedor-evaluacion {
     width: 100%;
     min-height: 100%;
-    min-width: 350px;
+    min-width: 0;
     padding: var(--espacio-s);
+    overflow: auto;
 }
 
 .formulario-evaluacion {
     width: 100%;
     max-width: 100%;
-    margin: 0 auto;
-    padding: var(--espacio-xl);
-    margin-bottom: var(--espacio-m);
-    background: var(--superficie);
-    border-radius: var(--radio-borde);
+    margin: 0 auto var(--espacio-m);
+    overflow: auto;
 }
 
-/* TÍTULO */
 .titulo-evaluacion {
-    text-align: center;
     margin-bottom: var(--espacio-s);
-    color: var(--verde);
     font-size: var(--tamano-texto-xl);
-    font-weight: 600;
 }
 
-/* INSTRUCCIÓN */
 .instruccion-evaluacion {
     text-align: center;
     color: var(--texto-sutil);
@@ -36,7 +27,6 @@
     border-bottom: 1px solid var(--borde);
 }
 
-/* PREGUNTAS */
 .pregunta-evaluacion {
     margin-bottom: var(--espacio-l);
 }
@@ -46,14 +36,12 @@
     margin-bottom: var(--espacio-s);
 }
 
-/* ESCALA */
 .likert-numerico {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: var(--espacio-s);
 }
 
-/* OPCIONES */
 .likert-numerico label {
     display: flex;
     justify-content: center;
@@ -66,12 +54,10 @@
     cursor: pointer;
 }
 
-/* INPUT OCULTO */
 .likert-numerico input {
     display: none;
 }
 
-/* SELECCIÓN */
 .likert-numerico input:checked + span,
 .likert-numerico label:has(input:checked) {
     background: var(--verde-claro);
@@ -79,12 +65,10 @@
     border-color: var(--verde-claro);
 }
 
-/* TEXTO */
 .likert-numerico span {
     display: block;
 }
 
-/* EXTREMOS */
 .likert-extremos {
     display: flex;
     justify-content: space-between;
@@ -93,15 +77,11 @@
     margin-top: var(--espacio-xs);
 }
 
-/* BOTÓN */
 .acciones-evaluacion {
     margin-top: var(--espacio-l);
 }
 
-
-/* ===== RESPONSIVE ===== */
-
-@media (min-width:1200px) {
+@media (min-width: 1200px) {
     .contenedor-evaluacion {
         display: flex;
         justify-content: center;

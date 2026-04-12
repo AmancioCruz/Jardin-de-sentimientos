@@ -12,7 +12,7 @@ export function crearInicio({ callbacks, usuario }) {
         hijos: [
             {
                 tipo: 'h1',
-                atributos: { class: 'inicio-titulo' },
+                atributos: { class: 'titulo-pantalla inicio-titulo' },
                 hijos: [`Hola ${usuario.nombre}`]
             },
             {
@@ -28,7 +28,6 @@ export function crearInicio({ callbacks, usuario }) {
                         tipo: 'div',
                         atributos: { class: 'evaluacion-rapida' },
                         hijos: [
-                            // Estresado - peso en la mente
                             {
                                 tipo: 'button',
                                 atributos: {
@@ -36,14 +35,13 @@ export function crearInicio({ callbacks, usuario }) {
                                     'data-destino': 'jardin'
                                 },
                                 eventos: {
-                                    click: () => { if (alSeleccionarEstado) alSeleccionarEstado('jardin'); }
+                                    click: () => { if (alSeleccionarEstado) alSeleccionarEstado('Saturado Mentalmente', usuario); }
                                 },
                                 hijos: [
                                     { tipo: 'i', atributos: { class: 'fa-solid fa-brain estado-icono' } },
-                                    { tipo: 'span', atributos: { class: 'estado-texto' }, hijos: ['Estresado'] }
+                                    { tipo: 'span', atributos: { class: 'estado-texto' }, hijos: ['Saturado Mentalmente'] }
                                 ]
                             },
-                            // Ansioso - corazón acelerado
                             {
                                 tipo: 'button',
                                 atributos: {
@@ -58,7 +56,6 @@ export function crearInicio({ callbacks, usuario }) {
                                     { tipo: 'span', atributos: { class: 'estado-texto' }, hijos: ['Ansioso'] }
                                 ]
                             },
-                            // Cansado - batería baja
                             {
                                 tipo: 'button',
                                 atributos: {
@@ -73,7 +70,6 @@ export function crearInicio({ callbacks, usuario }) {
                                     { tipo: 'span', atributos: { class: 'estado-texto' }, hijos: ['Cansado'] }
                                 ]
                             },
-                            // No estoy seguro - duda
                             {
                                 tipo: 'button',
                                 atributos: { class: 'btn-estado' },

@@ -5,23 +5,27 @@ import { IniciarSesionAuth } from "../../../servicios/autenticacion.js";
 import { componenteMenu } from "../../../componentes/menu_navegacion/gestor_menu_navegacion.js";
 import { componenteInformacionUsuario } from "../../../componentes/informacion_usuario/gestor_informacion_usuario.js";
 import { construirUsuario } from "../../../servicios/observador_sesiones.js";
-
+import { componenteTerminos } from "../../../componentes/terminos/gestor_terminos.js";
 
 async function manejarInicioSesion(datos) {
-    console.log(datos);
-    const usuario = await IniciarSesionAuth(datos.correo, datos.contraseña);
-    const usuarioActual = await construirUsuario(usuario);
-    console.log(usuarioActual);
+    try {
+        /* El login arma primero el usuario autenticado de Firebase
+           y despues completa la informacion visible que usa la app. */
+        const usuario = await IniciarSesionAuth(datos.correo, datos.contrasena);
+        const usuarioActual = await construirUsuario(usuario);
 
-    actualizarSeccion(seccionesApp.inicio);
-    actualizarSesion(true);
-    componenteMenu(usuarioActual);
-    componenteInformacionUsuario(usuarioActual.nombre);
-    mostrarPantalla(seccionesApp.inicio, usuarioActual);
+        actualizarSeccion(seccionesApp.inicio);
+        actualizarSesion(true);
+        componenteMenu(usuarioActual);
+        componenteInformacionUsuario(usuarioActual.nombre);
+        mostrarPantalla(seccionesApp.inicio, usuarioActual);
+    } catch (error) {
+        console.error("Error al iniciar sesion:", error);
+        alert("No fue posible iniciar sesion. Verifica tus credenciales e intentalo de nuevo.");
+    }
 }
 
 function manejarRecuperacion() {
-
 }
 
 registrarPantalla(seccionesApp.inicioSesion, {
@@ -29,6 +33,13 @@ registrarPantalla(seccionesApp.inicioSesion, {
     dependencias: {
         alEnviar: manejarInicioSesion,
         alOlvideContrasena: manejarRecuperacion,
-        alIrARegistro: () => { mostrarPantalla(seccionesApp.registro) }
+        alIrARegistro: () => {
+            /* Antes de abrir registro mostramos los terminos.
+               Cuando el usuario acepta, recien entonces entra al formulario. */
+            componenteTerminos({
+                alAceptar: () => mostrarPantalla(seccionesApp.registro),
+                alCerrar: () => mostrarPantalla(seccionesApp.inicioSesion)
+            });
+        }
     }
-})
+});

@@ -2,15 +2,20 @@
 .info-usuario {
   display: flex;
   align-items: center;
-  gap: var(--espacio-m);
+  gap: var(--espacio-s);
   color: #fff;
+  margin-left: auto;
 }
 
 .nombre-usuario {
   color: #fff;
   font-size: var(--tamano-texto-s);
-  font-weight: 600;
+  font-weight: 700;
   display: none;
+  max-width: 9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (min-width: 768px) {

@@ -1,0 +1,55 @@
+{
+    "titulo": "Aviso de Consentimiento Informado y Términos de Uso",
+    "proyecto": "Aplicación web interactiva para la gestión del estrés académico en estudiantes de posgrado",
+    "datos_proyecto": {
+        "institucion": "Universidad Autónoma de Ciudad Juárez",
+        "programa": "Maestría en Estudios y Procesos Creativos en Arte y Diseño",
+        "instituto": "Instituto de Arquitectura, Diseño y Arte (IADA)",
+        "responsable": "Amancio Torres Cruz",
+        "formacion": "Licenciado en Diseño Digital de Medios Interactivos",
+        "directora": "Dra. Silvia Verónica Ariza Ampudia",
+        "codirectora": "Dra. Verónica Portillo Reyes"
+    },
+    "secciones": [
+        {
+            "titulo": "1. Propósito del estudio",
+            "contenido": "El presente proyecto tiene como objetivo analizar el estrés académico en estudiantes de posgrado y evaluar el uso de una aplicación web interactiva como herramienta para la regulación emocional y el bienestar. Este proyecto forma parte de una investigación académica de posgrado."
+        },
+        {
+            "titulo": "2. Naturaleza de la participación",
+            "contenido": "La participación consiste en interactuar con una aplicación web que incluye identificación del estado emocional del usuario, preguntas de contextualización y actividades interactivas como jardín de sentimientos, modo pizarra y respiraciones guiadas."
+        },
+        {
+            "titulo": "3. Participación voluntaria",
+            "contenido": "Su participación es completamente voluntaria. Puede dejar de utilizar la aplicación en cualquier momento, sin ninguna consecuencia académica o personal."
+        },
+        {
+            "titulo": "4. Uso de la información",
+            "contenido": "La información recopilada será utilizada exclusivamente con fines académicos dentro de este proyecto de tesis. No será utilizada con fines comerciales."
+        },
+        {
+            "titulo": "5. Confidencialidad y protección de datos",
+            "contenido": "Sus respuestas serán tratadas de manera estrictamente confidencial. Los datos serán analizados de forma anónima y agregada. No se recopilará información personal que permita su identificación directa, salvo que usted decida proporcionarla voluntariamente."
+        },
+        {
+            "titulo": "6. Instrumentos de evaluación",
+            "contenido": "Este estudio se basa parcialmente en el uso del Inventario SISCO-SV21, así como en preguntas adicionales diseñadas para comprender la experiencia emocional del usuario."
+        },
+        {
+            "titulo": "7. Derechos del participante",
+            "contenido": "Usted tiene derecho a solicitar acceso a la información proporcionada, solicitar la corrección o eliminación de sus datos y solicitar una copia de sus respuestas en cualquier momento."
+        },
+        {
+            "titulo": "8. Riesgos y consideraciones",
+            "contenido": "Las actividades propuestas no representan riesgos significativos. Sin embargo, algunas preguntas pueden invitar a la reflexión sobre su estado emocional."
+        },
+        {
+            "titulo": "9. Contacto",
+            "contenido": "Para cualquier duda, comentario o solicitud relacionada con este estudio, puede comunicarse al correo: amancio.torres.cruz@gmail.com"
+        },
+        {
+            "titulo": "10. Consentimiento",
+            "contenido": "Al continuar utilizando esta aplicación, usted declara haber leído y comprendido este aviso, y acepta participar de manera voluntaria en este estudio."
+        }
+    ]
+}

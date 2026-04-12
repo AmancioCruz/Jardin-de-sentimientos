@@ -1,6 +1,6 @@
 import { construirElemento } from "../../utilidades/constructor_elementos.js";
 
-export function mostrarBitacora(nombreUsuario, alEvaluarRapida, alEvaluarCompleta) {
+export function mostrarBitacora() {
     return construirElemento({
         tipo: 'div',
         atributos: {
@@ -10,10 +10,9 @@ export function mostrarBitacora(nombreUsuario, alEvaluarRapida, alEvaluarComplet
         hijos: [
             {
                 tipo: 'h1',
-                atributos: { class: 'inicio-saludo' },
-                hijos: ["Pagina de Bitacora"]
-            },
-        
+                atributos: { class: 'titulo-pantalla' },
+                hijos: ["Página de Bitácora"]
+            }
         ]
     });
 }

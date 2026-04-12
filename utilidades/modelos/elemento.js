@@ -8,7 +8,7 @@ export class Elemento {
 
         const claseActual = this.atributos.class || '';
         this.atributos.class = claseActual ? `${claseActual} animado` : 'animado';
-
+        
         hijos.forEach(hijo => this.agregarHijo(hijo));
     }
 

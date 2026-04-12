@@ -13,7 +13,7 @@ export function crearPerfil({ usuario }) {
             {
                 tipo: 'section',
                 atributos: {
-                    class: 'seccion-informacion',
+                    class: 'tarjeta-app seccion-informacion',
                     'aria-label': 'Información personal'
                 },
                 hijos: [
@@ -43,12 +43,10 @@ export function crearPerfil({ usuario }) {
                     crearDato('Semestre', usuario.semestre)
                 ]
             },
-
-            // 🔊 SECCIÓN CONFIGURACIONES
             {
                 tipo: 'section',
                 atributos: {
-                    class: 'seccion-configuracion',
+                    class: 'tarjeta-app seccion-configuracion',
                     'aria-label': 'Configuraciones'
                 },
                 hijos: [
@@ -66,7 +64,6 @@ export function crearPerfil({ usuario }) {
     });
 }
 
-// reutilizable
 function crearDato(etiqueta, valor) {
     return {
         tipo: 'div',

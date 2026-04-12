@@ -4,10 +4,6 @@ export const contenedores = {
     cabecera: document.querySelector("#cabecera-principal")
 };
 
-/**
- * Verifica que todos los contenedores existan en el HTML
- * @returns {boolean} true si todos existen, false si falta alguno
- */
 export function verificarContenedores() {
     const faltantes = [];
 
@@ -20,6 +16,5 @@ export function verificarContenedores() {
         return false;
     }
 
-    console.log('Todos los contenedores encontrados');
     return true;
 }

@@ -3,15 +3,14 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut
-} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+} from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js';
 
 export const IniciarSesionAuth = async (correo, contra) => {
     try {
         const credenciales = await signInWithEmailAndPassword(configuracionesFirebase.auth, correo, contra);
-        const usuario = credenciales.user;
-        return usuario;
+        return credenciales.user;
     } catch (error) {
-        console.error("Error al iniciar sesión:", error.message);
+        console.error("Error al iniciar sesion:", error.message);
         throw error;
     }
 };
@@ -19,20 +18,22 @@ export const IniciarSesionAuth = async (correo, contra) => {
 export const RegistrarUsuarioAuth = async (correo, contra) => {
     try {
         const credencialesUsuario = await createUserWithEmailAndPassword(
-            configuracionesFirebase.auth, correo, contra);
+            configuracionesFirebase.auth, correo, contra
+        );
         return credencialesUsuario.user.uid;
     } catch (error) {
-        return error;
+        console.error("Error al registrar usuario:", error.message);
+        throw error;
     }
-}
+};
 
 export const CerrarSesionAuth = async () => {
     try {
+        /* Solo cerramos la sesion en Firebase.
+           La limpieza visual y el reload quedan en el gestor que controla la interfaz. */
         await signOut(configuracionesFirebase.auth);
-        console.log("Sesión cerrada");
-        location.reload();
     } catch (error) {
-        console.error("Error al cerrar sesión:", error.message);
+        console.error("Error al cerrar sesion:", error.message);
         throw error;
     }
 };

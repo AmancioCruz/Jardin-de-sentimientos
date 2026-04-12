@@ -3,9 +3,13 @@
 @import url('base/utilidades.css');
 @import url('base/variables.css');
 @import url('base/componentes.css');
-@import url('base/modulos.css');
 @import url('base/layout_base.css');
 
-/* ===== componenete ===== */
+/* ===== componentes reutilizables ===== */
 @import url('componentes/botones.css');
+@import url('componentes/tarjetas.css');
+@import url('componentes/formularios.css');
+@import url('componentes/menu_flotante.css');
 
+/* ===== modulos ===== */
+@import url('base/modulos.css');

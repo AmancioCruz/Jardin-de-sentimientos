@@ -1,48 +1,46 @@
-.espacio-inferior-m{
+.oculto {
+  display: none !important;
+}
+
+.espacio-inferior-m {
   margin-bottom: var(--espacio-m);
 }
-/* ===== LAYOUT ===== */
+
 .centrar-flex {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* ===== TEXTO ===== */
 .truncar {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* ===== CANVAS ===== */
+/* Utilidades del canvas para actividades que ocupan toda el area de la app. */
 .canvas-contenedor {
   position: relative;
   width: 100%;
   height: 100%;
-  overflow: hidden;
 }
 
 .canvas-full {
   display: block;
   width: 100%;
   height: 100%;
-  /* Previene scroll y selección accidental */
   touch-action: none;
   user-select: none;
 }
 
-/* Modo pizarra - cursor personalizado */
 .canvas-pizarra {
   cursor: crosshair;
 }
 
-/* Modo juego - cursor normal */
 .canvas-juego {
   cursor: default;
 }
 
-/* ===== CONTROLES FLOTANTES (para modo pizarra) ===== */
 .controles-canvas {
   position: absolute;
   display: flex;
@@ -53,17 +51,14 @@
   box-shadow: var(--sombra-suave);
 }
 
-/* Posiciones de controles */
 .controles-arriba { top: var(--espacio-m); left: 50%; transform: translateX(-50%); }
 .controles-abajo { bottom: var(--espacio-m); left: 50%; transform: translateX(-50%); }
 .controles-izquierda { left: var(--espacio-m); top: 50%; transform: translateY(-50%); flex-direction: column; }
 .controles-derecha { right: var(--espacio-m); top: 50%; transform: translateY(-50%); flex-direction: column; }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 767px) {
   .solo-escritorio { display: none !important; }
-  
-  /* Controles en móvil siempre abajo para el pulgar */
+
   .controles-canvas {
     bottom: var(--espacio-m);
     top: auto;

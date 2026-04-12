@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Jardin de Sentimientos">
+  <rect width="64" height="64" rx="18" fill="#164E3F"/>
+  <path d="M18 40c6-16 17-24 27-24-1 10-8 21-24 27l-3-3Z" fill="#F3E9D7"/>
+  <path d="M29 46c0-10 6-18 16-23 1 10-3 19-12 26l-4-3Z" fill="#A8D5BA"/>
+  <circle cx="22" cy="45" r="4" fill="#E2B86D"/>
+</svg>
