@@ -4,6 +4,10 @@ import { CerrarSesionAuth } from "../../servicios/autenticacion.js";
 import { limpiarEstado } from "../../nucleo/sistema_estados.js";
 
 export function componenteInformacionUsuario(nombre_usuario = null) {
+    contenedores.cabecera.querySelectorAll('.info-usuario').forEach((infoExistente) => {
+        infoExistente.remove();
+    });
+
     const informacionUsuario = crearInformacionUsuario({
         nombre_usuario,
         cerrarSesion

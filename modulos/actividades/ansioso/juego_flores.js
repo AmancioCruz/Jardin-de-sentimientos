@@ -1,7 +1,12 @@
 import { contenedores } from "../../../nucleo/contenedores_dom.js";
 import { construirElemento } from "../../../utilidades/constructor_elementos.js";
+import { mostrarTutorialActividad } from "../../../componentes/tutorial_actividad/tutorial_actividad.js";
 
-const duracionJuegoMs = 90 * 1000;
+const duracionesJuego = [
+    { etiqueta: '30 s', valor: 30 * 1000 },
+    { etiqueta: '1 min', valor: 60 * 1000 },
+    { etiqueta: '1:30 min', valor: 90 * 1000 }
+];
 const pensamientosBase = [
     { texto: 'agotamiento', archivo: 'agotamiento.png' },
     { texto: 'autoexigencia', archivo: 'autoexigencia.png' },
@@ -31,16 +36,25 @@ export function inicializarJuegoFlores({ alSalir } = {}) {
     const marcador = vista.nodo.querySelector('[data-marcador]');
     const mensaje = vista.nodo.querySelector('[data-mensaje]');
     const panelFinal = vista.nodo.querySelector('[data-panel-final]');
+    const panelDuracion = vista.nodo.querySelector('[data-panel-duracion]');
     const tituloFinal = vista.nodo.querySelector('[data-titulo-final]');
     const textoFinal = vista.nodo.querySelector('[data-texto-final]');
     const botonFinal = vista.nodo.querySelector('[data-boton-final]');
     const ctx = canvas.getContext('2d');
+    redibujarCuandoCarguenRecursos(estado, () => {
+        if (!estado.juegoIniciado) dibujar(ctx, estado);
+    });
 
     function finalizar() {
+        limpiar();
+        if (typeof alSalir === 'function') alSalir(canvas);
+    }
+
+    function limpiar() {
         estado.activo = false;
+        estado.bucleActivo = false;
         window.removeEventListener('resize', ajustarCanvas);
         window.removeEventListener('keydown', controlarTeclado);
-        if (typeof alSalir === 'function') alSalir(canvas);
     }
 
     function ajustarCanvas() {
@@ -78,7 +92,7 @@ export function inicializarJuegoFlores({ alSalir } = {}) {
 
     function dispararGota() {
         const ahora = performance.now();
-        if (estado.terminado || ahora - estado.ultimoDisparo < 210) return;
+        if (!estado.juegoIniciado || estado.terminado || ahora - estado.ultimoDisparo < 210) return;
         const punta = obtenerPuntaManguera(estado.regadera);
 
         estado.gotas.push({
@@ -95,7 +109,15 @@ export function inicializarJuegoFlores({ alSalir } = {}) {
 
         const delta = Math.min(34, tiempo - estado.tiempoAnterior);
         estado.tiempoAnterior = tiempo;
-        estado.progreso = limitar((tiempo - estado.inicio) / duracionJuegoMs, 0, 1);
+
+        if (!estado.juegoIniciado) {
+            dibujar(ctx, estado);
+            actualizarInterfaz(estado, marcador, mensaje);
+            requestAnimationFrame(actualizar);
+            return;
+        }
+
+        estado.progreso = limitar((tiempo - estado.inicio) / estado.duracionMs, 0, 1);
 
         if (!estado.terminado) {
             generarPensamiento(estado, tiempo);
@@ -129,10 +151,59 @@ export function inicializarJuegoFlores({ alSalir } = {}) {
 
         reiniciarPartida(estado, panelFinal);
         ajustarCanvas();
+        mostrarSelectorDuracion();
     });
 
+    panelDuracion?.querySelectorAll('[data-duracion-juego]').forEach((boton) => {
+        boton.addEventListener('click', () => {
+            iniciarConDuracion(Number(boton.dataset.duracionJuego));
+        });
+    });
+
+    function iniciarAnimacion() {
+        if (estado.bucleActivo) return;
+        estado.bucleActivo = true;
+        requestAnimationFrame(actualizar);
+    }
+
+    function mostrarSelectorDuracion() {
+        vista.nodo.classList.add('juego-en-espera');
+        panelDuracion?.classList.remove('oculto');
+        marcador.classList.add('oculto');
+        dibujar(ctx, estado);
+    }
+
+    function iniciarConDuracion(duracionMs) {
+        vista.nodo.classList.remove('juego-en-espera');
+        panelDuracion?.classList.add('oculto');
+        marcador.classList.remove('oculto');
+        estado.duracionMs = duracionMs || duracionesJuego[1].valor;
+        estado.inicio = performance.now();
+        estado.tiempoAnterior = estado.inicio;
+        estado.juegoIniciado = true;
+        iniciarAnimacion();
+    }
+
     ajustarCanvas();
-    requestAnimationFrame(actualizar);
+    dibujar(ctx, estado);
+    const prepararJuego = () => mostrarSelectorDuracion();
+    const tutorial = mostrarTutorialActividad({
+        id: 'juego-flores',
+        titulo: 'Guía rápida del juego',
+        descripcion: 'La idea no es ganar perfecto, sino practicar una pausa mientras cuidas la flor.',
+        pasos: [
+            { icono: 'fa-solid fa-computer-mouse', texto: 'Mueve la manguera con el cursor o con el dedo en móvil.' },
+            { icono: 'fa-solid fa-droplet', texto: 'Toca o haz clic para lanzar gotas desde la punta de la manguera.' },
+            { icono: 'fa-solid fa-seedling', texto: 'Evita que los pensamientos lleguen a la flor.' },
+            { icono: 'fa-solid fa-heart', texto: 'El marcador muestra tiempo y cuidado restante.' },
+            { icono: 'fa-solid fa-check', texto: 'Terminar guarda la actividad después de responder cómo te sientes.' }
+        ],
+        alCerrar: prepararJuego
+    });
+
+    if (!tutorial) prepararJuego();
+
+    return limpiar;
 }
 
 function crearVistaJuego(alSalir) {
@@ -190,6 +261,27 @@ function crearVistaJuego(alSalir) {
                         hijos: ['Reintentar']
                     }
                 ]
+            },
+            {
+                tipo: 'div',
+                atributos: { class: 'panel-final-juego selector-duracion-juego oculto', 'data-panel-duracion': '' },
+                hijos: [
+                    { tipo: 'h2', hijos: ['Elige tu pausa'] },
+                    { tipo: 'p', hijos: ['Selecciona cuánto tiempo quieres cuidar la flor.'] },
+                    {
+                        tipo: 'div',
+                        atributos: { class: 'selector-duracion-juego__opciones' },
+                        hijos: duracionesJuego.map((duracion) => ({
+                            tipo: 'button',
+                            atributos: {
+                                type: 'button',
+                                class: 'btn-actividad-salir',
+                                'data-duracion-juego': duracion.valor
+                            },
+                            hijos: [duracion.etiqueta]
+                        }))
+                    }
+                ]
             }
         ]
     });
@@ -198,14 +290,17 @@ function crearVistaJuego(alSalir) {
 function crearEstadoJuego() {
     return {
         activo: true,
+        bucleActivo: false,
+        juegoIniciado: false,
         terminado: false,
         resultado: '',
         panelMostrado: false,
         mensajeFinal: '',
         ancho: 0,
         alto: 0,
-        inicio: performance.now(),
+        inicio: 0,
         tiempoAnterior: performance.now(),
+        duracionMs: duracionesJuego[1].valor,
         ultimoDisparo: 0,
         ultimoPensamiento: 0,
         progreso: 0,
@@ -225,6 +320,8 @@ function cargarRecursosJuego() {
     return {
         flor: [1, 2, 3, 4].map((numero) => cargarImagen(`./recursos/flor/${numero}.png`)),
         manguera: cargarImagen('./recursos/manguera/manguera.png'),
+        sol: cargarImagen('./recursos/sol.png'),
+        pasto: cargarImagen('./recursos/pasto.png'),
         enemigos: Object.fromEntries(pensamientosBase.map((pensamiento) => [
             pensamiento.archivo,
             cargarImagen(`./recursos/enemigos/${pensamiento.archivo}`)
@@ -238,13 +335,28 @@ function cargarImagen(ruta) {
     return imagen;
 }
 
+function redibujarCuandoCarguenRecursos(estado, alCargar) {
+    const imagenes = [
+        ...(estado.recursos?.flor || []),
+        estado.recursos?.manguera,
+        estado.recursos?.sol,
+        estado.recursos?.pasto,
+        ...Object.values(estado.recursos?.enemigos || {})
+    ].filter(Boolean);
+
+    imagenes.forEach((imagen) => {
+        if (imagen.complete) return;
+        imagen.addEventListener('load', alCargar, { once: true });
+    });
+}
+
 function generarPensamiento(estado, tiempo) {
-    const intervalo = 1350 - (estado.progreso * 540);
+    const intervalo = 2300 - (estado.progreso * 650);
     if (tiempo - estado.ultimoPensamiento < intervalo) return;
 
     const plantilla = pensamientosBase[Math.floor(Math.random() * pensamientosBase.length)];
-    const tamano = 18 + Math.random() * 6;
-    const tamanoSprite = tamano * 3;
+    const tamano = 25 + Math.random() * 6;
+    const tamanoSprite = tamano * 3.45;
 
     estado.pensamientos.push({
         ...plantilla,
@@ -253,9 +365,9 @@ function generarPensamiento(estado, tiempo) {
         radio: tamano,
         ancho: tamanoSprite,
         alto: tamanoSprite,
-        velocidad: 0.48 + (estado.progreso * 0.78) + Math.random() * 0.32,
+        velocidad: 0.42 + (estado.progreso * 0.62) + Math.random() * 0.22,
         deriva: (Math.random() - 0.5) * 0.55,
-        seguimiento: 0.012 + (estado.progreso * 0.018),
+        seguimiento: 0.01 + (estado.progreso * 0.015),
         semilla: Math.random() * 1000,
         imagen: estado.recursos?.enemigos?.[plantilla.archivo] || null,
         alfa: 1,
@@ -369,7 +481,12 @@ function actualizarFlor(estado, delta) {
 }
 
 function actualizarInterfaz(estado, marcador, mensaje) {
-    const restante = Math.max(0, duracionJuegoMs - ((performance.now() - estado.inicio)));
+    if (!estado.juegoIniciado) {
+        mensaje.textContent = 'Antes de empezar, selecciona una duración para esta pausa.';
+        return;
+    }
+
+    const restante = Math.max(0, estado.duracionMs - ((performance.now() - estado.inicio)));
     const minutos = Math.floor(restante / 60000);
     const segundos = String(Math.floor((restante % 60000) / 1000)).padStart(2, '0');
 
@@ -412,13 +529,59 @@ function dibujarFondo(ctx, estado) {
     ctx.fillStyle = gradiente;
     ctx.fillRect(0, 0, estado.ancho, estado.alto);
 
-    ctx.fillStyle = 'rgba(255, 210, 90, 0.12)';
-    ctx.beginPath();
-    ctx.arc(estado.ancho * 0.15, estado.alto * 0.16, 78, 0, Math.PI * 2);
-    ctx.fill();
+    dibujarSol(ctx, estado);
 
     ctx.fillStyle = 'rgba(22, 78, 63, 0.08)';
     ctx.fillRect(0, estado.alto - 34, estado.ancho, 34);
+    dibujarPasto(ctx, estado);
+}
+
+function dibujarSol(ctx, estado) {
+    const imagen = estado.recursos?.sol;
+    const tamano = Math.min(Math.max(estado.ancho * 0.22, 82), 126);
+    const x = Math.max(20, estado.ancho * 0.08);
+    const y = Math.max(18, estado.alto * 0.06);
+
+    if (imagen?.complete && imagen.naturalWidth > 0) {
+        ctx.save();
+        ctx.globalAlpha = 0.9;
+        ctx.drawImage(imagen, x, y, tamano, tamano);
+        ctx.restore();
+        return;
+    }
+
+    ctx.fillStyle = 'rgba(255, 210, 90, 0.22)';
+    ctx.beginPath();
+    ctx.arc(x + (tamano / 2), y + (tamano / 2), tamano / 2, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+function dibujarPasto(ctx, estado) {
+    const imagen = estado.recursos?.pasto;
+    const altoDecoracion = Math.max(54, Math.min(92, estado.alto * 0.16));
+
+    if (imagen?.complete && imagen.naturalWidth > 0) {
+        const proporcion = imagen.naturalWidth / imagen.naturalHeight;
+        const grupos = [
+            { x: 0.08, escala: 1.05, elevacion: 0 },
+            { x: 0.46, escala: 0.82, elevacion: 4 },
+            { x: 0.78, escala: 1.12, elevacion: -2 }
+        ];
+
+        grupos.forEach((grupo) => {
+            const alto = altoDecoracion * grupo.escala;
+            const ancho = alto * proporcion;
+            const x = (estado.ancho * grupo.x) - (ancho / 2);
+            const y = estado.alto - alto - grupo.elevacion;
+
+            ctx.drawImage(imagen, x, y, ancho, alto);
+        });
+        return;
+    }
+
+    ctx.fillStyle = 'rgba(31, 111, 91, 0.18)';
+    ctx.fillRect(estado.ancho * 0.05, estado.alto - altoDecoracion, estado.ancho * 0.18, altoDecoracion);
+    ctx.fillRect(estado.ancho * 0.72, estado.alto - altoDecoracion * 1.05, estado.ancho * 0.22, altoDecoracion * 1.05);
 }
 
 function dibujarProgreso(ctx, estado) {
@@ -575,7 +738,7 @@ function dibujarFlorDesdeRecursos(ctx, estado, crecimiento) {
 
     if (!imagen?.complete || imagen.naturalWidth <= 0) return false;
 
-    const anchoFinal = Math.min(Math.max(estado.ancho * 0.22, 82), 132);
+    const anchoFinal = Math.min(Math.max(estado.ancho * 0.17, 66), 108);
     const ancho = anchoFinal * etapa.escala;
     const alto = ancho * (imagen.naturalHeight / imagen.naturalWidth);
     estado.flor.anchoVisible = ancho;

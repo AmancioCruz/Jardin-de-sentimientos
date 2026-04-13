@@ -77,10 +77,17 @@ const componenteFormularioEvaluacion = ({ titulo, instruccion, preguntas, alEnvi
                 respuestas[key] = Number(value);
             }
 
+            const error = e.target.querySelector('[data-error-evaluacion]');
+
             if (Object.keys(respuestas).length < preguntas.length) {
-                alert('Por favor responde todas las preguntas');
+                if (error) {
+                    error.textContent = 'Por favor responde todas las preguntas antes de continuar.';
+                    error.classList.remove('oculto');
+                }
                 return;
             }
+
+            error?.classList.add('oculto');
 
             if (alEnviar && typeof alEnviar === 'function') {
                 alEnviar(respuestas);
@@ -97,6 +104,15 @@ const componenteFormularioEvaluacion = ({ titulo, instruccion, preguntas, alEnvi
             tipo: 'p',
             atributos: { class: 'instruccion-evaluacion' },
             hijos: [instruccion]
+        },
+        {
+            tipo: 'p',
+            atributos: {
+                class: 'mensaje-error-evaluacion oculto',
+                'data-error-evaluacion': '',
+                role: 'status',
+                'aria-live': 'polite'
+            }
         },
         ...preguntas,
         {
@@ -156,6 +172,11 @@ const crearOpcionesLikert = (nombre, cantidad = 5) => {
                         type: 'radio',
                         name: nombre,
                         value: String(valor)
+                    },
+                    eventos: {
+                        change: (evento) => {
+                            evento.currentTarget.closest('form')?.querySelector('[data-error-evaluacion]')?.classList.add('oculto');
+                        }
                     }
                 },
                 {

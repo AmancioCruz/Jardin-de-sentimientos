@@ -7,14 +7,15 @@ import { crearComponenteCanvas } from "../../componentes/canvas/canvas.js";
 import { subirImagenActividad } from "../../servicios/almacenamiento.js";
 import { registrarActividadUsuario } from "../../servicios/base_datos.js";
 import { inicializarTablero } from "../../modulos/actividades/coordinador_actividades.js";
-import { obtenerOCrearTableroActivo, obtenerTableroActivo } from "../../modulos/actividades/tablero/estado_tablero.js";
+import { finalizarTableroActivo, obtenerOCrearTableroActivo, obtenerTableroActivo } from "../../modulos/actividades/tablero/estado_tablero.js";
 import { inicializarJuegoFlores } from "../../modulos/actividades/ansioso/juego_flores.js";
 import { inicializarRespiracionGuiada } from "../../modulos/actividades/cansado/respiracion_guiada.js";
 import { inicializarPizarronCreativo } from "../../modulos/actividades/pizarron/pizarron_creativo.js";
 import { configurarAudioActividad, detenerAudioActividad } from "../../servicios/audio_actividad.js";
 
 let actividadEnCurso = false;
-window.addEventListener('actividad:finalizada-sin-guardar', desactivarProteccionActividad);
+let limpiarActividadActual = null;
+window.addEventListener('actividad:finalizada-sin-guardar', limpiarActividadSinGuardar);
 
 const datosEvaluacion = {
     titulo: "Evaluación rápida",
@@ -74,54 +75,58 @@ export function abrirTablero(usuario = null) {
 
     activarModoActividad(usuario);
 
-    inicializarTablero(lienzo, {
+    registrarLimpiezaActividad(inicializarTablero(lienzo, {
         tablero: obtenerTableroActivo(),
         alGuardar: (canvas) => mostrarEvaluacionCierre(usuario, {
             nombreActividad: 'tablero',
             canvas
         })
-    });
+    }));
 }
 
 function abrirJuegoFlores(usuario = null) {
     activarModoActividad(usuario);
-    inicializarJuegoFlores({
+    registrarLimpiezaActividad(inicializarJuegoFlores({
         alSalir: (canvas) => mostrarEvaluacionCierre(usuario, {
             nombreActividad: 'juego',
             canvas
         })
-    });
+    }));
 }
 
 function abrirRespiracionGuiada(usuario = null) {
     activarModoActividad(usuario);
-    inicializarRespiracionGuiada({
+    registrarLimpiezaActividad(inicializarRespiracionGuiada({
         alSalir: () => mostrarEvaluacionCierre(usuario, {
             nombreActividad: 'respiracion',
             canvas: crearImagenResumenActividad('Respiración guiada')
         })
-    });
+    }));
 }
 
 function abrirPizarronCreativo(usuario = null) {
     activarModoActividad(usuario);
-    inicializarPizarronCreativo({
+    registrarLimpiezaActividad(inicializarPizarronCreativo({
         alSalir: (canvas) => mostrarEvaluacionCierre(usuario, {
             nombreActividad: 'pizarron',
             canvas
         })
-    });
+    }));
 }
 
 function activarModoActividad(usuario = null) {
+    ejecutarLimpiezaActividadActual();
     actividadEnCurso = true;
     document.body.classList.add('actividad-activa');
     contenedores.contenido.classList.add('actividad-activa');
     window.addEventListener('beforeunload', avisarAntesDeRecargar);
+    window.addEventListener('pagehide', limpiarDatosAlCerrarPagina);
     configurarAudioActividad();
 }
 
 function salirAInicio(usuario = null) {
+    ejecutarLimpiezaActividadActual();
+    limpiarDatosActividadTemporal();
     desactivarProteccionActividad();
     document.getElementById('evaluacion-cierre-actividad')?.remove();
     document.body.classList.remove('actividad-activa');
@@ -139,7 +144,42 @@ function avisarAntesDeRecargar(evento) {
 function desactivarProteccionActividad() {
     actividadEnCurso = false;
     window.removeEventListener('beforeunload', avisarAntesDeRecargar);
+    window.removeEventListener('pagehide', limpiarDatosAlCerrarPagina);
     detenerAudioActividad();
+}
+
+function registrarLimpiezaActividad(limpiador) {
+    limpiarActividadActual = typeof limpiador === 'function' ? limpiador : null;
+}
+
+function ejecutarLimpiezaActividadActual() {
+    if (typeof limpiarActividadActual === 'function') {
+        limpiarActividadActual();
+    }
+
+    limpiarActividadActual = null;
+    document.getElementById('tutorial-actividad')?.remove();
+    document.getElementById('panel-texto-nota')?.remove();
+    document.querySelectorAll('.fantasma-sticker').forEach((fantasma) => fantasma.remove());
+}
+
+function limpiarActividadSinGuardar() {
+    ejecutarLimpiezaActividadActual();
+    limpiarDatosActividadTemporal();
+    desactivarProteccionActividad();
+    document.getElementById('evaluacion-cierre-actividad')?.remove();
+    document.body.classList.remove('actividad-activa');
+    contenedores.contenido.classList.remove('actividad-activa');
+}
+
+function limpiarDatosActividadTemporal() {
+    finalizarTableroActivo();
+}
+
+function limpiarDatosAlCerrarPagina() {
+    if (!actividadEnCurso) return;
+
+    limpiarDatosActividadTemporal();
 }
 
 function mostrarEvaluacionCierre(usuario = null, actividad = {}) {

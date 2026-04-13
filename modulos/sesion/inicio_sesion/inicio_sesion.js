@@ -14,17 +14,28 @@ export function crearInicioSesion({ alEnviar, alOlvideContrasena, alIrARegistro 
                     id: 'form-inicio-sesion'
                 },
                 eventos: {
-                    submit: (e) => {
+                    submit: async (e) => {
                         e.preventDefault();
+                        const formulario = e.currentTarget;
+                        const mensajeError = formulario.querySelector('[data-error-inicio-sesion]');
                         const formData = new FormData(e.target);
                         const datos = {
                             correo: formData.get('correo'),
                             contrasena: formData.get('contrasena')
                         };
 
+                        ocultarErrorLogin(mensajeError);
+
                         if (alEnviar && typeof alEnviar === 'function') {
-                            alEnviar(datos);
+                            try {
+                                await alEnviar(datos);
+                            } catch (error) {
+                                mostrarErrorLogin(mensajeError, error?.message || 'No fue posible iniciar sesión. Verifica tus datos.');
+                            }
                         }
+                    },
+                    input: (e) => {
+                        ocultarErrorLogin(e.currentTarget.querySelector('[data-error-inicio-sesion]'));
                     }
                 },
                 hijos: [
@@ -32,6 +43,15 @@ export function crearInicioSesion({ alEnviar, alOlvideContrasena, alIrARegistro 
                         tipo: 'h2',
                         atributos: { class: 'titulo-formulario' },
                         hijos: ['Iniciar sesión']
+                    },
+                    {
+                        tipo: 'p',
+                        atributos: {
+                            class: 'mensaje-error-formulario oculto',
+                            'data-error-inicio-sesion': '',
+                            role: 'alert'
+                        },
+                        hijos: ['']
                     },
                     {
                         tipo: 'div',
@@ -103,4 +123,18 @@ export function crearInicioSesion({ alEnviar, alOlvideContrasena, alIrARegistro 
             }
         ]
     });
+}
+
+function mostrarErrorLogin(nodo, mensaje) {
+    if (!nodo) return;
+
+    nodo.textContent = mensaje;
+    nodo.classList.remove('oculto');
+}
+
+function ocultarErrorLogin(nodo) {
+    if (!nodo) return;
+
+    nodo.textContent = '';
+    nodo.classList.add('oculto');
 }

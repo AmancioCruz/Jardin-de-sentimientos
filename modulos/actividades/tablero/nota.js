@@ -1,5 +1,8 @@
 import { coloresPrioridad } from "./paleta_notas.js";
 
+const iconoEditar = new Image();
+cargarIconoEditarContraste();
+
 export class Nota {
     constructor(ancho, alto, x = 0, y = 0, prioridad = '', contenido = {}) {
         this.ancho = ancho;
@@ -129,29 +132,33 @@ export class Nota {
         const area = this.obtenerAreaEditar();
 
         ctx.save();
-        ctx.fillStyle = "#facc15";
-        ctx.shadowColor = "rgba(22, 78, 63, 0.16)";
-        ctx.shadowBlur = 8;
-        ctx.shadowOffsetY = 2;
+        ctx.fillStyle = "#ffd25a";
+        ctx.shadowColor = "rgba(12, 24, 20, 0.24)";
+        ctx.shadowBlur = 10;
+        ctx.shadowOffsetY = 3;
         ctx.beginPath();
         ctx.arc(area.x, area.y, area.radio, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.shadowColor = "transparent";
-        ctx.strokeStyle = "#164e3f";
-        ctx.lineWidth = 2.4;
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
-        ctx.beginPath();
-        ctx.moveTo(area.x - 5, area.y + 4);
-        ctx.lineTo(area.x + 4, area.y - 5);
-        ctx.moveTo(area.x + 1, area.y - 6);
-        ctx.lineTo(area.x + 6, area.y - 1);
-        ctx.moveTo(area.x - 6, area.y + 5);
-        ctx.lineTo(area.x - 2, area.y + 4);
-        ctx.stroke();
 
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.88)";
+        if (iconoEditar.complete && iconoEditar.naturalWidth > 0) {
+            const tamano = area.radio * 1.18;
+            ctx.drawImage(iconoEditar, area.x - (tamano / 2), area.y - (tamano / 2), tamano, tamano);
+        } else {
+            ctx.strokeStyle = "#164e3f";
+            ctx.lineWidth = 2.2;
+            ctx.lineCap = "round";
+            ctx.lineJoin = "round";
+            ctx.beginPath();
+            ctx.moveTo(area.x - 5, area.y + 4);
+            ctx.lineTo(area.x + 4, area.y - 5);
+            ctx.moveTo(area.x + 1, area.y - 6);
+            ctx.lineTo(area.x + 6, area.y - 1);
+            ctx.stroke();
+        }
+
+        ctx.strokeStyle = "rgba(22, 78, 63, 0.24)";
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.arc(area.x, area.y, area.radio - 1, 0, Math.PI * 2);
@@ -296,6 +303,17 @@ export class Nota {
         ctx.setLineDash([8, 5]);
         ctx.strokeRect(this.x - 5, this.y - 5, this.ancho + 10, this.alto + 10);
         ctx.restore();
+    }
+}
+
+async function cargarIconoEditarContraste() {
+    try {
+        const respuesta = await fetch('./recursos/iconos/edit-button-svgrepo-com.svg');
+        const svg = await respuesta.text();
+        const svgContraste = svg.replace(/fill="[^"]*"/g, 'fill="#164e3f"');
+        iconoEditar.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgContraste)}`;
+    } catch {
+        iconoEditar.src = './recursos/iconos/edit-button-svgrepo-com.svg';
     }
 }
 

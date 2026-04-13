@@ -1,31 +1,31 @@
 import { crearRegistro } from "./registro.js";
 import { mostrarPantalla, registrarPantalla } from "../../../nucleo/gestor_pantallas.js";
-import { seccionesApp } from "../../../nucleo/sistema_estados.js";
+import { actualizarSeccion, actualizarSesion, seccionesApp } from "../../../nucleo/sistema_estados.js";
 import { registrarUsuario } from "../../../servicios/coordinador_servicios.js";
 import { componenteTerminos } from "../../../componentes/terminos/gestor_terminos.js";
+import { componenteMenu } from "../../../componentes/menu_navegacion/gestor_menu_navegacion.js";
+import { componenteInformacionUsuario } from "../../../componentes/informacion_usuario/gestor_informacion_usuario.js";
+import { construirUsuario } from "../../../servicios/observador_sesiones.js";
 
 async function completarRegistro(datos) {
-    /* Si el usuario no sube una foto valida, usamos la imagen por defecto
-       para mantener completo el perfil desde el primer acceso. */
-    if (!datos.foto ||
-        datos.foto.size === 0 ||
-        (datos.foto.type !== "image/png" &&
-        datos.foto.type !== "image/jpeg" &&
-        datos.foto.type !== "image/webp")) {
+    /* La foto es opcional para el usuario, pero siempre subimos una imagen de perfil.
+       Si no selecciona una, usamos el avatar por defecto del proyecto. */
+    if (!datos.foto || datos.foto.size === 0) {
         datos.foto = await crearArchivoPorDefecto();
     }
 
-    await registrarUsuario(datos);
-    alert('Cuenta creada correctamente. Ahora puedes iniciar sesion.');
-    mostrarPantalla(seccionesApp.inicioSesion);
+    const usuarioFirebase = await registrarUsuario(datos);
+    const usuarioActual = await construirUsuario(usuarioFirebase);
+
+    actualizarSeccion(seccionesApp.inicio);
+    actualizarSesion(true);
+    componenteMenu(usuarioActual);
+    componenteInformacionUsuario(usuarioActual.nombre);
+    mostrarPantalla(seccionesApp.inicio, usuarioActual);
 }
 
 function manejarRegistro(datos) {
-    completarRegistro(datos).catch((error) => {
-        console.error("Error en registro:", error);
-        alert('No fue posible crear la cuenta. Verifica los datos e intentalo de nuevo.');
-        mostrarPantalla(seccionesApp.registro);
-    });
+    return completarRegistro(datos);
 }
 
 function manejarTerminos() {
@@ -50,12 +50,41 @@ function manejarFotografia(e) {
         };
         lector.readAsDataURL(imagen);
     } else {
-        alert('La imagen debe ser png, webp o jpg');
+        mostrarErrorCampoRegistro('foto-perfil', 'La imagen debe ser PNG, JPG o WEBP. Puedes continuar sin foto.');
+        e.target.value = '';
     }
+}
+
+function mostrarErrorCampoRegistro(campo, mensaje) {
+    const formulario = document.querySelector('#form-registro');
+    const control = formulario?.querySelector(`[name="${campo}"]`);
+    const contenedorCampo = control?.closest('.campo-registro');
+
+    if (!formulario || !control || !contenedorCampo) return;
+
+    const idError = `error-${campo}`;
+    let mensajeCampo = contenedorCampo.querySelector(`#${idError}`);
+
+    if (!mensajeCampo) {
+        mensajeCampo = document.createElement('p');
+        mensajeCampo.id = idError;
+        mensajeCampo.className = 'mensaje-error-campo';
+        contenedorCampo.appendChild(mensajeCampo);
+    }
+
+    mensajeCampo.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i><span>${mensaje}</span>`;
+    contenedorCampo.classList.add('campo-registro--error');
+    control.setAttribute('aria-invalid', 'true');
+    control.setAttribute('aria-describedby', idError);
 }
 
 async function crearArchivoPorDefecto() {
     const respuesta = await fetch('./recursos/imagenes/default.webp');
+
+    if (!respuesta.ok) {
+        throw new Error('No se pudo preparar la foto de perfil por defecto.');
+    }
+
     const blob = await respuesta.blob();
 
     return new File([blob], 'default_perfil.webp', {

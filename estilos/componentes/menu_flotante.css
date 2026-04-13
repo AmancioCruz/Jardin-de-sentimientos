@@ -430,6 +430,18 @@
     color: #fff;
 }
 
+.mensaje-error-nota {
+    margin: var(--espacio-s) 0 0;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid rgba(185, 28, 28, 0.28);
+    border-radius: 0.75rem;
+    background: rgba(254, 226, 226, 0.9);
+    color: #991b1b;
+    font-size: var(--tamano-texto-s);
+    font-weight: 800;
+    line-height: 1.35;
+}
+
 @keyframes aparecerModalNota {
     from {
         opacity: 0;

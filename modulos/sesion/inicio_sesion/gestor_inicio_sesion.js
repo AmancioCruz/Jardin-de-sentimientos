@@ -21,7 +21,7 @@ async function manejarInicioSesion(datos) {
         mostrarPantalla(seccionesApp.inicio, usuarioActual);
     } catch (error) {
         console.error("Error al iniciar sesion:", error);
-        alert("No fue posible iniciar sesion. Verifica tus credenciales e intentalo de nuevo.");
+        throw new Error("No fue posible iniciar sesión. Verifica tus credenciales e inténtalo de nuevo.");
     }
 }
 

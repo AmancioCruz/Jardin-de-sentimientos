@@ -15,6 +15,12 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
             submit: (evento) => {
                 evento.preventDefault();
                 manejarEnvio(evento.currentTarget, alGuardar);
+            },
+            input: (evento) => {
+                ocultarErrorNota(evento.currentTarget);
+            },
+            change: (evento) => {
+                ocultarErrorNota(evento.currentTarget);
             }
         },
         hijos: [
@@ -175,6 +181,15 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
                         hijos: ['Guardar']
                     }
                 ]
+            },
+            {
+                tipo: 'p',
+                atributos: {
+                    class: 'mensaje-error-nota oculto',
+                    'data-error-nota': '',
+                    role: 'alert'
+                },
+                hijos: ['']
             }
         ]
     });
@@ -190,6 +205,7 @@ function abrir(nodo, contenido = {}) {
     if (!nodo) return;
 
     nodo.classList.remove('oculto');
+    ocultarErrorNota(nodo);
     llenarFormulario(nodo, contenido);
     actualizarRutaFormulario(nodo);
     nodo.querySelector('[name="preocupacion"]')?.focus();
@@ -204,7 +220,7 @@ function manejarEnvio(formulario, alGuardar) {
     const error = validarDatos(datos);
 
     if (error) {
-        alert(error);
+        mostrarErrorNota(formulario, error);
         return;
     }
 
@@ -213,6 +229,22 @@ function manejarEnvio(formulario, alGuardar) {
     }
 
     cerrar(formulario);
+}
+
+function mostrarErrorNota(formulario, mensaje) {
+    const error = formulario.querySelector('[data-error-nota]');
+    if (!error) return;
+
+    error.textContent = mensaje;
+    error.classList.remove('oculto');
+}
+
+function ocultarErrorNota(formulario) {
+    const error = formulario.querySelector('[data-error-nota]');
+    if (!error) return;
+
+    error.textContent = '';
+    error.classList.add('oculto');
 }
 
 function llenarFormulario(formulario, contenido = {}) {

@@ -1,6 +1,7 @@
 import { configuracionesFirebase } from './firebase_config.js';
 import {
     createUserWithEmailAndPassword,
+    deleteUser,
     signInWithEmailAndPassword,
     signOut
 } from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js';
@@ -20,9 +21,18 @@ export const RegistrarUsuarioAuth = async (correo, contra) => {
         const credencialesUsuario = await createUserWithEmailAndPassword(
             configuracionesFirebase.auth, correo, contra
         );
-        return credencialesUsuario.user.uid;
+        return credencialesUsuario.user;
     } catch (error) {
         console.error("Error al registrar usuario:", error.message);
+        throw error;
+    }
+};
+
+export const EliminarUsuarioAuth = async (usuario) => {
+    try {
+        if (usuario) await deleteUser(usuario);
+    } catch (error) {
+        console.error("Error al eliminar usuario:", error.message);
         throw error;
     }
 };

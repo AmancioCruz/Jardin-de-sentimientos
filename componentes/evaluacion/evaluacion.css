@@ -3,16 +3,17 @@
     min-height: 100%;
     min-width: 0;
     display: grid;
-    place-items: center;
+    align-items: start;
+    justify-items: center;
     padding: clamp(0.75rem, 2vw, 1.25rem);
-    overflow: auto;
+    overflow: visible;
 }
 
 .formulario-app.formulario-evaluacion {
     width: 100%;
     max-width: 92rem;
-    margin: 0 auto var(--espacio-m);
-    overflow: hidden;
+    margin: 0 auto calc(var(--espacio-xl) + env(safe-area-inset-bottom, 0px));
+    overflow: visible;
 }
 
 .titulo-evaluacion {
@@ -87,6 +88,54 @@
 
 .acciones-evaluacion {
     margin-top: var(--espacio-l);
+    padding-bottom: max(var(--espacio-m), env(safe-area-inset-bottom, 0px));
+}
+
+.mensaje-error-evaluacion {
+    margin: -0.25rem 0 var(--espacio-s);
+    padding: 0.75rem 0.9rem;
+    border: 1px solid rgba(223, 65, 65, 0.28);
+    border-radius: 0.9rem;
+    background: rgba(223, 65, 65, 0.10);
+    color: #b4232f;
+    font-size: var(--tamano-texto-s);
+    font-weight: 800;
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .contenedor-evaluacion {
+        padding: 0.65rem 0.35rem 1rem;
+    }
+
+    .formulario-app.formulario-evaluacion {
+        gap: 0.85rem;
+        padding: 1.1rem;
+        border-radius: 1.25rem;
+    }
+
+    .titulo-evaluacion {
+        font-size: clamp(1.55rem, 8vw, 2rem);
+    }
+
+    .instruccion-evaluacion {
+        margin-bottom: 0.35rem;
+        padding-bottom: 0.65rem;
+    }
+
+    .pregunta-evaluacion {
+        margin-bottom: 0.85rem;
+    }
+
+    .likert-numerico {
+        gap: 0.55rem;
+        justify-content: space-between;
+    }
+
+    .likert-numerico label {
+        width: clamp(2.15rem, 13vw, 2.55rem);
+        height: clamp(2.15rem, 13vw, 2.55rem);
+    }
 }
 
 @media (min-width: 1200px) {
@@ -115,6 +164,7 @@
 
     .titulo-evaluacion,
     .instruccion-evaluacion,
+    .mensaje-error-evaluacion,
     .acciones-evaluacion {
         grid-column: 1 / -1;
     }

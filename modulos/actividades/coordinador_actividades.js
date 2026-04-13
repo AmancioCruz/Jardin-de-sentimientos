@@ -1,5 +1,6 @@
 import { contenedores } from "../../nucleo/contenedores_dom.js";
 import { construirElemento } from "../../utilidades/constructor_elementos.js";
+import { mostrarTutorialActividad } from "../../componentes/tutorial_actividad/tutorial_actividad.js";
 import {
     alActualizarNotas,
     alSeleccionarNota,
@@ -8,6 +9,7 @@ import {
     cambiarTamanoNotaSeleccionada,
     dibujarTablero,
     guardarTextoNotaSeleccionada,
+    limpiarInteraccionTablero,
     limpiarTablero,
     obtenerPrioridadNotaSeleccionada,
     obtenerRectNotaSeleccionada,
@@ -41,7 +43,12 @@ export function inicializarTablero(lienzo, { tablero = null, alGuardar } = {}) {
 
     const botonAgregarNota = crearBotonAgregarNota(() => {
         if (tableroTieneMaximoNotas()) return;
-        dibujarTablero(lienzo);
+        const notaNueva = dibujarTablero(lienzo);
+
+        if (notaNueva) {
+            formularioTexto.abrir(notaNueva.contenido);
+            actualizarControlesNota();
+        }
     });
 
     panelTamano.montar(areaLienzo);
@@ -50,6 +57,18 @@ export function inicializarTablero(lienzo, { tablero = null, alGuardar } = {}) {
     formularioTexto.elemento.montar(document.body);
     accionesTablero.montar(vistaTablero.nodo);
     botonAgregarNota.montar(areaLienzo);
+    mostrarTutorialActividad({
+        id: 'tablero',
+        titulo: 'Guía rápida del tablero',
+        descripcion: 'Este espacio te ayuda a ordenar lo que tienes en mente sin tener que escribir demasiado.',
+        pasos: [
+            { icono: 'fa-solid fa-note-sticky', texto: 'Nota crea una tarjeta para escribir una preocupación o idea.' },
+            { icono: 'fa-solid fa-pen', texto: 'El lápiz dentro de cada nota permite escribir o editar.' },
+            { icono: 'fa-solid fa-fire', texto: 'Selecciona una nota para cambiar su prioridad.' },
+            { icono: 'fa-solid fa-plus-minus', texto: 'Tamaño cambia la nota para acomodar mejor tus ideas.' },
+            { icono: 'fa-solid fa-check', texto: 'Guardar termina la actividad y la manda a tu bitácora.' }
+        ]
+    });
 
     alActualizarNotas(({ completo }) => {
         actualizarBotonAgregarNota(botonAgregarNota.nodo, completo);
@@ -72,6 +91,13 @@ export function inicializarTablero(lienzo, { tablero = null, alGuardar } = {}) {
     });
 
     actualizarBotonAgregarNota(botonAgregarNota.nodo, tableroTieneMaximoNotas());
+
+    return () => {
+        limpiarInteraccionTablero();
+        formularioTexto.cerrar();
+        formularioTexto.elemento.nodo?.remove();
+        document.querySelectorAll('.fantasma-sticker').forEach((fantasma) => fantasma.remove());
+    };
 }
 
 function crearVistaTablero() {

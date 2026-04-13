@@ -1,10 +1,12 @@
 body {
   height: 100vh;
-  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: auto;
 }
 
 .cabecera-principal {
   position: relative;
+  min-width: var(--ancho-minimo-app);
   height: var(--altura-cabecera);
   background: linear-gradient(135deg, var(--verde-claro), var(--verde));
   display: flex;
@@ -42,6 +44,7 @@ body {
 
 .contenedor-principal {
   width: 100%;
+  min-width: var(--ancho-minimo-app);
   height: calc(100vh - var(--altura-cabecera));
   overflow: hidden;
 }

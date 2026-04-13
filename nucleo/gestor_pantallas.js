@@ -47,6 +47,7 @@ function _mostrarPantalla(clave) {
 
     /* Esta funcion arma la pantalla activa y la monta dentro del main.
        Solo cambia el contenido interno para mantener fija la estructura base de la app. */
+    limpiarCapasGlobales();
     const elemento = config.constructor(config.dependencias);
 
     if (elemento instanceof Elemento) {
@@ -55,4 +56,12 @@ function _mostrarPantalla(clave) {
     } else {
         console.error(`"${clave}" no retorno un Elemento valido`);
     }
+}
+
+function limpiarCapasGlobales() {
+    document.getElementById('bitacora-detalle')?.remove();
+    document.getElementById('evaluacion-cierre-actividad')?.remove();
+    document.getElementById('tutorial-actividad')?.remove();
+    document.getElementById('panel-texto-nota')?.remove();
+    document.querySelectorAll('.fantasma-sticker').forEach((fantasma) => fantasma.remove());
 }

@@ -1,5 +1,6 @@
 import { contenedores } from "../../../nucleo/contenedores_dom.js";
 import { construirElemento } from "../../../utilidades/constructor_elementos.js";
+import { mostrarTutorialActividad } from "../../../componentes/tutorial_actividad/tutorial_actividad.js";
 
 const herramientas = ['pincel', 'linea', 'circulo', 'cuadrado', 'triangulo', 'mover'];
 
@@ -25,12 +26,29 @@ export function inicializarPizarronCreativo({ alSalir } = {}) {
     conectarEventosCanvas(estado);
     ajustarCanvas(estado);
     dibujarPizarron(estado);
+    mostrarTutorialActividad({
+        id: 'pizarron-creativo',
+        titulo: 'Guía rápida del pizarrón',
+        descripcion: 'No necesitas saber dibujar: usa líneas, colores o imágenes para expresar lo que sientes.',
+        pasos: [
+            { icono: 'fa-solid fa-paintbrush', texto: 'El botón principal abre herramientas como pincel, línea y figuras.' },
+            { icono: 'fa-solid fa-arrow-pointer', texto: 'Mover te permite acomodar imágenes, figuras y trazos.' },
+            { icono: 'fa-solid fa-image', texto: 'Imagen agrega un recurso propio al lienzo.' },
+            { icono: 'fa-solid fa-trash', texto: 'Limpiar borra el lienzo si quieres empezar de nuevo.' },
+            { icono: 'fa-solid fa-check', texto: 'Terminar guarda la actividad después de la evaluación final.' }
+        ]
+    });
 
-    window.addEventListener('resize', () => ajustarCanvas(estado));
+    const manejarResize = () => ajustarCanvas(estado);
+    window.addEventListener('resize', manejarResize);
+    estado.limpiadores.push(() => window.removeEventListener('resize', manejarResize));
 
     function finalizar() {
+        limpiarRecursosPizarron(estado);
         if (typeof alSalir === 'function') alSalir(estado.canvas);
     }
+
+    return () => limpiarRecursosPizarron(estado);
 }
 
 function crearVistaPizarron({ alSalir, alLimpiar }) {
@@ -193,7 +211,8 @@ function crearEstadoPizarron() {
         elementoActivo: null,
         vistaPrevia: null,
         arrastrandoImagen: null,
-        mostrarGuia: true
+        mostrarGuia: true,
+        limpiadores: []
     };
 }
 
@@ -206,11 +225,14 @@ function conectarControles(nodo, estado) {
     });
 
     panelMenu.addEventListener('click', (evento) => evento.stopPropagation());
-    document.addEventListener('pointerdown', (evento) => {
+    const cerrarAlClickFuera = (evento) => {
         if (!estado.menu?.contains(evento.target)) {
             cerrarMenuPizarron(panelMenu, estado.botonMenu);
         }
-    });
+    };
+
+    document.addEventListener('pointerdown', cerrarAlClickFuera);
+    estado.limpiadores.push(() => document.removeEventListener('pointerdown', cerrarAlClickFuera));
 
     nodo.querySelectorAll('[data-herramienta]').forEach((boton) => {
         boton.addEventListener('click', () => {
@@ -245,6 +267,11 @@ function conectarControles(nodo, estado) {
 
     estado.inputImagen.addEventListener('change', (evento) => cargarImagenComoSticker(evento, estado));
     actualizarBotonMenu(estado, nodo.querySelector('[data-herramienta].activo'));
+}
+
+function limpiarRecursosPizarron(estado) {
+    estado.limpiadores.forEach((limpiar) => limpiar());
+    estado.limpiadores = [];
 }
 
 function alternarMenuPizarron(panelMenu, botonMenu) {

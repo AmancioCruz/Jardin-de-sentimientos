@@ -16,6 +16,7 @@
 
   --altura-cabecera: 3.75rem;
   --ancho-sidebar: 15rem;
+  --ancho-minimo-app: 320px;
   --radio-borde: 1rem;
   --radio-grande: 1.5rem;
   --espacio-xs: 0.25rem;
@@ -107,6 +108,7 @@
 [data-theme="dark"] .tablero-acciones,
 [data-theme="dark"] .pizarron-acciones,
 [data-theme="dark"] .panel-texto-nota,
+[data-theme="dark"] .tutorial-actividad__tarjeta,
 [data-theme="dark"] .bitacora-detalle__tarjeta,
 [data-theme="dark"] .evaluacion-cierre-actividad__tarjeta {
   background: rgba(24, 36, 31, 0.98);
@@ -147,12 +149,27 @@
   background: rgba(5, 12, 10, 0.64);
 }
 
+[data-theme="dark"] .tutorial-actividad {
+  background: rgba(5, 12, 10, 0.64);
+}
+
+[data-theme="dark"] .tutorial-actividad__tarjeta h2,
 [data-theme="dark"] .evaluacion-cierre-actividad__tarjeta h2 {
   color: #b7efd2;
 }
 
+[data-theme="dark"] .tutorial-actividad__tarjeta p,
 [data-theme="dark"] .evaluacion-cierre-actividad__tarjeta p {
   color: #d6e6de;
+}
+
+[data-theme="dark"] .tutorial-actividad__lista li {
+  color: #edf4f0;
+}
+
+[data-theme="dark"] .tutorial-actividad__lista i {
+  background: rgba(183, 239, 210, 0.12);
+  color: #b7efd2;
 }
 
 [data-theme="dark"] .evaluacion-cierre-actividad__opcion {
@@ -164,6 +181,13 @@
 [data-theme="dark"] .evaluacion-cierre-actividad__opcion:first-child {
   background: #b7efd2;
   color: #0c1814;
+}
+
+[data-theme="dark"] .mensaje-error-formulario,
+[data-theme="dark"] .mensaje-error-nota {
+  background: rgba(127, 29, 29, 0.32);
+  border-color: rgba(248, 113, 113, 0.38);
+  color: #fecaca;
 }
 
 [data-theme="dark"] .panel-final-juego {
@@ -188,6 +212,7 @@
 html,
 body {
   min-height: 100vh;
+  min-width: var(--ancho-minimo-app);
   width: 100%;
   font-family: var(--fuente);
   background:

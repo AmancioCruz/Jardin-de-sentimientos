@@ -5,6 +5,10 @@ import { CerrarSesionAuth } from "../../servicios/autenticacion.js";
 import { limpiarEstado } from "../../nucleo/sistema_estados.js";
 
 export function componenteMenu(usuario) {
+    document.querySelectorAll('.barra-navegacion-lateral').forEach((menuExistente) => {
+        menuExistente.remove();
+    });
+
     const menu = crearMenuNavegacion({
         alHacerClick: (seccion) => {
             if (document.body.classList.contains('actividad-activa')) {
@@ -35,6 +39,12 @@ export function componenteMenu(usuario) {
 
 async function cerrarSesion() {
     try {
+        if (document.body.classList.contains('actividad-activa')) {
+            const salir = confirm('¿Quieres finalizar esta actividad? Los datos que no hayas guardado se perderán.');
+            if (!salir) return;
+            window.dispatchEvent(new CustomEvent('actividad:finalizada-sin-guardar'));
+        }
+
         await CerrarSesionAuth();
         limpiarEstado();
         document.querySelector('#contenedor-principal')?.classList.remove('con-menu');

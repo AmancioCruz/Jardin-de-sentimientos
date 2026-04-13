@@ -1,5 +1,6 @@
 import { contenedores } from "../../../nucleo/contenedores_dom.js";
 import { construirElemento } from "../../../utilidades/constructor_elementos.js";
+import { mostrarTutorialActividad } from "../../../componentes/tutorial_actividad/tutorial_actividad.js";
 
 const fases = [
     { texto: 'Inhala', duracion: 4, clase: 'respiracion-inhala' },
@@ -22,8 +23,13 @@ export function inicializarRespiracionGuiada({ alSalir } = {}) {
     const botonIniciar = vista.nodo.querySelector('[data-iniciar-respiracion]');
 
     function finalizar() {
-        clearInterval(intervalo);
+        limpiar();
         if (typeof alSalir === 'function') alSalir();
+    }
+
+    function limpiar() {
+        clearInterval(intervalo);
+        intervalo = null;
     }
 
     function mostrarFase() {
@@ -59,6 +65,18 @@ export function inicializarRespiracionGuiada({ alSalir } = {}) {
 
     botonIniciar.addEventListener('click', iniciar);
     mostrarFase();
+    mostrarTutorialActividad({
+        id: 'respiracion-guiada',
+        titulo: 'Guía rápida de respiración',
+        descripcion: 'Usa esta pausa para recuperar energía sin exigirte hacerlo perfecto.',
+        pasos: [
+            { icono: 'fa-solid fa-play', texto: 'Iniciar activa el ritmo de respiración.' },
+            { icono: 'fa-solid fa-circle', texto: 'El círculo te indica cuándo inhalar, sostener y exhalar.' },
+            { icono: 'fa-solid fa-check', texto: 'Terminar abre una pregunta breve sobre cómo te sientes.' }
+        ]
+    });
+
+    return limpiar;
 }
 
 function crearVistaRespiracion(alSalir) {

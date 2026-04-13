@@ -10,7 +10,7 @@ export class Usuario {
         this.#uid = uid;
         this.#nombre = nombre;
         this.#correo = correo;
-        this.#urlImagen = urlImagen || 'default-avatar.png';
+        this.#urlImagen = urlImagen || './recursos/imagenes/default.webp';
         this.#programa = programa;
         this.#semestre = semestre;
     }

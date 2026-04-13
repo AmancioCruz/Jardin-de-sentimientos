@@ -22,6 +22,7 @@ let alCambiarSeleccion = null;
 let alCambiarNotas = null;
 let alEditarNota = null;
 let indiceNotaSeleccionada = -1;
+let indiceNotaEnEdicion = -1;
 let prioridadSeleccionada = '';
 
 export function agregarNota({ prioridad = '' } = {}) {
@@ -29,7 +30,8 @@ export function agregarNota({ prioridad = '' } = {}) {
 
     const nota = new Nota(tamanoNotaInicial.ancho, tamanoNotaInicial.alto, 0, 0, prioridad);
     notas.push(nota);
-    indiceNotaSeleccionada = notas.length - 1;
+    indiceNotaSeleccionada = -1;
+    indiceNotaEnEdicion = notas.length - 1;
     notificarCambioSeleccion();
 }
 
@@ -57,6 +59,11 @@ export function dibujarTablero(lienzo) {
     guardarNotas();
     configurarArrastre(lienzo);
     redibujarTablero(lienzo);
+
+    return {
+        contenido: notas[indiceNotaEnEdicion]?.contenido || {},
+        indice: indiceNotaEnEdicion
+    };
 }
 
 function redibujarTablero(lienzo) {
@@ -137,6 +144,7 @@ export function tableroTieneMaximoNotas() {
 export function limpiarTablero(lienzo = lienzoActivo) {
     notas.length = 0;
     indiceNotaSeleccionada = -1;
+    indiceNotaEnEdicion = -1;
     prioridadSeleccionada = '';
     guardarNotas();
     notificarCambioSeleccion();
@@ -144,6 +152,16 @@ export function limpiarTablero(lienzo = lienzoActivo) {
     if (lienzo) {
         redibujarTablero(lienzo);
     }
+}
+
+export function limpiarInteraccionTablero() {
+    window.removeEventListener('pointermove', moverPrioridad);
+    window.removeEventListener('pointerup', soltarPrioridad);
+    arrastrePrioridad?.fantasma?.remove();
+    arrastrePrioridad = null;
+    arrastre = null;
+    prioridadSeleccionada = '';
+    indiceNotaEnEdicion = -1;
 }
 
 export function obtenerRectNotaSeleccionada() {
@@ -166,11 +184,12 @@ export function obtenerRectNotaSeleccionada() {
 }
 
 export function guardarTextoNotaSeleccionada(contenido) {
-    const nota = obtenerNotaSeleccionada();
+    const nota = obtenerNotaEnEdicion();
 
     if (!nota || !lienzoActivo) return false;
 
     nota.actualizarContenido(contenido);
+    indiceNotaEnEdicion = -1;
     guardarNotas();
     redibujarTablero(lienzoActivo);
     return true;
@@ -210,6 +229,14 @@ function obtenerNotaSeleccionada() {
     return notas[indiceNotaSeleccionada] || null;
 }
 
+function obtenerNotaEnEdicion() {
+    if (indiceNotaEnEdicion >= 0) {
+        return notas[indiceNotaEnEdicion] || null;
+    }
+
+    return obtenerNotaSeleccionada();
+}
+
 function iniciarArrastre(evento) {
     const punto = obtenerPuntoCanvas(evento);
     const indiceEliminar = obtenerIndiceEliminarEnPunto(punto.x, punto.y);
@@ -223,7 +250,8 @@ function iniciarArrastre(evento) {
     const indiceEditar = obtenerIndiceEditarEnPunto(punto.x, punto.y);
 
     if (indiceEditar !== -1) {
-        indiceNotaSeleccionada = indiceEditar;
+        indiceNotaSeleccionada = -1;
+        indiceNotaEnEdicion = indiceEditar;
         notificarCambioSeleccion();
         redibujarTablero(lienzoActivo);
         if (typeof alEditarNota === 'function') {
@@ -237,6 +265,7 @@ function iniciarArrastre(evento) {
 
     if (indiceNota === -1) {
         indiceNotaSeleccionada = -1;
+        indiceNotaEnEdicion = -1;
         prioridadSeleccionada = '';
         notificarCambioSeleccion();
         notificarCambioPrioridades();
@@ -254,6 +283,7 @@ function iniciarArrastre(evento) {
 
     const nota = notas[indiceNota];
 
+    indiceNotaEnEdicion = -1;
     arrastre = {
         indiceNota,
         offsetX: punto.x - nota.x,
@@ -419,6 +449,7 @@ function asignarPrioridadANota(indiceNota, prioridad) {
     nota.prioridad = prioridad;
     normalizarPrioridadesUnicas(nota);
     indiceNotaSeleccionada = indiceNota;
+    indiceNotaEnEdicion = -1;
     notificarCambioSeleccion();
     guardarNotas();
     redibujarTablero(lienzoActivo);
@@ -512,6 +543,7 @@ function eliminarNotaPorIndice(indice) {
 
     notas.splice(indice, 1);
     indiceNotaSeleccionada = notas.length ? Math.min(indiceNotaSeleccionada, notas.length - 1) : -1;
+    indiceNotaEnEdicion = -1;
     guardarNotas();
     notificarCambioSeleccion();
 
@@ -523,21 +555,23 @@ function eliminarNotaPorIndice(indice) {
 function crearFantasmaPrioridad(prioridad, evento) {
     const fantasma = document.createElement('div');
     fantasma.className = `fantasma-sticker fantasma-sticker--${prioridad}`;
-    fantasma.innerHTML = obtenerIconoPrioridad(prioridad);
+    fantasma.appendChild(crearIconoPrioridad(prioridad));
     fantasma.style.left = `${evento.clientX}px`;
     fantasma.style.top = `${evento.clientY}px`;
     document.body.appendChild(fantasma);
     return fantasma;
 }
 
-function obtenerIconoPrioridad(prioridad) {
+function crearIconoPrioridad(prioridad) {
     const iconos = {
-        alta: '<i class="fa-solid fa-fire"></i>',
-        media: '<i class="fa-solid fa-star-half-stroke"></i>',
-        baja: '<i class="fa-solid fa-leaf"></i>'
+        alta: 'fa-solid fa-fire',
+        media: 'fa-solid fa-star-half-stroke',
+        baja: 'fa-solid fa-leaf'
     };
 
-    return iconos[prioridad] || '<i class="fa-solid fa-tag"></i>';
+    const icono = document.createElement('i');
+    icono.className = iconos[prioridad] || 'fa-solid fa-tag';
+    return icono;
 }
 
 function notificarCambioPrioridades() {
