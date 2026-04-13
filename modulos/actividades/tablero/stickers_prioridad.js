@@ -18,7 +18,12 @@ export const prioridadesDisponibles = [
     }
 ];
 
-export function crearPanelPrioridades({ prioridadesUsadas = [], alIniciarArrastre } = {}) {
+export function crearPanelPrioridades({
+    prioridadesUsadas = [],
+    prioridadSeleccionada = '',
+    alIniciarArrastre,
+    alSeleccionarPrioridad
+} = {}) {
     return construirElemento({
         tipo: 'div',
         atributos: {
@@ -26,46 +31,60 @@ export function crearPanelPrioridades({ prioridadesUsadas = [], alIniciarArrastr
             id: 'panel-prioridades',
             'aria-label': 'Prioridades disponibles'
         },
-        hijos: prioridadesDisponibles.map((prioridad) =>
-            crearStickerPrioridad({
-                prioridad,
-                usado: prioridadesUsadas.includes(prioridad.valor),
-                alIniciarArrastre
-            })
-        )
+        hijos: [
+            {
+                tipo: 'p',
+                atributos: { class: 'panel-prioridades__ayuda' },
+                hijos: ['Toca una prioridad y luego una nota, o arrastrala']
+            },
+            ...prioridadesDisponibles.map((prioridad) =>
+                crearStickerPrioridad({
+                    prioridad,
+                    usado: prioridadesUsadas.includes(prioridad.valor),
+                    seleccionada: prioridadSeleccionada === prioridad.valor,
+                    alSeleccionarPrioridad,
+                    alIniciarArrastre
+                })
+            )
+        ]
     });
 }
 
-export function actualizarPanelPrioridades(panel, prioridadesUsadas = []) {
+export function actualizarPanelPrioridades(panel, prioridadesUsadas = [], prioridadSeleccionada = '') {
     if (!panel) return;
-
-    const tableroTieneTodasLasPrioridades = prioridadesUsadas.length >= prioridadesDisponibles.length;
-    panel.classList.toggle('panel-prioridades--bloqueado', tableroTieneTodasLasPrioridades);
 
     panel.querySelectorAll('[data-prioridad]').forEach((boton) => {
         const usado = prioridadesUsadas.includes(boton.dataset.prioridad);
-        const bloqueado = tableroTieneTodasLasPrioridades;
+        const seleccionada = prioridadSeleccionada === boton.dataset.prioridad;
 
         boton.classList.toggle('sticker-prioridad--usado', usado);
-        boton.classList.toggle('sticker-prioridad--bloqueado', bloqueado);
-        boton.disabled = bloqueado;
-        boton.setAttribute('aria-disabled', String(bloqueado));
+        boton.classList.toggle('sticker-prioridad--seleccionada', seleccionada);
+        boton.disabled = false;
+        boton.setAttribute('aria-pressed', String(seleccionada));
     });
 }
 
-function crearStickerPrioridad({ prioridad, usado, alIniciarArrastre }) {
+function crearStickerPrioridad({
+    prioridad,
+    usado,
+    seleccionada,
+    alSeleccionarPrioridad,
+    alIniciarArrastre
+}) {
     return {
         tipo: 'button',
         atributos: {
             type: 'button',
-            class: `sticker-prioridad sticker-prioridad--${prioridad.valor}${usado ? ' sticker-prioridad--usado' : ''}`,
+            class: `sticker-prioridad sticker-prioridad--${prioridad.valor}${usado ? ' sticker-prioridad--usado' : ''}${seleccionada ? ' sticker-prioridad--seleccionada' : ''}`,
             'data-prioridad': prioridad.valor,
-            'aria-disabled': String(usado),
+            'aria-pressed': String(seleccionada),
             title: `Prioridad ${prioridad.etiqueta}`
         },
         eventos: {
             pointerdown: (evento) => {
-                if (evento.currentTarget.disabled) return;
+                if (typeof alSeleccionarPrioridad === 'function') {
+                    alSeleccionarPrioridad(prioridad.valor);
+                }
 
                 if (typeof alIniciarArrastre === 'function') {
                     alIniciarArrastre(prioridad.valor, evento);
@@ -73,8 +92,7 @@ function crearStickerPrioridad({ prioridad, usado, alIniciarArrastre }) {
             }
         },
         hijos: [
-            { tipo: 'i', atributos: { class: prioridad.icono } },
-            { tipo: 'span', hijos: [prioridad.etiqueta] }
+            { tipo: 'i', atributos: { class: prioridad.icono } }
         ]
     };
 }

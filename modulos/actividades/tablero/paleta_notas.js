@@ -10,9 +10,9 @@ export const coloresPrioridad = {
         sombra: "rgba(160, 117, 20, 0.20)"
     },
     baja: {
-        frente: "#83c9f4",
-        franja: "#6db8e8",
-        sombra: "rgba(42, 115, 166, 0.18)"
+        frente: "#7edfb6",
+        franja: "#61c99e",
+        sombra: "rgba(46, 160, 112, 0.22)"
     },
     default: {
         frente: "#fffdf4",

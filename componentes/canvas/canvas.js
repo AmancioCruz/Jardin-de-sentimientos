@@ -5,8 +5,8 @@ let margenLienzo = 0;
 
 export function crearComponenteCanvas(margen) {
     margenLienzo = margen;
-    const alto = contenedores.contenido.clientHeight - margenLienzo;
-    const ancho = contenedores.contenido.clientWidth - margenLienzo;
+    const alto = contenedores.contenido.clientHeight;
+    const ancho = contenedores.contenido.clientWidth;
     return construirElemento({
         tipo: 'canvas',
         atributos: {
@@ -23,9 +23,10 @@ function ajustarLienzo() {
 
     if (!lienzo) return;
 
-    lienzo.width = contenedores.contenido.clientWidth - margenLienzo;
-    lienzo.height = contenedores.contenido.clientHeight -margenLienzo;
+    const contenedor = lienzo.parentElement || contenedores.contenido;
 
+    lienzo.width = contenedor.clientWidth;
+    lienzo.height = contenedor.clientHeight;
 
 }
 

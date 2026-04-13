@@ -1,7 +1,8 @@
 import { construirElemento } from "../../utilidades/constructor_elementos.js";
+import { guardarPreferenciaLocal, obtenerPreferenciasLocales } from "../../servicios/preferencias_locales.js";
 
 export function crearPerfil({ usuario }) {
-    const config = usuario.configuraciones;
+    const preferencias = obtenerPreferenciasLocales();
 
     return construirElemento({
         tipo: 'div',
@@ -10,6 +11,11 @@ export function crearPerfil({ usuario }) {
             class: 'perfil-contenedor'
         },
         hijos: [
+            {
+                tipo: 'h1',
+                atributos: { class: 'titulo-seccion-app perfil-titulo' },
+                hijos: ['Perfil']
+            },
             {
                 tipo: 'section',
                 atributos: {
@@ -20,7 +26,7 @@ export function crearPerfil({ usuario }) {
                     {
                         tipo: 'h3',
                         atributos: { class: 'subtitulo-seccion' },
-                        hijos: ['Información Personal']
+                        hijos: ['Información personal']
                     },
                     {
                         tipo: 'div',
@@ -53,15 +59,71 @@ export function crearPerfil({ usuario }) {
                     {
                         tipo: 'h3',
                         atributos: { class: 'subtitulo-seccion' },
-                        hijos: ['Configuraciones']
+                        hijos: ['Preferencias']
                     },
 
-                    crearDato('Sonido', config?.sonido),
-                    crearDato('Tema', config?.tema)
+                    crearSelectorPreferencia({
+                        etiqueta: 'Sonido para actividades',
+                        id: 'preferencia-sonido',
+                        valor: preferencias.sonido,
+                        opciones: [
+                            { valor: 'silencio', texto: 'Silencio' },
+                            { valor: 'lluvia', texto: 'Lluvia' },
+                            { valor: 'bosque', texto: 'Bosque' },
+                            { valor: 'olas', texto: 'Olas' }
+                        ],
+                        alCambiar: (valor) => guardarPreferenciaLocal('sonido', valor)
+                    }),
+                    crearSelectorPreferencia({
+                        etiqueta: 'Tema visual',
+                        id: 'preferencia-tema',
+                        valor: preferencias.tema,
+                        opciones: [
+                            { valor: 'claro', texto: 'Claro' },
+                            { valor: 'oscuro', texto: 'Oscuro' }
+                        ],
+                        alCambiar: (valor) => guardarPreferenciaLocal('tema', valor)
+                    })
                 ]
             }
         ]
     });
+}
+
+function crearSelectorPreferencia({ etiqueta, id, valor, opciones, alCambiar }) {
+    return {
+        tipo: 'div',
+        atributos: { class: 'dato-perfil dato-perfil--selector' },
+        hijos: [
+            {
+                tipo: 'label',
+                atributos: { class: 'etiqueta-dato', for: id },
+                hijos: [etiqueta]
+            },
+            {
+                tipo: 'select',
+                atributos: {
+                    class: 'select-preferencia selector-perfil',
+                    id
+                },
+                eventos: {
+                    change: (evento) => {
+                        if (typeof alCambiar === 'function') {
+                            alCambiar(evento.target.value);
+                        }
+                    }
+                },
+                hijos: opciones.map((opcion) => ({
+                    tipo: 'option',
+                    atributos: {
+                        value: opcion.valor,
+                        selected: opcion.valor === valor
+                    },
+                    hijos: [opcion.texto]
+                }))
+            }
+        ]
+    };
 }
 
 function crearDato(etiqueta, valor) {

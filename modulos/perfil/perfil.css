@@ -1,30 +1,37 @@
 .perfil-contenedor {
     width: 100%;
-    min-height: 100%;
+    height: 100%;
+    min-height: 0;
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--espacio-l);
-    padding: var(--espacio-m) var(--espacio-m) var(--espacio-2xl);
+    gap: clamp(0.85rem, 2vw, 1.25rem);
+    padding: clamp(1rem, 2.5vw, 1.75rem);
     justify-items: center;
+    align-content: start;
     overflow: auto;
 }
 
 .seccion-informacion,
 .seccion-configuracion {
     width: min(100%, 720px);
-    padding: var(--espacio-l);
+    padding: clamp(1rem, 2.5vw, 1.5rem);
     overflow: clip;
+}
+
+.perfil-titulo {
+    width: 100%;
+    margin-bottom: clamp(0.25rem, 1vw, 0.75rem);
 }
 
 .dato-perfil-imagen {
     display: flex;
     justify-content: center;
-    margin-bottom: var(--espacio-m);
+    margin-bottom: clamp(0.7rem, 1.8vw, 1rem);
 }
 
 .imagen-perfil {
-    width: 120px;
-    height: 120px;
+    width: clamp(82px, 14vw, 112px);
+    height: clamp(82px, 14vw, 112px);
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid var(--acento);
@@ -34,8 +41,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--espacio-xs);
-    margin-bottom: var(--espacio-s);
-    padding: var(--espacio-s);
+    margin-bottom: clamp(0.45rem, 1.3vw, 0.7rem);
+    padding: clamp(0.55rem, 1.4vw, 0.75rem);
     border-radius: 0.85rem;
     background: rgba(255, 255, 255, 0.45);
     transition: background 0.2s ease;
@@ -52,11 +59,24 @@
     color: var(--texto);
 }
 
+.dato-perfil--selector {
+    gap: 0.45rem;
+}
+
+.selector-perfil {
+    min-height: 2.75rem;
+    font-weight: 700;
+}
+
 @media (min-width: 768px) {
     .perfil-contenedor {
         grid-template-columns: repeat(2, 1fr);
         justify-content: center;
-        align-items: start;
+        align-items: center;
+    }
+
+    .perfil-titulo {
+        grid-column: 1 / -1;
     }
 
     .seccion-informacion,
@@ -66,5 +86,11 @@
 
     .dato-perfil-imagen {
         justify-content: flex-start;
+    }
+}
+
+@media (max-width: 767px) {
+    .perfil-contenedor {
+        align-content: start;
     }
 }

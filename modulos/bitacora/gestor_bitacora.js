@@ -3,5 +3,5 @@ import { seccionesApp } from "../../nucleo/sistema_estados.js";
 import { mostrarBitacora } from "./bitacora.js";
 
 registrarPantalla(seccionesApp.bitacora, {
-    constructor: () => mostrarBitacora()
+    constructor: (dependencias) => mostrarBitacora(dependencias)
 });

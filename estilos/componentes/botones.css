@@ -88,7 +88,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: var(--espacio-m);
-  padding: 1rem 1.1rem;
+  padding: 1rem 1.05rem;
   background: linear-gradient(180deg, var(--superficie) 0%, var(--superficie-suave) 100%);
   border: 1px solid var(--borde);
   border-radius: var(--radio-grande);
@@ -115,14 +115,49 @@
   background: #fff8e7;
 }
 
+.btn-ansioso:hover {
+  background: #fff0eb;
+}
+
+.btn-pizarron:hover {
+  background: #f0f7ff;
+}
+
+.btn-no-seguro:hover {
+  background: #f4f1ea;
+}
+
 .btn-estado .estado-icono {
-  font-size: 1.8rem;
+  flex: 0 0 auto;
+  width: 2.25rem;
+  font-size: clamp(1.35rem, 4vw, 1.8rem);
   color: var(--verde);
+}
+
+.estado-contenido {
+  min-width: 0;
+  display: grid;
+  gap: 0.12rem;
+}
+
+.estado-item {
+  color: var(--acento-fuerte);
+  font-size: var(--tamano-texto-xs);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .btn-estado .estado-texto {
   font-weight: 700;
   color: var(--texto);
+  line-height: 1.18;
+}
+
+.estado-descripcion {
+  color: var(--texto-sutil);
+  font-size: var(--tamano-texto-s);
+  line-height: 1.25;
 }
 
 .btn-flotante {
@@ -132,22 +167,18 @@
 }
 
 .btn-circulo-m {
-  width: 100%;
-  height: 100%;
+  width: clamp(2.85rem, 11vw, 3.35rem);
+  height: clamp(2.85rem, 11vw, 3.35rem);
   border-radius: 999px;
   text-align: center;
-  padding: var(--espacio-m);
-  font-size: var(--tamano-texto-xl);
+  padding: 0;
+  font-size: clamp(1.15rem, 4vw, 1.45rem);
 }
 
 .btn-cadrado-m {
-  width: 20vw;
-  height: 20vw;
-  max-width: 60px;
-  max-height: 60px;
-  min-width: 50px;
-  min-height: 50px;
-  padding: var(--espacio-m);
+  width: clamp(3.1rem, 12vw, 3.65rem);
+  height: clamp(3.1rem, 12vw, 3.65rem);
+  padding: 0;
   margin: auto;
 }
 

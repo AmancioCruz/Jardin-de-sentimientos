@@ -35,7 +35,6 @@ export async function construirUsuario(usuarioFirebase) {
         usuarioFirebase.email,
         foto,
         perfil?.programa || '',
-        perfil?.semestre || 1,
-        perfil?.configuraciones || null
+        perfil?.semestre || 1
     );
 }

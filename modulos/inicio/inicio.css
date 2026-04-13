@@ -26,16 +26,101 @@
 .inicio-subtitulo {
     font-size: var(--tamano-texto-l);
     color: var(--texto);
-    font-weight: 600;
+    font-weight: 800;
+    text-align: center;
+}
+
+.inicio-encabezado {
+    display: grid;
+    gap: var(--espacio-s);
+    justify-items: center;
+    max-width: 44rem;
+}
+
+.inicio-descripcion {
+    margin: 0;
+    max-width: 40rem;
+    color: var(--texto-sutil);
+    font-size: var(--tamano-texto-s);
+    line-height: 1.45;
     text-align: center;
 }
 
 .evaluacion-rapida {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
     gap: var(--espacio-m);
     width: 100%;
     max-width: 420px;
+}
+
+.btn-estado {
+    position: relative;
+    padding-left: 4rem;
+    background: linear-gradient(180deg, var(--superficie) 0%, var(--superficie-suave) 100%);
+    border-color: rgba(22, 78, 63, 0.1);
+}
+
+.btn-estado::after {
+    content: "";
+    position: absolute;
+    inset: 0.65rem;
+    border-radius: calc(var(--radio-grande) - 0.35rem);
+    border: 1px solid transparent;
+    pointer-events: none;
+}
+
+.btn-estado .estado-icono {
+    position: absolute;
+    left: 1rem;
+    width: 2.45rem;
+    height: 2.45rem;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 999px;
+    background: transparent;
+    font-size: 1.6rem;
+    box-shadow: none;
+}
+
+.btn-no-seguro .estado-icono {
+    color: #5b8def;
+}
+
+.btn-no-seguro::after {
+    border-color: rgba(91, 141, 239, 0.16);
+}
+
+.btn-jardin .estado-icono {
+    color: #f59e0b;
+}
+
+.btn-jardin::after {
+    border-color: rgba(255, 184, 77, 0.18);
+}
+
+.btn-pizarron .estado-icono {
+    color: #17a673;
+}
+
+.btn-pizarron::after {
+    border-color: rgba(126, 223, 182, 0.18);
+}
+
+.btn-respiraciones .estado-icono {
+    color: #38a7df;
+}
+
+.btn-respiraciones::after {
+    border-color: rgba(131, 201, 244, 0.2);
+}
+
+.btn-ansioso .estado-icono {
+    color: #ef5367;
+}
+
+.btn-ansioso::after {
+    border-color: rgba(255, 124, 138, 0.18);
 }
 
 @media (min-width: 768px) {
@@ -49,7 +134,7 @@
     }
 
     .evaluacion-rapida {
-        max-width: 760px;
+        max-width: 820px;
         gap: var(--espacio-l);
     }
 }
@@ -60,6 +145,6 @@
     }
 
     .evaluacion-rapida {
-        max-width: 1120px;
+        max-width: 1180px;
     }
 }

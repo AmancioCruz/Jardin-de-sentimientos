@@ -3,7 +3,7 @@ import { RegistrarUsuarioAuth } from "./autenticacion.js";
 import { registrarDatosUsuario } from "./base_datos.js";
 
 export async function registrarUsuario(datosUsuario) {
-    const { foto, nombre, correo, programa, semestre, sonido, tema, terminos, contrasena } = datosUsuario;
+    const { foto, nombre, correo, programa, semestre, terminos, contrasena } = datosUsuario;
 
     try {
         /* Este flujo crea primero la cuenta en Auth.
@@ -21,10 +21,6 @@ export async function registrarUsuario(datosUsuario) {
             correo,
             programa,
             semestre,
-            configuraciones: {
-                sonido,
-                tema
-            },
             terminos
         });
 

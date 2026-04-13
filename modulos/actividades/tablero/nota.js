@@ -78,6 +78,7 @@ export class Nota {
             this.dibujarStickerPrioridad(ctx, colores);
         }
 
+        this.dibujarBotonEditar(ctx);
         this.dibujarBotonEliminar(ctx);
 
         if (seleccionada) {
@@ -97,12 +98,65 @@ export class Nota {
         };
     }
 
+    obtenerAreaEditar() {
+        const areaEliminar = this.obtenerAreaEliminar();
+        const radio = areaEliminar.radio;
+
+        return {
+            x: areaEliminar.x - (radio * 2) - 7,
+            y: areaEliminar.y,
+            radio
+        };
+    }
+
     contienePuntoEliminar(x, y) {
         const area = this.obtenerAreaEliminar();
         const distanciaX = x - area.x;
         const distanciaY = y - area.y;
 
         return Math.sqrt((distanciaX ** 2) + (distanciaY ** 2)) <= area.radio + 4;
+    }
+
+    contienePuntoEditar(x, y) {
+        const area = this.obtenerAreaEditar();
+        const distanciaX = x - area.x;
+        const distanciaY = y - area.y;
+
+        return Math.sqrt((distanciaX ** 2) + (distanciaY ** 2)) <= area.radio + 4;
+    }
+
+    dibujarBotonEditar(ctx) {
+        const area = this.obtenerAreaEditar();
+
+        ctx.save();
+        ctx.fillStyle = "#facc15";
+        ctx.shadowColor = "rgba(22, 78, 63, 0.16)";
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetY = 2;
+        ctx.beginPath();
+        ctx.arc(area.x, area.y, area.radio, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.shadowColor = "transparent";
+        ctx.strokeStyle = "#164e3f";
+        ctx.lineWidth = 2.4;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.beginPath();
+        ctx.moveTo(area.x - 5, area.y + 4);
+        ctx.lineTo(area.x + 4, area.y - 5);
+        ctx.moveTo(area.x + 1, area.y - 6);
+        ctx.lineTo(area.x + 6, area.y - 1);
+        ctx.moveTo(area.x - 6, area.y + 5);
+        ctx.lineTo(area.x - 2, area.y + 4);
+        ctx.stroke();
+
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.88)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(area.x, area.y, area.radio - 1, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
     }
 
     dibujarBotonEliminar(ctx) {
@@ -126,24 +180,44 @@ export class Nota {
     }
 
     dibujarStickerPrioridad(ctx, colores) {
-        const radio = Math.max(13, Math.min(18, this.ancho * 0.1));
-        const x = this.x + this.ancho - radio - 10;
-        const y = this.y + radio + 8;
+        const etiqueta = this.obtenerEtiquetaPrioridad();
+        const alto = Math.max(20, Math.min(26, this.alto * 0.18));
+        const ancho = Math.max(68, Math.min(92, this.ancho * 0.5));
+        const x = this.x + 9;
+        const y = this.y + 7;
+        const radio = alto / 2;
+        const iconoX = x + radio + 1;
+        const textoX = x + alto + 7;
 
         ctx.save();
-        ctx.fillStyle = colores.franja;
-        ctx.strokeStyle = "rgba(255,255,255,0.75)";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(x, y, radio, 0, Math.PI * 2);
+        ctx.shadowColor = "rgba(22, 78, 63, 0.12)";
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetY = 3;
+        redondearRect(ctx, x, y, ancho, alto, radio);
+        ctx.fillStyle = "rgba(255, 255, 255, 0.86)";
         ctx.fill();
-        ctx.stroke();
 
-        ctx.fillStyle = "#ffffff";
-        ctx.font = `700 ${radio}px sans-serif`;
+        ctx.shadowColor = "transparent";
+        ctx.fillStyle = colores.franja;
+        ctx.beginPath();
+        ctx.arc(iconoX, y + radio, Math.max(7, radio - 4), 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = this.prioridad === 'alta' ? "#ffffff" : "#21312c";
+        ctx.font = `800 ${Math.max(9, radio * 0.75)}px sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(this.obtenerSimboloPrioridad(), x, y + 1);
+        ctx.fillText(this.obtenerSimboloPrioridad(), iconoX, y + radio + 0.5);
+
+        ctx.fillStyle = "rgba(30, 49, 43, 0.9)";
+        ctx.font = `800 ${Math.max(10, Math.min(12, this.ancho * 0.06))}px sans-serif`;
+        ctx.textAlign = "left";
+        ctx.fillText(etiqueta, textoX, y + radio + 0.5);
+
+        ctx.strokeStyle = "rgba(22, 78, 63, 0.08)";
+        ctx.lineWidth = 2;
+        redondearRect(ctx, x, y, ancho, alto, radio);
+        ctx.stroke();
         ctx.restore();
     }
 
@@ -151,10 +225,20 @@ export class Nota {
         const simbolos = {
             alta: "!",
             media: "*",
-            baja: "✓"
+            baja: "+"
         };
 
         return simbolos[this.prioridad] || "";
+    }
+
+    obtenerEtiquetaPrioridad() {
+        const etiquetas = {
+            alta: "Alta",
+            media: "Media",
+            baja: "Baja"
+        };
+
+        return etiquetas[this.prioridad] || "";
     }
 
     dibujarContenido(ctx, altoFranja) {
@@ -258,6 +342,18 @@ function dividirTextoEnLineas(ctx, texto, anchoMaximo, maximoLineas) {
     const visibles = lineas.slice(0, maximoLineas);
     visibles[visibles.length - 1] = recortarConPuntos(ctx, visibles[visibles.length - 1], anchoMaximo);
     return visibles;
+}
+
+function redondearRect(ctx, x, y, ancho, alto, radio) {
+    const r = Math.min(radio, ancho / 2, alto / 2);
+
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + ancho, y, x + ancho, y + alto, r);
+    ctx.arcTo(x + ancho, y + alto, x, y + alto, r);
+    ctx.arcTo(x, y + alto, x, y, r);
+    ctx.arcTo(x, y, x + ancho, y, r);
+    ctx.closePath();
 }
 
 function recortarConPuntos(ctx, texto, anchoMaximo) {

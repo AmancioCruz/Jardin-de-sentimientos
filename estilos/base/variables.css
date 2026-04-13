@@ -47,6 +47,144 @@
   --sombra-media: 0 20px 48px rgba(0, 0, 0, 0.34);
 }
 
+[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at top left, rgba(201, 111, 74, 0.16), transparent 28%),
+    radial-gradient(circle at top right, rgba(127, 223, 182, 0.12), transparent 24%),
+    linear-gradient(180deg, #101714 0%, #0b110f 100%);
+}
+
+[data-theme="dark"] .tarjeta-app,
+[data-theme="dark"] .btn-estado,
+[data-theme="dark"] .bitacora-tarjeta,
+[data-theme="dark"] .actividad-juego,
+[data-theme="dark"] .actividad-tablero,
+[data-theme="dark"] .actividad-pizarron,
+[data-theme="dark"] .actividad-respiracion {
+  background: linear-gradient(180deg, rgba(24, 36, 31, 0.96), rgba(18, 29, 25, 0.96));
+  border-color: rgba(223, 241, 232, 0.1);
+}
+
+[data-theme="dark"] .titulo-formulario,
+[data-theme="dark"] .titulo-seccion,
+[data-theme="dark"] .titulo-pantalla,
+[data-theme="dark"] .titulo-seccion-app,
+[data-theme="dark"] .subtitulo-seccion,
+[data-theme="dark"] .inicio-subtitulo,
+[data-theme="dark"] .bitacora-encabezado h1,
+[data-theme="dark"] .bitacora-detalle__info h2,
+[data-theme="dark"] .actividad-panel-superior h1,
+[data-theme="dark"] .respiracion-tarjeta h1 {
+  color: #b7efd2;
+}
+
+[data-theme="dark"] .dato-perfil,
+[data-theme="dark"] .campo,
+[data-theme="dark"] .select-preferencia,
+[data-theme="dark"] .campo-nota input[type="text"],
+[data-theme="dark"] .bitacora-tarjeta__imagen,
+[data-theme="dark"] .btn-tablero-mini,
+[data-theme="dark"] .btn-pizarron-mini,
+[data-theme="dark"] .btn-pizarron-herramienta,
+[data-theme="dark"] .control-pizarron {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--texto);
+  border-color: rgba(223, 241, 232, 0.12);
+}
+
+[data-theme="dark"] .campo input,
+[data-theme="dark"] .campo select,
+[data-theme="dark"] .campo textarea {
+  color: var(--texto);
+}
+
+[data-theme="dark"] .barra-navegacion-lateral,
+[data-theme="dark"] .cabecera-principal {
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28);
+}
+
+[data-theme="dark"] .actividad-panel-superior,
+[data-theme="dark"] .tablero-acciones,
+[data-theme="dark"] .pizarron-acciones,
+[data-theme="dark"] .panel-texto-nota,
+[data-theme="dark"] .bitacora-detalle__tarjeta,
+[data-theme="dark"] .evaluacion-cierre-actividad__tarjeta {
+  background: rgba(24, 36, 31, 0.98);
+  color: var(--texto);
+  border-color: rgba(223, 241, 232, 0.12);
+}
+
+[data-theme="dark"] .panel-tamano-nota,
+[data-theme="dark"] .panel-prioridad-nota {
+  background: rgba(246, 250, 245, 0.92);
+  color: #164e3f;
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+[data-theme="dark"] .panel-tamano-nota__texto {
+  color: #164e3f;
+  opacity: 0.9;
+}
+
+[data-theme="dark"] .btn-tamano-nota,
+[data-theme="dark"] .btn-actividad-salir,
+[data-theme="dark"] .btn-tablero-toggle,
+[data-theme="dark"] .btn-pizarron-toggle {
+  background: #164e3f;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .btn-tablero-mini,
+[data-theme="dark"] .btn-pizarron-mini,
+[data-theme="dark"] .btn-pizarron-herramienta,
+[data-theme="dark"] .control-pizarron {
+  background: rgba(246, 250, 245, 0.94);
+  color: #21312c;
+  border-color: rgba(22, 78, 63, 0.12);
+}
+
+[data-theme="dark"] .evaluacion-cierre-actividad {
+  background: rgba(5, 12, 10, 0.64);
+}
+
+[data-theme="dark"] .evaluacion-cierre-actividad__tarjeta h2 {
+  color: #b7efd2;
+}
+
+[data-theme="dark"] .evaluacion-cierre-actividad__tarjeta p {
+  color: #d6e6de;
+}
+
+[data-theme="dark"] .evaluacion-cierre-actividad__opcion {
+  background: rgba(246, 250, 245, 0.96);
+  color: #21312c;
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+[data-theme="dark"] .evaluacion-cierre-actividad__opcion:first-child {
+  background: #b7efd2;
+  color: #0c1814;
+}
+
+[data-theme="dark"] .panel-final-juego {
+  background: rgba(24, 36, 31, 0.98);
+  color: var(--texto);
+  border-color: rgba(223, 241, 232, 0.12);
+}
+
+[data-theme="dark"] .panel-final-juego h2 {
+  color: #b7efd2;
+}
+
+[data-theme="dark"] .panel-final-juego p {
+  color: #edf4f0;
+}
+
+[data-theme="dark"] .canvas-pizarron-creativo,
+[data-theme="dark"] .actividad-tablero .lienzo-base {
+  background: #fffef9;
+}
+
 html,
 body {
   min-height: 100vh;

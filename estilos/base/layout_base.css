@@ -73,5 +73,37 @@ body {
 
 .margen-por-barra-navegacion {
   justify-content: flex-start;
-  align-items: stretch;
+  align-items: center;
+}
+
+.contenido-principal.actividad-activa {
+  justify-content: center;
+  align-items: center;
+}
+
+.titulo-seccion-app {
+  margin: 0;
+  color: var(--verde);
+  font-size: clamp(1.55rem, 5vw, var(--tamano-texto-2xl));
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .contenido-principal {
+    padding: clamp(1rem, 2vw, 1.5rem);
+  }
+}
+
+@media (min-width: 1200px) {
+  .contenedor-principal.con-menu {
+    grid-template-rows: minmax(0, 1fr);
+    grid-template-columns: clamp(11rem, 16vw, 14rem) minmax(0, 1fr);
+  }
+
+  .info-usuario .btn-fantasma {
+    display: none;
+  }
 }

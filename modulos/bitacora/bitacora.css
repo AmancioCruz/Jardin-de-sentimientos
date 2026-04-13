@@ -1,0 +1,155 @@
+.bitacora-contenedor {
+    width: min(100%, 72rem);
+    min-height: 100%;
+    display: grid;
+    align-content: start;
+    justify-items: center;
+    gap: clamp(1rem, 3vw, 1.75rem);
+    padding: clamp(1rem, 4vw, 2rem);
+}
+
+.bitacora-encabezado {
+    text-align: center;
+}
+
+.bitacora-encabezado h1 {
+    margin: 0;
+    color: var(--verde);
+    font-size: clamp(1.65rem, 6vw, 2.4rem);
+}
+
+.bitacora-encabezado p,
+.bitacora-estado {
+    margin: 0.35rem 0 0;
+    color: var(--texto-sutil);
+    font-weight: 700;
+}
+
+.bitacora-galeria {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13.5rem), 16rem));
+    justify-content: center;
+    align-items: start;
+    gap: clamp(1rem, 3vw, 1.4rem);
+}
+
+.bitacora-tarjeta {
+    overflow: hidden;
+    border: 1px solid rgba(22, 78, 63, 0.1);
+    border-radius: 0.35rem;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 10px 22px rgba(22, 78, 63, 0.14);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.bitacora-tarjeta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 30px rgba(22, 78, 63, 0.18);
+}
+
+.bitacora-tarjeta__imagen {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    display: block;
+    overflow: hidden;
+    border-radius: 0;
+    background: #fffef9;
+}
+
+.bitacora-tarjeta__imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.bitacora-tarjeta__imagen span,
+.bitacora-detalle__sin-imagen {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    padding: var(--espacio-m);
+    color: var(--texto-sutil);
+    font-weight: 800;
+}
+
+.bitacora-tarjeta__contenido {
+    display: grid;
+    gap: 0.25rem;
+    padding: 0.75rem 0.85rem 0.9rem;
+    text-align: center;
+}
+
+.bitacora-tarjeta__contenido strong {
+    color: var(--verde);
+}
+
+.bitacora-tarjeta__contenido span,
+.bitacora-tarjeta__contenido small {
+    color: var(--texto-sutil);
+    font-weight: 700;
+}
+
+.bitacora-detalle {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: grid;
+    place-items: center;
+    padding: var(--espacio-m);
+    background: rgba(12, 24, 20, 0.48);
+    backdrop-filter: blur(6px);
+}
+
+.bitacora-detalle__tarjeta {
+    position: relative;
+    width: min(100%, 44rem);
+    max-height: calc(100vh - 2rem);
+    overflow: auto;
+    display: grid;
+    gap: var(--espacio-m);
+    padding: clamp(0.8rem, 3vw, 1.2rem);
+    border-radius: var(--radio-grande);
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 24px 70px rgba(7, 22, 18, 0.28);
+}
+
+.bitacora-detalle__cerrar {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 999px;
+    background: #ef4444;
+    color: #fff;
+    box-shadow: var(--sombra-suave);
+}
+
+.bitacora-detalle img {
+    width: 100%;
+    max-height: 58vh;
+    object-fit: contain;
+    border-radius: var(--radio-borde);
+    background: #fffef9;
+}
+
+.bitacora-detalle__info {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.bitacora-detalle__info h2,
+.bitacora-detalle__info p {
+    margin: 0;
+}
+
+.bitacora-detalle__info h2 {
+    color: var(--verde);
+}
+
+.bitacora-detalle__descargar {
+    justify-self: end;
+}

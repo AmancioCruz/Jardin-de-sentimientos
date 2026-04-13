@@ -15,7 +15,7 @@ export const consentimientoData = {
     secciones: [
         {
             titulo: "1. Propósito del estudio",
-            contenido: "Evaluar el uso de una aplicación web interactiva en la gestion del estres academico. Este proyecto forma parte de una investigación académica de posgrado."
+            contenido: "Evaluar el uso de una aplicación web interactiva en la gestión del estrés académico. Este proyecto forma parte de una investigación académica de posgrado."
         },
         {
             titulo: "2. Naturaleza de la participación",

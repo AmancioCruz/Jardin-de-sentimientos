@@ -56,7 +56,7 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
                             type: 'text',
                             name: 'preocupacion',
                             required: true,
-                            placeholder: 'Ej. No terminar capitulo de tesis',
+                            placeholder: 'Ej. No terminar capítulo de tesis',
                             autocomplete: 'off'
                         }
                     }
@@ -71,7 +71,7 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
                 hijos: [
                     {
                         tipo: 'legend',
-                        hijos: ['¿Esta en tus manos hacer algo ahora?']
+                        hijos: ['¿Está en tus manos hacer algo ahora?']
                     },
                     {
                         tipo: 'label',
@@ -117,7 +117,7 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
                         atributos: {
                             type: 'text',
                             name: 'accion',
-                            placeholder: 'Ej. Escribir introduccion con musica',
+                            placeholder: 'Ej. Escribir introducción con música',
                             autocomplete: 'off'
                         }
                     }
@@ -241,15 +241,15 @@ function validarDatos(datos) {
     }
 
     if (contarPalabras(datos.preocupacion) > limitePreocupacion) {
-        return `La primera respuesta debe tener maximo ${limitePreocupacion} palabras.`;
+        return `La primera respuesta debe tener máximo ${limitePreocupacion} palabras.`;
     }
 
     if (datos.estaEnMisManos && !datos.accion) {
-        return 'Escribe una accion pequena que si puedas hacer.';
+        return 'Escribe una acción pequeña que sí puedas hacer.';
     }
 
     if (datos.estaEnMisManos && contarPalabras(datos.accion) > limiteAccion) {
-        return `La accion debe tener maximo ${limiteAccion} palabras.`;
+        return `La acción debe tener máximo ${limiteAccion} palabras.`;
     }
 
     if (!datos.estaEnMisManos && !datos.sentimiento) {
@@ -257,7 +257,7 @@ function validarDatos(datos) {
     }
 
     if (!datos.estaEnMisManos && contarPalabras(datos.sentimiento) > limiteSentimiento) {
-        return `El sentimiento debe tener maximo ${limiteSentimiento} palabras.`;
+        return `El sentimiento debe tener máximo ${limiteSentimiento} palabras.`;
     }
 
     return '';

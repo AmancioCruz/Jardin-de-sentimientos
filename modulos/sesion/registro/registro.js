@@ -2,6 +2,7 @@ import { construirElemento } from "../../../utilidades/constructor_elementos.js"
 
 export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, eventoFoto }) {
     const urlImagen = './recursos/imagenes/default.webp';
+    setTimeout(configurarFormularioRegistro, 0);
 
     return construirElemento({
         tipo: 'div',
@@ -30,8 +31,6 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                             correo: formData.get('correo'),
                             programa: formData.get('programa'),
                             semestre: formData.get('semestre'),
-                            sonido: formData.get('sonido'),
-                            tema: formData.get('tema'),
                             contrasena: formData.get('contrasena'),
                             confirmarContrasena: formData.get('confirmar-contrasena'),
                             terminos: true
@@ -193,9 +192,8 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                             },
                             {
                                 tipo: 'div',
-                                atributos: { class: 'campo' },
+                                atributos: { class: 'fila-select' },
                                 hijos: [
-                                    { tipo: 'i', atributos: { class: 'fa-solid fa-graduation-cap' } },
                                     {
                                         tipo: 'input',
                                         atributos: {
@@ -252,67 +250,6 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                                             { tipo: 'option', atributos: { value: '4 semestre' }, hijos: ['4 semestre'] }
                                         ]
                                     }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        tipo: 'h3',
-                        atributos: { class: 'subtitulo-seccion' },
-                        hijos: ['Preferencias iniciales']
-                    },
-                    {
-                        tipo: 'div',
-                        atributos: { class: 'campo-registro' },
-                        hijos: [
-                            {
-                                tipo: 'label',
-                                atributos: {
-                                    class: 'etiqueta-campo',
-                                    for: 'select-sonido'
-                                },
-                                hijos: ['Sonido ambiente']
-                            },
-                            {
-                                tipo: 'select',
-                                atributos: {
-                                    class: 'select-preferencia',
-                                    name: 'sonido',
-                                    id: 'select-sonido',
-                                    autocomplete: 'off'
-                                },
-                                hijos: [
-                                    { tipo: 'option', atributos: { value: 'lluvia', selected: true }, hijos: ['Lluvia'] },
-                                    { tipo: 'option', atributos: { value: 'bosque' }, hijos: ['Bosque'] },
-                                    { tipo: 'option', atributos: { value: 'olas' }, hijos: ['Olas'] },
-                                    { tipo: 'option', atributos: { value: 'silencio' }, hijos: ['Silencio'] }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        tipo: 'div',
-                        atributos: { class: 'campo-registro' },
-                        hijos: [
-                            {
-                                tipo: 'label',
-                                atributos: {
-                                    class: 'etiqueta-campo',
-                                    for: 'select-tema'
-                                },
-                                hijos: ['Tema visual']
-                            },
-                            {
-                                tipo: 'select',
-                                atributos: {
-                                    class: 'select-preferencia',
-                                    name: 'tema',
-                                    id: 'select-tema',
-                                    autocomplete: 'off'
-                                },
-                                hijos: [
-                                    { tipo: 'option', atributos: { value: 'claro' }, hijos: ['Claro'] },
-                                    { tipo: 'option', atributos: { value: 'oscuro', selected: true }, hijos: ['Oscuro'] }
                                 ]
                             }
                         ]
@@ -460,4 +397,27 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
             }
         ]
     });
+}
+
+function configurarFormularioRegistro() {
+    configurarSelectorPrograma();
+}
+
+function configurarSelectorPrograma() {
+    const campoPrograma = document.querySelector('#programa');
+    if (!campoPrograma || campoPrograma.tagName === 'SELECT') return;
+
+    const selector = document.createElement('select');
+    selector.className = 'select-preferencia';
+    selector.name = 'programa';
+    selector.id = 'programa';
+    selector.required = true;
+    selector.autocomplete = 'off';
+    selector.innerHTML = `
+        <option value="" disabled selected>Selecciona tu programa</option>
+        <option value="Maestría en Estudios y Procesos Creativos en Arte y Diseño">Maestría en Estudios y Procesos Creativos en Arte y Diseño</option>
+        <option value="Otro">Otro</option>
+    `;
+
+    campoPrograma.replaceWith(selector);
 }
