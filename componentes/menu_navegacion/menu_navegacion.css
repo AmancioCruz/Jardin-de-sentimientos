@@ -1,7 +1,6 @@
 .barra-navegacion-lateral {
     width: 100%;
-    background: rgba(22, 78, 63, 0.96);
-    backdrop-filter: blur(10px);
+    background: var(--verde);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 

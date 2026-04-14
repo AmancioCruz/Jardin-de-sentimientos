@@ -6,6 +6,7 @@ import { componenteTerminos } from "../../../componentes/terminos/gestor_termino
 import { componenteMenu } from "../../../componentes/menu_navegacion/gestor_menu_navegacion.js";
 import { componenteInformacionUsuario } from "../../../componentes/informacion_usuario/gestor_informacion_usuario.js";
 import { construirUsuario } from "../../../servicios/observador_sesiones.js";
+import { aplicarTemaLocal } from "../../../servicios/preferencias_locales.js";
 
 async function completarRegistro(datos) {
     /* La foto es opcional para el usuario, pero siempre subimos una imagen de perfil.
@@ -17,6 +18,7 @@ async function completarRegistro(datos) {
     const usuarioFirebase = await registrarUsuario(datos);
     const usuarioActual = await construirUsuario(usuarioFirebase);
 
+    aplicarTemaLocal();
     actualizarSeccion(seccionesApp.inicio);
     actualizarSesion(true);
     componenteMenu(usuarioActual);

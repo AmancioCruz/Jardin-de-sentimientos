@@ -72,9 +72,15 @@ export function inicializarDesdeLocalStorage() {
     const guardado = localStorage.getItem('estadoApp');
     
     if (guardado) {
-        const datos = JSON.parse(guardado);
-        _estado.sesionActiva = datos.sesionActiva;
-        _estado.seccionActual = datos.seccionActual;
+        try {
+            const datos = JSON.parse(guardado);
+            _estado.sesionActiva = Boolean(datos.sesionActiva);
+            _estado.seccionActual = Object.values(seccionesApp).includes(datos.seccionActual)
+                ? datos.seccionActual
+                : seccionesApp.inicioSesion;
+        } catch {
+            limpiarEstado();
+        }
     }
     
     return {

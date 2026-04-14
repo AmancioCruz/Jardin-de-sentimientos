@@ -15,12 +15,14 @@ import {
     obtenerRectNotaSeleccionada,
     obtenerPrioridadesUsadas,
     prepararTablero,
+    redibujarTableroActivo,
+    tableroTieneContenido,
     tableroTieneMaximoNotas
 } from "./tablero/tablero_notas.js";
 import { finalizarTableroActivo } from "./tablero/estado_tablero.js";
 import { crearFormularioTextoNota } from "./tablero/formulario_texto_nota.js";
 
-export function inicializarTablero(lienzo, { tablero = null, alGuardar } = {}) {
+export function inicializarTablero(lienzo, { tablero = null, alGuardar, alSalir } = {}) {
     const vistaTablero = crearVistaTablero();
     vistaTablero.montar(contenedores.contenido, true);
 
@@ -28,6 +30,12 @@ export function inicializarTablero(lienzo, { tablero = null, alGuardar } = {}) {
     lienzo.montar(areaLienzo, true);
     ajustarLienzoTablero(lienzo.nodo, areaLienzo);
     prepararTablero(lienzo, tablero);
+    const manejarResize = () => {
+        ajustarLienzoTablero(lienzo.nodo, areaLienzo);
+        redibujarTableroActivo();
+    };
+
+    window.addEventListener('resize', manejarResize);
 
     const actualizarControlesNota = () => {
         actualizarPosicionPanelTamano(panelTamano.nodo);
@@ -36,7 +44,7 @@ export function inicializarTablero(lienzo, { tablero = null, alGuardar } = {}) {
     };
     const panelTamano = crearPanelTamanoNota(actualizarControlesNota);
     const panelPrioridad = crearPanelPrioridadNota(actualizarControlesNota);
-    const accionesTablero = crearAccionesTablero(lienzo, alGuardar);
+    const accionesTablero = crearAccionesTablero(lienzo, { alGuardar, alSalir });
     const formularioTexto = crearFormularioTextoNota({
         alGuardar: guardarTextoNotaSeleccionada
     });
@@ -72,6 +80,7 @@ export function inicializarTablero(lienzo, { tablero = null, alGuardar } = {}) {
 
     alActualizarNotas(({ completo }) => {
         actualizarBotonAgregarNota(botonAgregarNota.nodo, completo);
+        actualizarBotonGuardarTablero(accionesTablero.nodo, tableroTieneContenido());
     });
 
     alSeleccionarNota((haySeleccion) => {
@@ -91,8 +100,10 @@ export function inicializarTablero(lienzo, { tablero = null, alGuardar } = {}) {
     });
 
     actualizarBotonAgregarNota(botonAgregarNota.nodo, tableroTieneMaximoNotas());
+    actualizarBotonGuardarTablero(accionesTablero.nodo, tableroTieneContenido());
 
     return () => {
+        window.removeEventListener('resize', manejarResize);
         limpiarInteraccionTablero();
         formularioTexto.cerrar();
         formularioTexto.elemento.nodo?.remove();
@@ -207,7 +218,7 @@ function limitar(valor, minimo, maximo) {
     return Math.min(Math.max(valor, minimo), maximo);
 }
 
-function crearAccionesTablero(lienzo, alGuardar) {
+function crearAccionesTablero(lienzo, { alGuardar, alSalir } = {}) {
     return construirElemento({
         tipo: 'div',
         atributos: { class: 'tablero-acciones' },
@@ -235,11 +246,33 @@ function crearAccionesTablero(lienzo, alGuardar) {
                         tipo: 'button',
                         atributos: {
                             type: 'button',
-                            class: 'btn-actividad-salir',
-                            title: 'Guardar tablero'
+                            class: 'btn-tablero-mini',
+                            title: 'Salir sin guardar'
                         },
                         eventos: {
                             click: () => {
+                                finalizarTableroActivo();
+                                if (typeof alSalir === 'function') {
+                                    alSalir();
+                                }
+                            }
+                        },
+                        hijos: [
+                            { tipo: 'i', atributos: { class: 'fa-solid fa-xmark' } },
+                            'Terminar'
+                        ]
+                    },
+                    {
+                        tipo: 'button',
+                        atributos: {
+                            type: 'button',
+                            class: 'btn-actividad-salir',
+                            title: 'Guardar tablero',
+                            'data-guardar-tablero': ''
+                        },
+                        eventos: {
+                            click: () => {
+                                if (!tableroTieneContenido()) return;
                                 finalizarTableroActivo();
                                 if (typeof alGuardar === 'function') {
                                     alGuardar(lienzo.nodo);
@@ -353,4 +386,14 @@ function actualizarBotonAgregarNota(boton, completo) {
     boton.setAttribute('aria-label', completo
         ? 'Límite de notas alcanzado'
         : 'Agregar nota');
+}
+
+function actualizarBotonGuardarTablero(contenedor, tieneContenido) {
+    const boton = contenedor?.querySelector('[data-guardar-tablero]');
+    if (!boton) return;
+
+    boton.disabled = !tieneContenido;
+    boton.title = tieneContenido
+        ? 'Guardar tablero'
+        : 'Agrega al menos una nota para guardar';
 }

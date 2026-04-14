@@ -310,6 +310,16 @@
     width: 5rem;
 }
 
+.btn-actividad-salir:disabled,
+.btn-tablero-mini:disabled,
+.btn-pizarron-mini:disabled {
+    background: rgba(102, 117, 111, 0.28);
+    color: rgba(33, 49, 44, 0.56);
+    border-color: rgba(102, 117, 111, 0.18);
+    box-shadow: none;
+    opacity: 0.58;
+}
+
 .actividad-respiracion {
     display: grid;
     place-items: center;
@@ -321,12 +331,25 @@
     box-shadow: 0 14px 34px rgba(22, 78, 63, 0.12);
 }
 
+.actividad-respiracion {
+    isolation: isolate;
+}
+
 .respiracion-tarjeta {
     width: min(100%, 34rem);
     display: grid;
     justify-items: center;
     gap: clamp(1rem, 4vw, 1.6rem);
     text-align: center;
+}
+
+.actividad-respiracion.respiracion-sesion-completa .respiracion-circulo,
+.actividad-respiracion.respiracion-sesion-completa .respiracion-progreso,
+.actividad-respiracion.respiracion-sesion-completa .respiracion-acciones,
+.actividad-respiracion.respiracion-sesion-completa .respiracion-tarjeta > h1,
+.actividad-respiracion.respiracion-sesion-completa .respiracion-tarjeta > p {
+    filter: blur(3px);
+    opacity: 0.45;
 }
 
 .respiracion-circulo {
@@ -363,6 +386,44 @@
     justify-content: center;
     gap: 0.55rem;
     flex-wrap: wrap;
+}
+
+.respiracion-progreso {
+    color: var(--verde);
+    font-weight: 900;
+}
+
+.respiracion-panel-sesion {
+    width: min(100%, 24rem);
+    box-sizing: border-box;
+    display: grid;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 1px solid rgba(22, 78, 63, 0.12);
+    border-radius: var(--radio-borde);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--sombra-suave);
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.respiracion-panel-sesion p {
+    color: var(--texto);
+    font-weight: 850;
+}
+
+.respiracion-panel-sesion__acciones {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+}
+
+.respiracion-panel-sesion__acciones button {
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+    white-space: normal;
+    line-height: 1.2;
 }
 
 .respiracion-boton-iniciado {
@@ -411,6 +472,35 @@
     display: grid;
     gap: 0.55rem;
     margin-top: 0.25rem;
+}
+
+.evaluacion-cierre-actividad__comentario {
+    display: grid;
+    gap: 0.35rem;
+    text-align: left;
+    color: var(--texto);
+    font-size: var(--tamano-texto-s);
+    font-weight: 800;
+}
+
+.evaluacion-cierre-actividad__comentario textarea {
+    width: 100%;
+    min-height: 4.8rem;
+    resize: vertical;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid rgba(22, 78, 63, 0.14);
+    border-radius: 0.85rem;
+    background: #fffdf8;
+    color: var(--texto);
+    font: inherit;
+    font-weight: 650;
+    line-height: 1.35;
+    outline: none;
+}
+
+.evaluacion-cierre-actividad__comentario textarea:focus {
+    border-color: rgba(31, 111, 91, 0.45);
+    box-shadow: 0 0 0 3px rgba(31, 111, 91, 0.1);
 }
 
 .evaluacion-cierre-actividad__opcion {
@@ -565,6 +655,15 @@
     .panel-final-juego {
         width: calc(100% - 1.4rem);
         padding: var(--espacio-m);
+    }
+
+    .respiracion-panel-sesion {
+        width: min(100%, 21rem);
+        padding: 0.85rem;
+    }
+
+    .respiracion-panel-sesion__acciones {
+        grid-template-columns: 1fr;
     }
 
     .actividad-flores {

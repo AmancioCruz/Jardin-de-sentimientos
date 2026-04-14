@@ -15,7 +15,7 @@
 }
 
 .btn-primario {
-  background: linear-gradient(135deg, var(--verde-claro), var(--verde));
+  background: var(--verde);
   color: #fff;
   padding: 0.9rem 1.2rem;
   border-radius: 999px;
@@ -89,7 +89,7 @@
   justify-content: flex-start;
   gap: var(--espacio-m);
   padding: 1rem 1.05rem;
-  background: linear-gradient(180deg, var(--superficie) 0%, var(--superficie-suave) 100%);
+  background: var(--superficie);
   border: 1px solid var(--borde);
   border-radius: var(--radio-grande);
   font-size: var(--tamano-texto-m);
@@ -199,4 +199,20 @@
   .btn-estado .estado-icono {
     font-size: 2.2rem;
   }
+}
+
+[data-theme="dark"] .btn-estado:hover,
+[data-theme="dark"] .btn-jardin:hover,
+[data-theme="dark"] .btn-respiraciones:hover,
+[data-theme="dark"] .btn-pizarra:hover,
+[data-theme="dark"] .btn-ansioso:hover,
+[data-theme="dark"] .btn-pizarron:hover,
+[data-theme="dark"] .btn-no-seguro:hover {
+  background: rgba(246, 250, 245, 0.08);
+  border-color: rgba(183, 239, 210, 0.28);
+}
+
+[data-theme="dark"] .btn-estado:hover .estado-texto,
+[data-theme="dark"] .btn-estado:hover .estado-descripcion {
+  color: #ffffff;
 }

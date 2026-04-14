@@ -4,13 +4,17 @@ import { mostrarTutorialActividad } from "../../../componentes/tutorial_activida
 
 const herramientas = ['pincel', 'linea', 'circulo', 'cuadrado', 'triangulo', 'mover'];
 
-export function inicializarPizarronCreativo({ alSalir } = {}) {
+export function inicializarPizarronCreativo({ alGuardar, alSalir } = {}) {
     const estado = crearEstadoPizarron();
     const vista = crearVistaPizarron({
-        alSalir: finalizar,
+        alGuardar: guardar,
+        alSalir: salirSinGuardar,
         alLimpiar: () => {
             estado.elementos = [];
+            estado.colorFondo = '#fffef9';
+            vista.nodo.querySelector('[data-color-fondo]').value = estado.colorFondo;
             dibujarPizarron(estado);
+            actualizarEstadoGuardadoPizarron(estado);
         }
     });
 
@@ -21,11 +25,13 @@ export function inicializarPizarronCreativo({ alSalir } = {}) {
     estado.inputImagen = vista.nodo.querySelector('#pizarron-imagen');
     estado.menu = vista.nodo.querySelector('[data-menu-pizarron]');
     estado.botonMenu = vista.nodo.querySelector('[data-toggle-menu-pizarron]');
+    estado.botonGuardar = vista.nodo.querySelector('[data-guardar-pizarron]');
 
     conectarControles(vista.nodo, estado);
     conectarEventosCanvas(estado);
     ajustarCanvas(estado);
     dibujarPizarron(estado);
+    actualizarEstadoGuardadoPizarron(estado);
     mostrarTutorialActividad({
         id: 'pizarron-creativo',
         titulo: 'Guía rápida del pizarrón',
@@ -35,7 +41,8 @@ export function inicializarPizarronCreativo({ alSalir } = {}) {
             { icono: 'fa-solid fa-arrow-pointer', texto: 'Mover te permite acomodar imágenes, figuras y trazos.' },
             { icono: 'fa-solid fa-image', texto: 'Imagen agrega un recurso propio al lienzo.' },
             { icono: 'fa-solid fa-trash', texto: 'Limpiar borra el lienzo si quieres empezar de nuevo.' },
-            { icono: 'fa-solid fa-check', texto: 'Terminar guarda la actividad después de la evaluación final.' }
+            { icono: 'fa-solid fa-check', texto: 'Guardar abre la evaluación final y manda la imagen a tu bitácora.' },
+            { icono: 'fa-solid fa-xmark', texto: 'Terminar sale de la actividad sin guardar.' }
         ]
     });
 
@@ -43,15 +50,22 @@ export function inicializarPizarronCreativo({ alSalir } = {}) {
     window.addEventListener('resize', manejarResize);
     estado.limpiadores.push(() => window.removeEventListener('resize', manejarResize));
 
-    function finalizar() {
+    function guardar() {
+        if (!tieneContenidoPizarron(estado)) return;
+
         limpiarRecursosPizarron(estado);
-        if (typeof alSalir === 'function') alSalir(estado.canvas);
+        if (typeof alGuardar === 'function') alGuardar(estado.canvas);
+    }
+
+    function salirSinGuardar() {
+        limpiarRecursosPizarron(estado);
+        if (typeof alSalir === 'function') alSalir();
     }
 
     return () => limpiarRecursosPizarron(estado);
 }
 
-function crearVistaPizarron({ alSalir, alLimpiar }) {
+function crearVistaPizarron({ alGuardar, alSalir, alLimpiar }) {
     return construirElemento({
         tipo: 'section',
         atributos: { class: 'actividad-pizarron' },
@@ -168,11 +182,20 @@ function crearVistaPizarron({ alSalir, alLimpiar }) {
                     },
                     {
                         tipo: 'button',
-                        atributos: { type: 'button', class: 'btn-actividad-salir' },
+                        atributos: { type: 'button', class: 'btn-pizarron-mini' },
                         eventos: { click: alSalir },
                         hijos: [
-                            { tipo: 'i', atributos: { class: 'fa-solid fa-check' } },
+                            { tipo: 'i', atributos: { class: 'fa-solid fa-xmark' } },
                             'Terminar'
+                        ]
+                    },
+                    {
+                        tipo: 'button',
+                        atributos: { type: 'button', class: 'btn-actividad-salir', 'data-guardar-pizarron': '' },
+                        eventos: { click: alGuardar },
+                        hijos: [
+                            { tipo: 'i', atributos: { class: 'fa-solid fa-check' } },
+                            'Guardar'
                         ]
                     }
                 ]
@@ -211,6 +234,7 @@ function crearEstadoPizarron() {
         elementoActivo: null,
         vistaPrevia: null,
         arrastrandoImagen: null,
+        botonGuardar: null,
         mostrarGuia: true,
         limpiadores: []
     };
@@ -259,6 +283,7 @@ function conectarControles(nodo, estado) {
     nodo.querySelector('[data-color-fondo]').addEventListener('input', (evento) => {
         estado.colorFondo = evento.target.value;
         dibujarPizarron(estado);
+        actualizarEstadoGuardadoPizarron(estado);
     });
 
     nodo.querySelector('[data-subir-imagen]').addEventListener('click', () => {
@@ -320,6 +345,7 @@ function iniciarTrazo(evento, estado) {
         estado.elementoActivo = crearElementoBase('pincel', estado, punto);
         estado.elementoActivo.puntos = [punto];
         estado.elementos.push(estado.elementoActivo);
+        actualizarEstadoGuardadoPizarron(estado);
         return;
     }
 
@@ -357,12 +383,27 @@ function moverTrazo(evento, estado) {
 function terminarTrazo(estado) {
     if (estado.vistaPrevia) {
         estado.elementos.push(estado.vistaPrevia);
+        actualizarEstadoGuardadoPizarron(estado);
     }
 
     estado.elementoActivo = null;
     estado.vistaPrevia = null;
     estado.arrastrandoImagen = null;
     dibujarPizarron(estado);
+}
+
+function tieneContenidoPizarron(estado) {
+    return estado.elementos.length > 0 || estado.colorFondo.toLowerCase() !== '#fffef9';
+}
+
+function actualizarEstadoGuardadoPizarron(estado) {
+    if (!estado.botonGuardar) return;
+
+    const hayContenido = tieneContenidoPizarron(estado);
+    estado.botonGuardar.disabled = !hayContenido;
+    estado.botonGuardar.title = hayContenido
+        ? 'Guardar pizarrón'
+        : 'Agrega un trazo, figura, imagen o cambia el fondo para guardar';
 }
 
 function crearElementoBase(tipo, estado, inicio) {
@@ -402,6 +443,7 @@ function cargarImagenComoSticker(evento, estado) {
             });
             actualizarBotonMenu(estado, document.querySelector('[data-herramienta="mover"]'));
             dibujarPizarron(estado);
+            actualizarEstadoGuardadoPizarron(estado);
         };
         imagen.src = lector.result;
     };

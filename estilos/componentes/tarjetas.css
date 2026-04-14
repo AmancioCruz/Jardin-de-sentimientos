@@ -1,7 +1,7 @@
 /* Tarjetas reutilizables para formularios, perfil, evaluaciones y modales. */
 .tarjeta-app {
   width: 100%;
-  background: linear-gradient(180deg, var(--superficie) 0%, var(--superficie-suave) 100%);
+  background: var(--superficie);
   border: 1px solid var(--borde);
   border-radius: var(--radio-grande);
   box-shadow: var(--sombra-suave);

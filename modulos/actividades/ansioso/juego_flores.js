@@ -25,10 +25,10 @@ const pensamientosBase = [
     { texto: 'tesis', archivo: 'tesis.png' }
 ];
 
-export function inicializarJuegoFlores({ alSalir } = {}) {
+export function inicializarJuegoFlores({ alCompletar, alSalir } = {}) {
     const estado = crearEstadoJuego();
     estado.recursos = cargarRecursosJuego();
-    const vista = crearVistaJuego(finalizar);
+    const vista = crearVistaJuego(salirSinGuardar);
 
     vista.montar(contenedores.contenido, true);
 
@@ -45,9 +45,14 @@ export function inicializarJuegoFlores({ alSalir } = {}) {
         if (!estado.juegoIniciado) dibujar(ctx, estado);
     });
 
-    function finalizar() {
+    function salirSinGuardar() {
         limpiar();
-        if (typeof alSalir === 'function') alSalir(canvas);
+        if (typeof alSalir === 'function') alSalir();
+    }
+
+    function completarJuego() {
+        limpiar();
+        if (typeof alCompletar === 'function') alCompletar(canvas);
     }
 
     function limpiar() {
@@ -144,14 +149,7 @@ export function inicializarJuegoFlores({ alSalir } = {}) {
     window.addEventListener('keydown', controlarTeclado);
     window.addEventListener('resize', ajustarCanvas);
     botonFinal.addEventListener('click', () => {
-        if (estado.resultado === 'ganado') {
-            finalizar();
-            return;
-        }
-
-        reiniciarPartida(estado, panelFinal);
-        ajustarCanvas();
-        mostrarSelectorDuracion();
+        completarJuego();
     });
 
     panelDuracion?.querySelectorAll('[data-duracion-juego]').forEach((boton) => {
@@ -196,7 +194,7 @@ export function inicializarJuegoFlores({ alSalir } = {}) {
             { icono: 'fa-solid fa-droplet', texto: 'Toca o haz clic para lanzar gotas desde la punta de la manguera.' },
             { icono: 'fa-solid fa-seedling', texto: 'Evita que los pensamientos lleguen a la flor.' },
             { icono: 'fa-solid fa-heart', texto: 'El marcador muestra tiempo y cuidado restante.' },
-            { icono: 'fa-solid fa-check', texto: 'Terminar guarda la actividad después de responder cómo te sientes.' }
+            { icono: 'fa-solid fa-check', texto: 'La actividad solo se guarda cuando el juego termina.' }
         ],
         alCerrar: prepararJuego
     });
@@ -258,7 +256,7 @@ function crearVistaJuego(alSalir) {
                     {
                         tipo: 'button',
                         atributos: { type: 'button', class: 'btn-actividad-salir', 'data-boton-final': '' },
-                        hijos: ['Reintentar']
+                        hijos: ['Continuar']
                     }
                 ]
             },
@@ -451,12 +449,6 @@ function finalizarPartida(estado, resultado, mensaje) {
     estado.mensajeFinal = mensaje;
 }
 
-function reiniciarPartida(estado, panelFinal) {
-    const recursos = estado.recursos;
-    Object.assign(estado, crearEstadoJuego(), { recursos });
-    panelFinal?.classList.add('oculto');
-}
-
 function actualizarPanelFinal(estado, panelFinal, tituloFinal, textoFinal, botonFinal) {
     if (!estado.terminado || !estado.mensajeFinal || estado.panelMostrado) return;
 
@@ -466,9 +458,7 @@ function actualizarPanelFinal(estado, panelFinal, tituloFinal, textoFinal, boton
         ? 'Pausa completada'
         : 'Momento de pausar';
     textoFinal.textContent = estado.mensajeFinal;
-    botonFinal.textContent = estado.resultado === 'ganado'
-        ? 'Terminar'
-        : 'Reintentar';
+    botonFinal.textContent = 'Continuar';
 }
 
 function actualizarFlor(estado, delta) {

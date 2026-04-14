@@ -78,6 +78,24 @@
   background-color: #fff;
 }
 
+[data-theme="dark"] .select-preferencia {
+  background-color: #203229;
+  color: #edf4f0;
+  border-color: rgba(223, 241, 232, 0.18);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23b7efd2' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+}
+
+[data-theme="dark"] .select-preferencia:focus {
+  background-color: #263a30;
+  border-color: rgba(183, 239, 210, 0.5);
+  box-shadow: 0 0 0 4px rgba(183, 239, 210, 0.1);
+}
+
+[data-theme="dark"] .select-preferencia option {
+  background-color: #203229;
+  color: #edf4f0;
+}
+
 .texto-formulario {
   text-align: center;
   font-size: var(--tamano-texto-s);

@@ -80,37 +80,45 @@ export function abrirTablero(usuario = null) {
         alGuardar: (canvas) => mostrarEvaluacionCierre(usuario, {
             nombreActividad: 'tablero',
             canvas
-        })
+        }),
+        alSalir: () => salirAInicio(usuario)
     }));
 }
 
 function abrirJuegoFlores(usuario = null) {
     activarModoActividad(usuario);
     registrarLimpiezaActividad(inicializarJuegoFlores({
-        alSalir: (canvas) => mostrarEvaluacionCierre(usuario, {
+        alCompletar: (canvas) => mostrarEvaluacionCierre(usuario, {
             nombreActividad: 'juego',
             canvas
-        })
+        }),
+        alSalir: () => salirAInicio(usuario)
     }));
 }
 
 function abrirRespiracionGuiada(usuario = null) {
     activarModoActividad(usuario);
     registrarLimpiezaActividad(inicializarRespiracionGuiada({
-        alSalir: () => mostrarEvaluacionCierre(usuario, {
+        alCompletar: (datosRespiracion) => mostrarEvaluacionCierre(usuario, {
             nombreActividad: 'respiracion',
-            canvas: crearImagenResumenActividad('Respiración guiada')
-        })
+            canvas: crearImagenResumenActividad('Respiración guiada', `${datosRespiracion.sesiones} sesión(es) completada(s)`),
+            detalles: {
+                sesiones: datosRespiracion.sesiones,
+                duracionTotalSegundos: datosRespiracion.duracionTotalSegundos
+            }
+        }),
+        alSalir: () => salirAInicio(usuario)
     }));
 }
 
 function abrirPizarronCreativo(usuario = null) {
     activarModoActividad(usuario);
     registrarLimpiezaActividad(inicializarPizarronCreativo({
-        alSalir: (canvas) => mostrarEvaluacionCierre(usuario, {
+        alGuardar: (canvas) => mostrarEvaluacionCierre(usuario, {
             nombreActividad: 'pizarron',
             canvas
-        })
+        }),
+        alSalir: () => salirAInicio(usuario)
     }));
 }
 
@@ -190,8 +198,8 @@ function mostrarEvaluacionCierre(usuario = null, actividad = {}) {
         { texto: 'Igual que antes', icono: 'fa-solid fa-minus' },
         { texto: 'Necesito otra pausa', icono: 'fa-solid fa-heart' }
     ];
-    const evaluacion = construirEvaluacionCierre(opciones, async (respuesta) => {
-        await guardarRegistroActividad(usuario, actividad, respuesta);
+    const evaluacion = construirEvaluacionCierre(opciones, async ({ respuesta, comentario }) => {
+        await guardarRegistroActividad(usuario, actividad, respuesta, comentario);
         salirAInicio(usuario);
     });
 
@@ -207,11 +215,16 @@ function construirEvaluacionCierre(opciones, alContinuar) {
         <div class="evaluacion-cierre-actividad__tarjeta" role="dialog" aria-modal="true" aria-labelledby="evaluacion-cierre-titulo">
             <h2 id="evaluacion-cierre-titulo">¿Cómo te sientes ahora?</h2>
             <p>Elige la opción que más se acerque a este momento.</p>
+            <label class="evaluacion-cierre-actividad__comentario">
+                <span>Comentario opcional</span>
+                <textarea rows="3" maxlength="240" placeholder="Puedes escribir algo breve sobre cómo te ayudó la actividad."></textarea>
+            </label>
             <div class="evaluacion-cierre-actividad__opciones"></div>
         </div>
     `;
 
     const grupoOpciones = contenedor.querySelector('.evaluacion-cierre-actividad__opciones');
+    const comentario = contenedor.querySelector('textarea');
 
     opciones.forEach((opcion) => {
         const boton = document.createElement('button');
@@ -223,7 +236,10 @@ function construirEvaluacionCierre(opciones, alContinuar) {
                 item.disabled = true;
             });
             boton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Guardando...</span>';
-            await alContinuar(opcion.texto);
+            await alContinuar({
+                respuesta: opcion.texto,
+                comentario: comentario?.value?.trim() || ''
+            });
         });
         grupoOpciones.appendChild(boton);
     });
@@ -231,7 +247,7 @@ function construirEvaluacionCierre(opciones, alContinuar) {
     return contenedor;
 }
 
-async function guardarRegistroActividad(usuario, actividad = {}, respuesta = '') {
+async function guardarRegistroActividad(usuario, actividad = {}, respuesta = '', comentario = '') {
     if (!usuario?.uid || !actividad.canvas) return null;
 
     const fechaActividad = new Date();
@@ -242,8 +258,10 @@ async function guardarRegistroActividad(usuario, actividad = {}, respuesta = '')
             uid: usuario.uid,
             nombreActividad: actividad.nombreActividad,
             respuesta,
+            comentario,
             imagen,
-            fechaActividad
+            fechaActividad,
+            detalles: actividad.detalles
         });
 
         await registrarActividadUsuario(usuario.uid, registro);
@@ -255,18 +273,20 @@ async function guardarRegistroActividad(usuario, actividad = {}, respuesta = '')
     }
 }
 
-function crearDatosRegistroActividad({ uid, nombreActividad, respuesta, imagen, fechaActividad }) {
+function crearDatosRegistroActividad({ uid, nombreActividad, respuesta, comentario, imagen, fechaActividad, detalles }) {
     const { fecha, hora } = obtenerFechaHoraLegible(fechaActividad);
 
     return {
         uid,
         nombreActividad,
         respuesta,
+        comentario: comentario || '',
         fecha,
         hora,
         imagenPath: imagen?.ruta || '',
         imagenUrl: imagen?.url || '',
-        creadoEn: fechaActividad.getTime()
+        creadoEn: fechaActividad.getTime(),
+        ...(detalles || {})
     };
 }
 
@@ -287,7 +307,7 @@ function obtenerFechaHoraLegible(fecha) {
     };
 }
 
-function crearImagenResumenActividad(titulo) {
+function crearImagenResumenActividad(titulo, subtitulo = 'Pausa completada') {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
@@ -301,7 +321,7 @@ function crearImagenResumenActividad(titulo) {
     ctx.fillText(titulo, canvas.width / 2, 480);
     ctx.fillStyle = 'rgba(30, 49, 43, 0.72)';
     ctx.font = '700 34px sans-serif';
-    ctx.fillText('Pausa completada', canvas.width / 2, 560);
+    ctx.fillText(subtitulo, canvas.width / 2, 560);
     ctx.fillText('Respira profundo y vuelve cuando lo necesites.', canvas.width / 2, 620);
 
     return canvas;

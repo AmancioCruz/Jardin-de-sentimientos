@@ -8,7 +8,7 @@ body {
   position: relative;
   min-width: var(--ancho-minimo-app);
   height: var(--altura-cabecera);
-  background: linear-gradient(135deg, var(--verde-claro), var(--verde));
+  background: var(--verde);
   display: flex;
   justify-content: space-between;
   align-items: center;

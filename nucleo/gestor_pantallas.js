@@ -61,6 +61,7 @@ function _mostrarPantalla(clave) {
 function limpiarCapasGlobales() {
     document.getElementById('bitacora-detalle')?.remove();
     document.getElementById('evaluacion-cierre-actividad')?.remove();
+    document.querySelectorAll('.respiracion-evaluacion-minuto').forEach((capa) => capa.remove());
     document.getElementById('tutorial-actividad')?.remove();
     document.getElementById('panel-texto-nota')?.remove();
     document.querySelectorAll('.fantasma-sticker').forEach((fantasma) => fantasma.remove());

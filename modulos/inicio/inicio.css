@@ -57,7 +57,7 @@
 .btn-estado {
     position: relative;
     padding-left: 4rem;
-    background: linear-gradient(180deg, var(--superficie) 0%, var(--superficie-suave) 100%);
+    background: var(--superficie);
     border-color: rgba(22, 78, 63, 0.1);
 }
 

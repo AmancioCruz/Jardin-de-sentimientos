@@ -442,6 +442,49 @@
     line-height: 1.35;
 }
 
+[data-theme="dark"] .campo-nota--opciones label {
+    background: rgba(246, 250, 245, 0.08);
+    color: #edf4f0;
+    border: 1px solid rgba(223, 241, 232, 0.16);
+}
+
+[data-theme="dark"] .campo-nota--opciones label:hover {
+    background: rgba(183, 239, 210, 0.16);
+    color: #ffffff;
+    border-color: rgba(183, 239, 210, 0.42);
+}
+
+[data-theme="dark"] .campo-nota--opciones label:has(input:checked) {
+    background: #dff1e8;
+    color: #0c1814;
+    border-color: rgba(183, 239, 210, 0.86);
+}
+
+[data-theme="dark"] .campo-nota--opciones input[type="radio"] {
+    accent-color: #ec4899;
+}
+
+[data-theme="dark"] .btn-texto-nota--secundario {
+    background: rgba(246, 250, 245, 0.94);
+    color: #21312c;
+    border-color: rgba(223, 241, 232, 0.2);
+}
+
+[data-theme="dark"] .btn-texto-nota--secundario:hover {
+    background: #ffffff;
+    color: #0c1814;
+}
+
+[data-theme="dark"] .btn-texto-nota--principal {
+    background: #1f6f5b;
+    color: #ffffff;
+}
+
+[data-theme="dark"] .btn-texto-nota--principal:hover {
+    background: #2a826b;
+    color: #ffffff;
+}
+
 @keyframes aparecerModalNota {
     from {
         opacity: 0;

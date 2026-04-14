@@ -1,7 +1,7 @@
 const clavePreferencias = 'preferenciasApp';
 
 const preferenciasPorDefecto = {
-    tema: 'claro',
+    tema: '',
     sonido: 'silencio'
 };
 
@@ -31,7 +31,9 @@ export function guardarPreferenciaLocal(clave, valor) {
 
 export function aplicarTemaLocal() {
     const { tema } = obtenerPreferenciasLocales();
-    document.documentElement.setAttribute('data-theme', tema === 'oscuro' ? 'dark' : 'light');
+    const temaPreferido = tema || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'oscuro' : 'claro');
+
+    document.documentElement.setAttribute('data-theme', temaPreferido === 'oscuro' ? 'dark' : 'light');
 }
 
 export function obtenerSonidoActividad() {

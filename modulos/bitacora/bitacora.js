@@ -14,7 +14,7 @@ export function mostrarBitacora({ usuario } = {}) {
                 atributos: { class: 'bitacora-encabezado' },
                 hijos: [
                     { tipo: 'h1', atributos: { class: 'titulo-seccion-app' }, hijos: ['Bitácora'] },
-                    { tipo: 'p', hijos: ['Aquí aparecerán las actividades que guardes.'] }
+                    { tipo: 'p', hijos: ['Tus actividades guardadas se organizan por fecha.'] }
                 ]
             },
             {
@@ -53,8 +53,9 @@ async function cargarActividades(nodo, usuario) {
     }
 
     galeria.replaceChildren();
-    actividades.forEach((actividad) => {
-        galeria.appendChild(crearTarjetaActividad(actividad));
+
+    agruparActividadesPorFecha(actividades).forEach(([fecha, actividadesDia]) => {
+        galeria.appendChild(crearGrupoFecha(fecha, actividadesDia));
     });
 }
 
@@ -65,6 +66,48 @@ function mostrarEstadoBitacora(galeria, mensaje) {
     galeria.replaceChildren(estado);
 }
 
+function agruparActividadesPorFecha(actividades) {
+    const grupos = new Map();
+
+    actividades.forEach((actividad) => {
+        const fecha = actividad.fecha || 'Sin fecha';
+
+        if (!grupos.has(fecha)) {
+            grupos.set(fecha, []);
+        }
+
+        grupos.get(fecha).push(actividad);
+    });
+
+    return [...grupos.entries()];
+}
+
+function crearGrupoFecha(fecha, actividades) {
+    const grupo = document.createElement('section');
+    grupo.className = 'bitacora-grupo-fecha';
+
+    const encabezado = document.createElement('header');
+    encabezado.className = 'bitacora-fecha';
+
+    const titulo = document.createElement('h2');
+    titulo.textContent = formatearFecha(fecha);
+
+    const contador = document.createElement('span');
+    contador.textContent = `${actividades.length} actividad${actividades.length === 1 ? '' : 'es'}`;
+
+    const mosaico = document.createElement('div');
+    mosaico.className = 'bitacora-mosaico';
+
+    actividades.forEach((actividad) => {
+        mosaico.appendChild(crearTarjetaActividad(actividad));
+    });
+
+    encabezado.append(titulo, contador);
+    grupo.append(encabezado, mosaico);
+
+    return grupo;
+}
+
 function crearTarjetaActividad(actividad) {
     const tarjeta = document.createElement('article');
     tarjeta.className = 'bitacora-tarjeta';
@@ -72,12 +115,12 @@ function crearTarjetaActividad(actividad) {
     const botonImagen = document.createElement('button');
     botonImagen.type = 'button';
     botonImagen.className = 'bitacora-tarjeta__imagen';
-    botonImagen.setAttribute('aria-label', `Abrir actividad ${actividad.nombreActividad || ''}`);
+    botonImagen.setAttribute('aria-label', `Abrir actividad ${formatearNombreActividad(actividad.nombreActividad)}`);
 
     if (actividad.imagenUrl) {
         const imagen = document.createElement('img');
         imagen.src = actividad.imagenUrl;
-        imagen.alt = `Actividad ${actividad.nombreActividad || ''}`;
+        imagen.alt = `Actividad ${formatearNombreActividad(actividad.nombreActividad)}`;
         botonImagen.appendChild(imagen);
     } else {
         const sinImagen = document.createElement('span');
@@ -85,20 +128,16 @@ function crearTarjetaActividad(actividad) {
         botonImagen.appendChild(sinImagen);
     }
 
-    const contenido = document.createElement('div');
-    contenido.className = 'bitacora-tarjeta__contenido';
+    const etiqueta = document.createElement('span');
+    etiqueta.className = 'bitacora-tarjeta__etiqueta';
+    etiqueta.textContent = formatearNombreActividad(actividad.nombreActividad);
 
-    const nombre = document.createElement('strong');
-    nombre.textContent = formatearNombreActividad(actividad.nombreActividad);
+    const hora = document.createElement('span');
+    hora.className = 'bitacora-tarjeta__hora';
+    hora.textContent = actividad.hora || '';
 
-    const fecha = document.createElement('span');
-    fecha.textContent = `${actividad.fecha || ''} ${actividad.hora || ''}`.trim();
-
-    const respuesta = document.createElement('small');
-    respuesta.textContent = actividad.respuesta || 'Sin respuesta registrada';
-
-    contenido.append(nombre, fecha, respuesta);
-    tarjeta.append(botonImagen, contenido);
+    botonImagen.append(etiqueta, hora);
+    tarjeta.appendChild(botonImagen);
     botonImagen.addEventListener('click', () => abrirDetalleActividad(actividad));
 
     return tarjeta;
@@ -152,7 +191,7 @@ function crearMedioDetalle(actividad) {
 
     const imagen = document.createElement('img');
     imagen.src = actividad.imagenUrl;
-    imagen.alt = `Actividad ${actividad.nombreActividad || ''}`;
+    imagen.alt = `Actividad ${formatearNombreActividad(actividad.nombreActividad)}`;
     return imagen;
 }
 
@@ -164,12 +203,18 @@ function crearInfoDetalle(actividad) {
     titulo.id = 'bitacora-detalle-titulo';
     titulo.textContent = formatearNombreActividad(actividad.nombreActividad);
 
-    info.append(
+    const lineas = [
         titulo,
         crearLineaInfo('Respuesta:', actividad.respuesta || 'Sin respuesta registrada'),
-        crearLineaInfo('Fecha:', actividad.fecha || ''),
+        crearLineaInfo('Fecha:', formatearFecha(actividad.fecha || '')),
         crearLineaInfo('Hora:', actividad.hora || '')
-    );
+    ];
+
+    if (actividad.comentario) {
+        lineas.push(crearLineaInfo('Comentario:', actividad.comentario));
+    }
+
+    info.append(...lineas);
 
     return info;
 }
@@ -201,6 +246,20 @@ function descargarActividad(actividad) {
     enlace.target = '_blank';
     enlace.rel = 'noopener';
     enlace.click();
+}
+
+function formatearFecha(fecha = '') {
+    if (!fecha || fecha === 'Sin fecha') return fecha || 'Sin fecha';
+
+    const [anio, mes, dia] = fecha.split('-').map(Number);
+    const fechaLocal = new Date(anio, (mes || 1) - 1, dia || 1);
+
+    return new Intl.DateTimeFormat('es-MX', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    }).format(fechaLocal);
 }
 
 function formatearNombreActividad(nombre = '') {

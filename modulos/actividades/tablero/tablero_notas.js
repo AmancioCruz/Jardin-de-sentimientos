@@ -80,6 +80,12 @@ function redibujarTablero(lienzo) {
     notas.forEach((nota, indice) => nota.dibujar(ctx, indice === indiceNotaSeleccionada));
 }
 
+export function redibujarTableroActivo() {
+    if (!lienzoActivo) return;
+
+    redibujarTablero(lienzoActivo);
+}
+
 function cargarNotas(notasGuardadas) {
     notas.length = 0;
 
@@ -139,6 +145,10 @@ export function alSolicitarEdicionNota(callback) {
 
 export function tableroTieneMaximoNotas() {
     return notas.length >= maximoNotas;
+}
+
+export function tableroTieneContenido() {
+    return notas.length > 0;
 }
 
 export function limpiarTablero(lienzo = lienzoActivo) {
