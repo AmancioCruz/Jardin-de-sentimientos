@@ -1,11 +1,6 @@
 import { Elemento } from "./modelos/elemento.js";
-/**
- * Construye un Elemento desde un objeto de configuración
- * Soporta: objetos anidados, funciones de evento, texto plano
- * 
- * @param {Object} config - {tipo, atributos, hijos, eventos}
- * @returns {Elemento} - Instancia lista para montar
- */
+
+// Convierte configuraciones declarativas en instancias de Elemento.
 export function construirElemento(config) {
     try {
         if (!config) {
@@ -50,10 +45,6 @@ export function construirElemento(config) {
     }
 }
 
-/**
- * Procesa un hijo y lo agrega al elemento padre
- * Maneja: strings, numbers, Elementos, objetos de config, HTMLElements, Text nodes
- */
 function procesarHijo(hijo, elementoPadre, index) {
     if (hijo === null || hijo === undefined) {
         return;
@@ -90,13 +81,4 @@ function procesarHijo(hijo, elementoPadre, index) {
     }
 
     console.warn(`Hijo en posición [${index}] no reconocido:`, hijo);
-}
-
-
-export function el(tipo, atributos = {}, ...hijos) {
-    return new Elemento(tipo, atributos, hijos);
-}
-
-export function texto(contenido) {
-    return document.createTextNode(String(contenido));
 }

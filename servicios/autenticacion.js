@@ -39,8 +39,6 @@ export const EliminarUsuarioAuth = async (usuario) => {
 
 export const CerrarSesionAuth = async () => {
     try {
-        /* Solo cerramos la sesion en Firebase.
-           La limpieza visual y el reload quedan en el gestor que controla la interfaz. */
         await signOut(configuracionesFirebase.auth);
     } catch (error) {
         console.error("Error al cerrar sesion:", error.message);

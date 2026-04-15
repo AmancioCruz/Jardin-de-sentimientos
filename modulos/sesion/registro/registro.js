@@ -25,8 +25,6 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                         const formulario = e.currentTarget;
                         const formData = new FormData(formulario);
 
-                        /* Este bloque convierte el formulario en un objeto simple
-                           para que el gestor solo reciba datos listos para registrar. */
                         const datos = {
                             foto: formData.get('foto-perfil'),
                             nombre: formData.get('nombre'),
@@ -151,7 +149,7 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                                             type: 'text',
                                             name: 'nombre',
                                             id: 'nombre',
-                                            placeholder: 'Ej: Maria Gonzalez',
+                                            placeholder: 'Ej: María González',
                                             autocomplete: 'name',
                                             required: true
                                         }
@@ -258,10 +256,10 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                                                 },
                                                 hijos: ['Selecciona tu semestre']
                                             },
-                                            { tipo: 'option', atributos: { value: '1 semestre' }, hijos: ['1 semestre'] },
-                                            { tipo: 'option', atributos: { value: '2 semestre' }, hijos: ['2 semestre'] },
-                                            { tipo: 'option', atributos: { value: '3 semestre' }, hijos: ['3 semestre'] },
-                                            { tipo: 'option', atributos: { value: '4 semestre' }, hijos: ['4 semestre'] }
+                                            { tipo: 'option', atributos: { value: '1 semestre' }, hijos: ['Semestre 1'] },
+                                            { tipo: 'option', atributos: { value: '2 semestre' }, hijos: ['Semestre 2'] },
+                                            { tipo: 'option', atributos: { value: '3 semestre' }, hijos: ['Semestre 3'] },
+                                            { tipo: 'option', atributos: { value: '4 semestre' }, hijos: ['Semestre 4'] }
                                         ]
                                     }
                                 ]
@@ -339,7 +337,7 @@ export function crearRegistro({ alEnviar, alVerTerminos, alIrAInicioSesion, even
                                                     type: 'password',
                                                     name: 'confirmar-contrasena',
                                                     id: 'confirmar-contrasena',
-                                                    placeholder: 'Repite la contraseña',
+                                                    placeholder: 'Repite tu contraseña',
                                                     autocomplete: 'new-password',
                                                     minlength: 8,
                                                     required: true
@@ -558,7 +556,7 @@ function obtenerMensajeErrorRegistro(error) {
     const mensajes = {
         'auth/email-already-in-use': { campo: 'correo', mensaje: 'Este correo ya tiene una cuenta registrada. Puedes iniciar sesión.' },
         'auth/invalid-email': { campo: 'correo', mensaje: 'El correo electrónico no tiene un formato válido.' },
-        'auth/weak-password': { campo: 'contrasena', mensaje: 'La contraseña debe ser más segura. Usa al menos 8 caracteres.' },
+        'auth/weak-password': { campo: 'contrasena', mensaje: 'Usa una contraseña de al menos 8 caracteres.' },
         'auth/network-request-failed': { mensaje: 'No se pudo conectar con Firebase. Revisa tu conexión e inténtalo de nuevo.' },
         'PERMISSION_DENIED': { mensaje: 'No se pudieron guardar tus datos de perfil. Revisa las reglas de Firebase e inténtalo de nuevo.' }
     };

@@ -54,7 +54,7 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
                 hijos: [
                     {
                         tipo: 'span',
-                        hijos: [`¿Qué tienes en mente? Max. ${limitePreocupacion} palabras`]
+                        hijos: [`¿Qué piensas o sientes ahora? Max. ${limitePreocupacion} palabras`]
                     },
                     {
                         tipo: 'input',
@@ -62,7 +62,7 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
                             type: 'text',
                             name: 'preocupacion',
                             required: true,
-                            placeholder: 'Ej. No terminar capítulo de tesis',
+                            placeholder: 'Ej. Me siento bloqueado',
                             autocomplete: 'off'
                         }
                     }
@@ -77,7 +77,7 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
                 hijos: [
                     {
                         tipo: 'legend',
-                        hijos: ['¿Está en tus manos hacer algo ahora?']
+                        hijos: ['¿Quieres hacer algo con esto ahora?']
                     },
                     {
                         tipo: 'label',
@@ -91,7 +91,7 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
                                     checked: true
                                 }
                             },
-                            ' Si'
+                            ' Sí'
                         ]
                     },
                     {
@@ -116,14 +116,14 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
                 hijos: [
                     {
                         tipo: 'span',
-                        hijos: [`¿Qué puedes hacer ya? Max. ${limiteAccion} palabras`]
+                        hijos: [`¿Qué te ayudaría en este momento? Max. ${limiteAccion} palabras`]
                     },
                     {
                         tipo: 'input',
                         atributos: {
                             type: 'text',
                             name: 'accion',
-                            placeholder: 'Ej. Escribir introducción con música',
+                            placeholder: 'Ej. Respirar y pedir apoyo',
                             autocomplete: 'off'
                         }
                     }
@@ -135,7 +135,7 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
                 hijos: [
                     {
                         tipo: 'p',
-                        hijos: ['No tienes que resolverlo solo. Puedes pedir apoyo y usar esta nota para expresar lo que sientes.']
+                        hijos: ['No tienes que resolverlo ahora. Nombrarlo también puede ayudarte a entenderlo.']
                     },
                     {
                         tipo: 'label',
@@ -149,7 +149,7 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
                                 atributos: {
                                     type: 'text',
                                     name: 'sentimiento',
-                                    placeholder: 'Ej. Ansioso pero con esperanza',
+                                    placeholder: 'Ej. Confundido pero acompañado',
                                     autocomplete: 'off'
                                 }
                             }
@@ -269,7 +269,7 @@ function leerFormulario(formulario) {
 
 function validarDatos(datos) {
     if (!datos.preocupacion) {
-        return 'Escribe en pocas palabras que tienes en mente.';
+        return 'Escribe en pocas palabras qué tienes en mente.';
     }
 
     if (contarPalabras(datos.preocupacion) > limitePreocupacion) {
@@ -277,7 +277,7 @@ function validarDatos(datos) {
     }
 
     if (datos.estaEnMisManos && !datos.accion) {
-        return 'Escribe una acción pequeña que sí puedas hacer.';
+        return 'Escribe algo pequeño que podría ayudarte ahora.';
     }
 
     if (datos.estaEnMisManos && contarPalabras(datos.accion) > limiteAccion) {
@@ -285,7 +285,7 @@ function validarDatos(datos) {
     }
 
     if (!datos.estaEnMisManos && !datos.sentimiento) {
-        return 'Escribe como te hace sentir para poder soltarlo en la nota.';
+        return 'Escribe cómo te hace sentir para poder dejarlo en la nota.';
     }
 
     if (!datos.estaEnMisManos && contarPalabras(datos.sentimiento) > limiteSentimiento) {

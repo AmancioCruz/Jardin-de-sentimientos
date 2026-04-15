@@ -84,7 +84,7 @@ export function inicializarRespiracionGuiada({ alCompletar, alSalir } = {}) {
         iniciada = true;
         botonIniciar.disabled = true;
         botonIniciar.classList.add('respiracion-boton-iniciado');
-        botonIniciar.innerHTML = '<i class="fa-solid fa-seedling"></i> En curso';
+        botonIniciar.innerHTML = '<i class="fa-solid fa-seedling"></i> Respirando';
         overlaySesion.classList.add('oculto');
         vista.nodo.classList.remove('respiracion-sesion-completa');
         mostrarFase();
@@ -100,7 +100,7 @@ export function inicializarRespiracionGuiada({ alCompletar, alSalir } = {}) {
         circulo.classList.remove(...fases.map((item) => item.clase));
         textoFase.textContent = 'Pausa completada';
         contador.textContent = sesionesCompletadas;
-        progreso.textContent = `${sesionesCompletadas} sesión(es) completada(s)`;
+        progreso.textContent = `${sesionesCompletadas} pausa(s) completada(s)`;
 
         textoPanelSesion.textContent = 'Terminaste un minuto de respiración. ¿Cómo te sientes ahora?';
         overlaySesion.classList.remove('oculto');
@@ -134,12 +134,12 @@ export function inicializarRespiracionGuiada({ alCompletar, alSalir } = {}) {
     mostrarTutorialActividad({
         id: 'respiracion-guiada',
         titulo: 'Guía rápida de respiración',
-        descripcion: 'Cada sesión dura un minuto. Al terminar puedes decidir si ya estás mejor o si necesitas respirar otra vez.',
+        descripcion: 'Cada pausa dura un minuto. Al terminar puedes elegir si quieres cerrarla o repetirla.',
         pasos: [
-            { icono: 'fa-solid fa-play', texto: 'Iniciar activa el ritmo de respiración.' },
-            { icono: 'fa-solid fa-circle', texto: 'El círculo te indica cuándo inhalar, sostener y exhalar.' },
-            { icono: 'fa-solid fa-repeat', texto: 'Puedes repetir el minuto hasta sentirte más tranquilo.' },
-            { icono: 'fa-solid fa-check', texto: 'Solo se guarda cuando completas la pausa y respondes la evaluación final.' }
+            { icono: 'fa-solid fa-play', texto: 'Inicia para activar el ritmo de respiración.' },
+            { icono: 'fa-solid fa-circle', texto: 'El círculo te guía para inhalar, sostener y exhalar.' },
+            { icono: 'fa-solid fa-repeat', texto: 'Puedes repetir la pausa las veces que necesites.' },
+            { icono: 'fa-solid fa-check', texto: 'La actividad se guarda cuando completas la pausa y respondes la evaluación final.' }
         ]
     });
 
@@ -155,10 +155,10 @@ function crearVistaRespiracion(alSalir) {
                 tipo: 'div',
                 atributos: { class: 'respiracion-tarjeta' },
                 hijos: [
-                    { tipo: 'h1', hijos: ['Pausa para descansar'] },
+                    { tipo: 'h1', hijos: ['Pausa para respirar'] },
                     {
                         tipo: 'p',
-                        hijos: ['Sigue el ritmo del círculo. No tienes que hacerlo perfecto, solo acompaña tu respiración.']
+                        hijos: ['Sigue el ritmo del círculo. No tienes que hacerlo perfecto; solo acompaña tu respiración.']
                     },
                     {
                         tipo: 'div',
@@ -202,7 +202,7 @@ function crearVistaRespiracion(alSalir) {
                                         atributos: { type: 'button', class: 'btn-actividad-salir', 'data-respiracion-mejor': '' },
                                         hijos: [
                                             { tipo: 'i', atributos: { class: 'fa-solid fa-seedling' } },
-                                            'Estoy más tranquilo'
+                                            'Me siento más tranquilo'
                                         ]
                                     },
                                     {
@@ -210,7 +210,7 @@ function crearVistaRespiracion(alSalir) {
                                         atributos: { type: 'button', class: 'btn-pizarron-mini', 'data-respiracion-otra': '' },
                                         hijos: [
                                             { tipo: 'i', atributos: { class: 'fa-solid fa-repeat' } },
-                                            'Necesito respirar otra vez'
+                                            'Quiero respirar otra vez'
                                         ]
                                     }
                                 ]

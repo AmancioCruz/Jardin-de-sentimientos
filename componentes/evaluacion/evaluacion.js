@@ -1,8 +1,8 @@
 import { construirElemento } from "../../utilidades/constructor_elementos.js";
 
 const evaluacion = {
-    titulo: "Evaluación",
-    instruccion: "Del 1 al 5, ¿qué tanto te identificas con cada afirmación?",
+    titulo: "Revisión",
+    instruccion: "Del 1 al 5, marca qué tanto se parece cada frase a cómo te sientes ahora.",
     escala: {
         minimo: 1,
         maximo: 5,
@@ -14,19 +14,19 @@ const evaluacion = {
     preguntas: [
         {
             id: "estres",
-            texto: "Me siento abrumado por mis actividades"
+            texto: "Me siento abrumado por lo que tengo en mente."
         },
         {
             id: "concentracion",
-            texto: "Me cuesta concentrarme"
+            texto: "Me cuesta concentrarme."
         },
         {
             id: "cansancio",
-            texto: "Me siento cansado"
+            texto: "Me siento cansado."
         },
         {
             id: "ansiedad",
-            texto: "Me siento inquieto o nervioso"
+            texto: "Me siento inquieto o nervioso."
         }
     ]
 };
@@ -81,7 +81,7 @@ const componenteFormularioEvaluacion = ({ titulo, instruccion, preguntas, alEnvi
 
             if (Object.keys(respuestas).length < preguntas.length) {
                 if (error) {
-                    error.textContent = 'Por favor responde todas las preguntas antes de continuar.';
+                    error.textContent = 'Responde todas las preguntas para continuar.';
                     error.classList.remove('oculto');
                 }
                 return;

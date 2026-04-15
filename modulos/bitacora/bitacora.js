@@ -14,7 +14,7 @@ export function mostrarBitacora({ usuario } = {}) {
                 atributos: { class: 'bitacora-encabezado' },
                 hijos: [
                     { tipo: 'h1', atributos: { class: 'titulo-seccion-app' }, hijos: ['Bitácora'] },
-                    { tipo: 'p', hijos: ['Tus actividades guardadas se organizan por fecha.'] }
+                    { tipo: 'p', hijos: ['Aquí se guardan tus pausas y actividades por fecha.'] }
                 ]
             },
             {
@@ -41,7 +41,7 @@ async function cargarActividades(nodo, usuario) {
     if (!galeria) return;
 
     if (!usuario?.uid) {
-        mostrarEstadoBitacora(galeria, 'Inicia sesión para ver tus actividades.');
+        mostrarEstadoBitacora(galeria, 'Inicia sesión para ver tu bitácora.');
         return;
     }
 
@@ -264,8 +264,8 @@ function formatearFecha(fecha = '') {
 
 function formatearNombreActividad(nombre = '') {
     const nombres = {
-        tablero: 'Tablero',
-        juego: 'Riega tu calma',
+        tablero: 'Tablero de ideas',
+        juego: 'Protege tu flor',
         respiracion: 'Respiración guiada',
         pizarron: 'Pizarrón creativo'
     };

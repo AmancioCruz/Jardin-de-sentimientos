@@ -1,15 +1,9 @@
-// js/nucleo/sistema_estados.js
-
 export const seccionesApp = {
     inicioSesion: 'Inicio Sesion',
     registro: 'Registro',
     inicio: 'Inicio',
     perfil: 'Perfil',
-    bitacora: 'Bitacora',
-    sisco: 'SISCO-SV21',
-    jardin: 'Jardin',
-    pizarra: 'Pizarra',
-    respiraciones: 'Respiraciones'
+    bitacora: 'Bitacora'
 };
 
 let _estado = {
@@ -17,27 +11,12 @@ let _estado = {
     seccionActual: seccionesApp.inicioSesion
 };
 
-// ===== GETTERS =====
-
-export function obtenerEstado() {
-    return { ..._estado };
-}
-
-export function obtenerSeccion() {
-    return _estado.seccionActual;
-}
-
-export function estaAutenticado() {
-    return _estado.sesionActiva;
-}
-
-// ===== SETTERS =====
-
 export function actualizarSeccion(seccion) {
     if (!Object.values(seccionesApp).includes(seccion)) {
-        console.warn(`Sección no válida: ${seccion}`);
+        console.warn(`Seccion no valida: ${seccion}`);
         return;
     }
+
     _estado.seccionActual = seccion;
     _guardarEnLocalStorage();
 }
@@ -55,8 +34,6 @@ export function limpiarEstado() {
     localStorage.removeItem('estadoApp');
 }
 
-// ===== LOCALSTORAGE =====
-
 function _guardarEnLocalStorage() {
     localStorage.setItem('estadoApp', JSON.stringify({
         sesionActiva: _estado.sesionActiva,
@@ -64,13 +41,9 @@ function _guardarEnLocalStorage() {
     }));
 }
 
-/**
- * Carga estado desde localStorage y retorna info útil
- * @returns {Object} { habiaSesion, seccion }
- */
 export function inicializarDesdeLocalStorage() {
     const guardado = localStorage.getItem('estadoApp');
-    
+
     if (guardado) {
         try {
             const datos = JSON.parse(guardado);
@@ -82,7 +55,7 @@ export function inicializarDesdeLocalStorage() {
             limpiarEstado();
         }
     }
-    
+
     return {
         habiaSesion: _estado.sesionActiva,
         seccion: _estado.seccionActual

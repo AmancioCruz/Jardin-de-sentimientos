@@ -19,7 +19,7 @@ export const consentimientoData = {
         },
         {
             titulo: "2. Naturaleza de la participación",
-            contenido: "Interacción con actividades como jardín de sentimientos, modo pizarra y respiraciones guiadas."
+            contenido: "Interacción con actividades como Tablero de ideas, Protege tu flor, Pizarrón creativo y Respiración guiada."
         },
         {
             titulo: "3. Participación voluntaria",

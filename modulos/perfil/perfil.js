@@ -63,7 +63,7 @@ export function crearPerfil({ usuario }) {
                     },
 
                     crearSelectorPreferencia({
-                        etiqueta: 'Sonido para actividades',
+                        etiqueta: 'Sonido durante actividades',
                         id: 'preferencia-sonido',
                         valor: preferencias.sonido,
                         opciones: [

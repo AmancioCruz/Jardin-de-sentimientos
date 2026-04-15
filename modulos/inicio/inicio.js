@@ -3,42 +3,37 @@ import { construirElemento } from "../../utilidades/constructor_elementos.js";
 const actividadesInicio = [
     {
         estado: 'No Estoy Seguro',
-        etiqueta: 'Orientación',
         titulo: 'No sé cómo me siento',
-        descripcion: 'Responder unas preguntas para recibir una sugerencia.',
+        descripcion: 'Responde unas preguntas breves para encontrar una actividad.',
         icono: 'fa-solid fa-compass',
         clase: 'btn-no-seguro'
     },
     {
         estado: 'Saturado Mentalmente',
-        etiqueta: 'Muchas tareas',
         titulo: 'Me siento saturado mentalmente',
-        descripcion: 'Tengo mucho por hacer y poco tiempo.',
-        icono: 'fa-solid fa-layer-group',
+        descripcion: 'Quiero ordenar lo que pienso y lo que siento.',
+        icono: 'fa-solid fa-brain',
         clase: 'btn-jardin'
     },
     {
         estado: 'Pizarrón Creativo',
-        etiqueta: 'Concentración',
         titulo: 'No me puedo concentrar',
-        descripcion: 'Necesito ordenar mis ideas de forma visual.',
+        descripcion: 'Necesito aclarar mis ideas de forma visual.',
         icono: 'fa-solid fa-palette',
         clase: 'btn-pizarron'
     },
     {
         estado: 'Cansado',
-        etiqueta: 'Cansancio',
         titulo: 'Me siento agotado',
-        descripcion: 'Necesito una pausa para recuperar energía.',
+        descripcion: 'Necesito una pausa tranquila para recuperar energía.',
         icono: 'fa-solid fa-wind',
         clase: 'btn-respiraciones'
     },
     {
         estado: 'Ansioso',
-        etiqueta: 'Inquietud',
-        titulo: 'Me siento ansioso',
-        descripcion: 'Quiero calmar pensamientos que no se detienen.',
-        icono: 'fa-solid fa-seedling',
+        titulo: 'Me siento bajo presión',
+        descripcion: 'Quiero proteger mi bienestar de lo que me estresa.',
+        icono: 'fa-solid fa-shield-halved',
         clase: 'btn-ansioso'
     }
 ];
@@ -74,7 +69,7 @@ export function crearInicio({ callbacks, usuario }) {
                             {
                                 tipo: 'p',
                                 atributos: { class: 'inicio-descripcion' },
-                                hijos: ['Elige la opción que más se parece a lo que estás sintiendo ahora.']
+                                hijos: ['Elige la opción que más se acerque a lo que estás sintiendo en este momento.']
                             }
                         ]
                     },
@@ -112,7 +107,6 @@ function crearBotonesActividades(actividades, alSeleccionarEstado, alNoEstoySegu
                 tipo: 'span',
                 atributos: { class: 'estado-contenido' },
                 hijos: [
-                    { tipo: 'small', atributos: { class: 'estado-item' }, hijos: [actividad.etiqueta] },
                     { tipo: 'span', atributos: { class: 'estado-texto' }, hijos: [actividad.titulo] },
                     { tipo: 'span', atributos: { class: 'estado-descripcion' }, hijos: [actividad.descripcion] }
                 ]

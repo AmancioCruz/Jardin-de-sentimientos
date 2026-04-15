@@ -5,8 +5,6 @@ import { contenedores } from "../../nucleo/contenedores_dom.js";
 export function componenteTerminos({ alAceptar = null, alCerrar = null } = {}) {
     quitarTerminos();
 
-    /* Este gestor monta los terminos como una capa temporal dentro del main.
-       Asi la pantalla anterior sigue intacta debajo y solo se cierra o acepta. */
     const terminos = crearConsentimiento({
         consentimientoData,
         alAceptar: async () => {

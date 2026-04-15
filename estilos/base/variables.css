@@ -155,8 +155,36 @@
   border-color: rgba(22, 78, 63, 0.12);
 }
 
+[data-theme="dark"] .grupo-pizarron--principales {
+  background: rgba(47, 127, 195, 0.22);
+  border-color: rgba(135, 195, 242, 0.22);
+}
+
+[data-theme="dark"] .grupo-pizarron--herramientas {
+  background: rgba(22, 126, 88, 0.24);
+  border-color: rgba(183, 239, 210, 0.2);
+}
+
+[data-theme="dark"] .grupo-pizarron--estilo {
+  background: rgba(205, 139, 34, 0.2);
+  border-color: rgba(255, 210, 90, 0.2);
+}
+
+[data-theme="dark"] .grupo-pizarron--principales .btn-pizarron-herramienta i {
+  color: #2f7fc3;
+}
+
+[data-theme="dark"] .grupo-pizarron--herramientas .btn-pizarron-herramienta i {
+  color: #167e58;
+}
+
+[data-theme="dark"] .grupo-pizarron--estilo .control-pizarron span {
+  color: #7a541d;
+}
+
 [data-theme="dark"] .btn-actividad-salir:disabled,
 [data-theme="dark"] .btn-tablero-mini:disabled,
+[data-theme="dark"] .btn-pizarron-herramienta:disabled,
 [data-theme="dark"] .btn-pizarron-mini:disabled {
   background: rgba(246, 250, 245, 0.14);
   color: rgba(237, 244, 240, 0.52);
@@ -216,9 +244,17 @@
   color: #b7efd2;
 }
 
+[data-theme="dark"] .tutorial-actividad__tarjeta h2 {
+  color: var(--color-tutorial, #b7efd2);
+}
+
 [data-theme="dark"] .tutorial-actividad__tarjeta p,
 [data-theme="dark"] .evaluacion-cierre-actividad__tarjeta p {
   color: #d6e6de;
+}
+
+[data-theme="dark"] .tutorial-actividad__tarjeta p {
+  color: #edf4f0;
 }
 
 [data-theme="dark"] .tutorial-actividad__lista li {
@@ -226,8 +262,8 @@
 }
 
 [data-theme="dark"] .tutorial-actividad__lista i {
-  background: rgba(183, 239, 210, 0.12);
-  color: #b7efd2;
+  background: var(--fondo-tutorial-icono, rgba(183, 239, 210, 0.12));
+  color: var(--color-tutorial, #b7efd2);
 }
 
 [data-theme="dark"] .evaluacion-cierre-actividad__opcion {
@@ -289,6 +325,14 @@
 
 [data-theme="dark"] .panel-final-juego p {
   color: #edf4f0;
+}
+
+[data-theme="dark"] .selector-duracion-juego__texto--secundario {
+  color: rgba(237, 244, 240, 0.74);
+}
+
+[data-theme="dark"] .selector-duracion-juego__pregunta {
+  color: #b7efd2;
 }
 
 [data-theme="dark"] .bitacora-fecha h2 {

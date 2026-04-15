@@ -8,7 +8,11 @@ import { Usuario } from "../utilidades/modelos/usuario.js";
 
 export function haySesionActiva() {
     return new Promise((resolve, reject) => {
-        onAuthStateChanged(configuracionesFirebase.auth, async (usuarioFirebase) => {
+        let dejarDeObservar = () => {};
+
+        dejarDeObservar = onAuthStateChanged(configuracionesFirebase.auth, async (usuarioFirebase) => {
+            dejarDeObservar();
+
             if (usuarioFirebase) {
                 try {
                     const usuario = await construirUsuario(usuarioFirebase);

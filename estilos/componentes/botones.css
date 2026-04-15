@@ -140,14 +140,6 @@
   gap: 0.12rem;
 }
 
-.estado-item {
-  color: var(--acento-fuerte);
-  font-size: var(--tamano-texto-xs);
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
 .btn-estado .estado-texto {
   font-weight: 700;
   color: var(--texto);

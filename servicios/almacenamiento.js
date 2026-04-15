@@ -1,4 +1,4 @@
-import { ref, listAll, getDownloadURL, uploadBytes, getBytes } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-storage.js";
+import { ref, listAll, getDownloadURL, uploadBytes } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-storage.js";
 import { configuracionesFirebase } from "./firebase_config.js";
 
 export async function obtenerFotoPerfil(usuario) {
@@ -105,36 +105,4 @@ function normalizarNombreActividad(nombreActividad = "actividad") {
         .replace(/[\u0300-\u036f]/g, "")
         .replace(/[^a-z0-9]+/g, "_")
         .replace(/^_+|_+$/g, "") || "actividad";
-}
-
-export async function existeCarpeta(ruta) {
-    try {
-        const referencia = ref(configuracionesFirebase.storage, ruta);
-        const resultado = await listAll(referencia);
-        return true;
-
-    } catch (error) {
-        return false;
-    }
-}
-
-export async function listarArchivos(ruta) {
-    try {
-        const referencia = ref(configuracionesFirebase.storage, ruta);
-        const resultado = await listAll(referencia);
-
-        const archivos = await Promise.all(
-            resultado.items.map(async (item) => ({
-                nombre: item.name,
-                ruta: item.fullPath,
-                url: await getDownloadURL(item)
-            }))
-        );
-
-        return archivos;
-
-    } catch (error) {
-        console.error("Error al listar:", error.message);
-        throw error;
-    }
 }

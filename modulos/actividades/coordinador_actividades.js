@@ -67,14 +67,14 @@ export function inicializarTablero(lienzo, { tablero = null, alGuardar, alSalir 
     botonAgregarNota.montar(areaLienzo);
     mostrarTutorialActividad({
         id: 'tablero',
-        titulo: 'Guía rápida del tablero',
-        descripcion: 'Este espacio te ayuda a ordenar lo que tienes en mente sin tener que escribir demasiado.',
+        titulo: 'Guía rápida del tablero de ideas',
+        descripcion: 'Usa notas para darle lugar a lo que piensas, sientes o necesitas entender mejor.',
         pasos: [
-            { icono: 'fa-solid fa-note-sticky', texto: 'Nota crea una tarjeta para escribir una preocupación o idea.' },
-            { icono: 'fa-solid fa-pen', texto: 'El lápiz dentro de cada nota permite escribir o editar.' },
-            { icono: 'fa-solid fa-fire', texto: 'Selecciona una nota para cambiar su prioridad.' },
-            { icono: 'fa-solid fa-plus-minus', texto: 'Tamaño cambia la nota para acomodar mejor tus ideas.' },
-            { icono: 'fa-solid fa-check', texto: 'Guardar termina la actividad y la manda a tu bitácora.' }
+            { icono: 'fa-solid fa-note-sticky', texto: 'Crea una nota para escribir una idea, emoción o pensamiento.' },
+            { icono: 'fa-solid fa-pen', texto: 'Usa el lápiz para escribir o editar.' },
+            { icono: 'fa-solid fa-fire', texto: 'Selecciona una nota para marcar qué se siente más importante.' },
+            { icono: 'fa-solid fa-plus-minus', texto: 'Ajusta el tamaño si necesitas más espacio.' },
+            { icono: 'fa-solid fa-check', texto: 'Guarda cuando quieras conservar este momento en tu bitácora.' }
         ]
     });
 
@@ -232,7 +232,7 @@ function crearAccionesTablero(lienzo, { alGuardar, alSalir } = {}) {
                         atributos: {
                             type: 'button',
                             class: 'btn-tablero-mini',
-                            title: 'Limpiar tablero'
+                            title: 'Limpiar tablero de ideas'
                         },
                         eventos: {
                             click: () => limpiarTablero(lienzo)
@@ -259,7 +259,7 @@ function crearAccionesTablero(lienzo, { alGuardar, alSalir } = {}) {
                         },
                         hijos: [
                             { tipo: 'i', atributos: { class: 'fa-solid fa-xmark' } },
-                            'Terminar'
+                            'Salir'
                         ]
                     },
                     {
@@ -267,7 +267,7 @@ function crearAccionesTablero(lienzo, { alGuardar, alSalir } = {}) {
                         atributos: {
                             type: 'button',
                             class: 'btn-actividad-salir',
-                            title: 'Guardar tablero',
+                            title: 'Guardar tablero de ideas',
                             'data-guardar-tablero': ''
                         },
                         eventos: {
@@ -292,9 +292,9 @@ function crearAccionesTablero(lienzo, { alGuardar, alSalir } = {}) {
 
 function crearPanelPrioridadNota(alCambiarPrioridad) {
     const prioridades = [
-        { valor: 'alta', icono: 'fa-solid fa-fire', titulo: 'Prioridad alta' },
-        { valor: 'media', icono: 'fa-solid fa-star-half-stroke', titulo: 'Prioridad media' },
-        { valor: 'baja', icono: 'fa-solid fa-leaf', titulo: 'Prioridad baja' }
+        { valor: 'alta', icono: 'fa-solid fa-fire', titulo: 'Se siente muy importante' },
+        { valor: 'media', icono: 'fa-solid fa-star-half-stroke', titulo: 'Se siente importante' },
+        { valor: 'baja', icono: 'fa-solid fa-leaf', titulo: 'Se siente más ligero' }
     ];
 
     return construirElemento({
@@ -302,7 +302,7 @@ function crearPanelPrioridadNota(alCambiarPrioridad) {
         atributos: {
             class: 'panel-prioridad-nota oculto',
             id: 'panel-prioridad-nota',
-            'aria-label': 'Cambiar prioridad de nota'
+            'aria-label': 'Cambiar importancia de la nota'
         },
         hijos: prioridades.map((prioridad) => ({
             tipo: 'button',
@@ -384,7 +384,7 @@ function actualizarBotonAgregarNota(boton, completo) {
     boton.disabled = completo;
     boton.classList.toggle('btn-opcion--deshabilitado', completo);
     boton.setAttribute('aria-label', completo
-        ? 'Límite de notas alcanzado'
+        ? 'Ya alcanzaste el límite de notas'
         : 'Agregar nota');
 }
 
@@ -394,6 +394,6 @@ function actualizarBotonGuardarTablero(contenedor, tieneContenido) {
 
     boton.disabled = !tieneContenido;
     boton.title = tieneContenido
-        ? 'Guardar tablero'
+        ? 'Guardar tablero de ideas'
         : 'Agrega al menos una nota para guardar';
 }

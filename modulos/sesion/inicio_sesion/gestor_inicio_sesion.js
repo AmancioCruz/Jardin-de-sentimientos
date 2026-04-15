@@ -10,8 +10,6 @@ import { aplicarTemaLocal } from "../../../servicios/preferencias_locales.js";
 
 async function manejarInicioSesion(datos) {
     try {
-        /* El login arma primero el usuario autenticado de Firebase
-           y despues completa la informacion visible que usa la app. */
         const usuario = await IniciarSesionAuth(datos.correo, datos.contrasena);
         const usuarioActual = await construirUsuario(usuario);
 
@@ -23,21 +21,15 @@ async function manejarInicioSesion(datos) {
         mostrarPantalla(seccionesApp.inicio, usuarioActual);
     } catch (error) {
         console.error("Error al iniciar sesion:", error);
-        throw new Error("No fue posible iniciar sesión. Verifica tus credenciales e inténtalo de nuevo.");
+        throw new Error("No fue posible iniciar sesión. Revisa tu correo y contraseña.");
     }
-}
-
-function manejarRecuperacion() {
 }
 
 registrarPantalla(seccionesApp.inicioSesion, {
     constructor: crearInicioSesion,
     dependencias: {
         alEnviar: manejarInicioSesion,
-        alOlvideContrasena: manejarRecuperacion,
         alIrARegistro: () => {
-            /* Antes de abrir registro mostramos los terminos.
-               Cuando el usuario acepta, recien entonces entra al formulario. */
             componenteTerminos({
                 alAceptar: () => mostrarPantalla(seccionesApp.registro),
                 alCerrar: () => mostrarPantalla(seccionesApp.inicioSesion)

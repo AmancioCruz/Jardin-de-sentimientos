@@ -45,8 +45,6 @@ function _mostrarPantalla(clave) {
         return;
     }
 
-    /* Esta funcion arma la pantalla activa y la monta dentro del main.
-       Solo cambia el contenido interno para mantener fija la estructura base de la app. */
     limpiarCapasGlobales();
     const elemento = config.constructor(config.dependencias);
 

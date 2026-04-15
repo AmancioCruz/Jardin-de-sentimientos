@@ -7,8 +7,6 @@ export async function registrarUsuario(datosUsuario) {
     let usuarioAuth = null;
 
     try {
-        /* Este flujo crea primero la cuenta en Auth.
-           Con el uid resultante se guarda el perfil completo en la base. */
         usuarioAuth = await RegistrarUsuarioAuth(correo, contrasena);
         const uid = usuarioAuth?.uid;
         if (!uid || typeof uid !== "string") {

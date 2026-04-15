@@ -18,8 +18,8 @@ let limpiarActividadActual = null;
 window.addEventListener('actividad:finalizada-sin-guardar', limpiarActividadSinGuardar);
 
 const datosEvaluacion = {
-    titulo: "Evaluación rápida",
-    instruccion: "Del 1 al 5, ¿qué tanto te identificas con cada afirmación?",
+    titulo: "Revisión rápida",
+    instruccion: "Del 1 al 5, marca qué tanto se parece cada frase a cómo te sientes ahora.",
     escala: {
         minimo: 1,
         maximo: 5,
@@ -29,12 +29,12 @@ const datosEvaluacion = {
         }
     },
     preguntas: [
-        { id: "estres", texto: "Me siento abrumado por mis actividades" },
-        { id: "concentracion", texto: "Me cuesta concentrarme" },
-        { id: "cansancio", texto: "Me siento cansado" },
-        { id: "ansiedad", texto: "Me siento inquieto o nervioso" },
-        { id: "tiempo", texto: "Siento que tengo poco tiempo" },
-        { id: "orden", texto: "Me cuesta ordenar mis ideas" }
+        { id: "estres", texto: "Me siento abrumado por lo que tengo en mente." },
+        { id: "concentracion", texto: "Me cuesta concentrarme." },
+        { id: "cansancio", texto: "Me siento cansado." },
+        { id: "ansiedad", texto: "Me siento inquieto o nervioso." },
+        { id: "tiempo", texto: "Siento que el tiempo no me alcanza." },
+        { id: "orden", texto: "Me cuesta ordenar mis ideas." }
     ]
 };
 
@@ -101,7 +101,7 @@ function abrirRespiracionGuiada(usuario = null) {
     registrarLimpiezaActividad(inicializarRespiracionGuiada({
         alCompletar: (datosRespiracion) => mostrarEvaluacionCierre(usuario, {
             nombreActividad: 'respiracion',
-            canvas: crearImagenResumenActividad('Respiración guiada', `${datosRespiracion.sesiones} sesión(es) completada(s)`),
+            canvas: crearImagenResumenActividad('Respiración guiada', `${datosRespiracion.sesiones} pausa(s) completada(s)`),
             detalles: {
                 sesiones: datosRespiracion.sesiones,
                 duracionTotalSegundos: datosRespiracion.duracionTotalSegundos
@@ -194,8 +194,8 @@ function mostrarEvaluacionCierre(usuario = null, actividad = {}) {
     document.getElementById('evaluacion-cierre-actividad')?.remove();
 
     const opciones = [
-        { texto: 'Más tranquilo', icono: 'fa-solid fa-seedling' },
-        { texto: 'Igual que antes', icono: 'fa-solid fa-minus' },
+        { texto: 'Me siento más tranquilo', icono: 'fa-solid fa-seedling' },
+        { texto: 'Me siento igual', icono: 'fa-solid fa-minus' },
         { texto: 'Necesito otra pausa', icono: 'fa-solid fa-heart' }
     ];
     const evaluacion = construirEvaluacionCierre(opciones, async ({ respuesta, comentario }) => {
@@ -214,11 +214,11 @@ function construirEvaluacionCierre(opciones, alContinuar) {
     contenedor.innerHTML = `
         <div class="evaluacion-cierre-actividad__tarjeta" role="dialog" aria-modal="true" aria-labelledby="evaluacion-cierre-titulo">
             <h2 id="evaluacion-cierre-titulo">¿Cómo te sientes ahora?</h2>
-            <p>Elige la opción que más se acerque a este momento.</p>
             <label class="evaluacion-cierre-actividad__comentario">
                 <span>Comentario opcional</span>
-                <textarea rows="3" maxlength="240" placeholder="Puedes escribir algo breve sobre cómo te ayudó la actividad."></textarea>
+                <textarea rows="3" maxlength="240" placeholder="Puedes escribir algo breve sobre este momento."></textarea>
             </label>
+            <p>Elige una opción para guardar tu actividad.</p>
             <div class="evaluacion-cierre-actividad__opciones"></div>
         </div>
     `;
@@ -328,8 +328,6 @@ function crearImagenResumenActividad(titulo, subtitulo = 'Pausa completada') {
 }
 
 function manejarNoEstoySeguro(usuario = null) {
-    /* Esta seccion funciona como apoyo cuando el usuario no identifica su estado.
-       Muestra una evaluacion corta sin salir del espacio principal de la app. */
     const evaluacion = crearEvaluacion(datosEvaluacion, (respuestas) => {
         manejarEstados(obtenerEstadoSugerido(respuestas), usuario);
     });

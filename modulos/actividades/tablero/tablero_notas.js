@@ -475,7 +475,7 @@ function dibujarGuiaTablero(ctx, canvas) {
     ctx.font = '700 14px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    envolverTexto(ctx, 'Este espacio es para ordenar lo que tienes en mente. Agrega notas y mueve tus prioridades.', x, y, ancho, 20, 3);
+    envolverTexto(ctx, 'Ordena tus ideas en este espacio. Puedes escribir hasta 3 notas y darles prioridad.', x, y, ancho, 20, 3);
     ctx.restore();
 }
 

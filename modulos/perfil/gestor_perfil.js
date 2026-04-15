@@ -4,13 +4,4 @@ import { seccionesApp } from "../../nucleo/sistema_estados.js";
 
 registrarPantalla(seccionesApp.perfil, {
     constructor: crearPerfil
-})
-
-/**
- * registrarPantalla(seccionesApp.inicio, {
-     constructor:,
-     dependencias: {
-         callbacks: {}
-     }
- })
- */
+});

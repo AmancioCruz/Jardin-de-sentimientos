@@ -1,10 +1,5 @@
 import { construirElemento } from "../../utilidades/constructor_elementos.js";
 
-/**
- * Crea el componente de información del usuario
- * @param {string} nombre_usuario - Nombre que se le da al usuario
- * @param {Function|null} [cerrarSesion] - Función para cerrar sesión
- */
 export function crearInformacionUsuario({nombre_usuario, cerrarSesion = null}) {
     return construirElemento(
         {
@@ -23,7 +18,7 @@ export function crearInformacionUsuario({nombre_usuario, cerrarSesion = null}) {
                     },
                     hijos: [
                         { tipo: 'i', atributos: { class: 'fa-solid fa-sign-out-alt' } },
-                        ' Salir'
+                        ' Cerrar sesión'
                     ],
                     eventos: {
                         click: typeof cerrarSesion === 'function'

@@ -2,8 +2,6 @@ import { construirElemento } from "../../utilidades/constructor_elementos.js";
 import { seccionesApp } from "../../nucleo/sistema_estados.js";
 
 export function crearMenuNavegacion({ alHacerClick, alCerrarSesion }) {
-    /* El menu concentra las rutas principales que ya existen en la app.
-       Cada opcion delega la navegacion al callback para no acoplar este componente al gestor. */
     const opciones = [
         { etiqueta: "Inicio", seccion: seccionesApp.inicio },
         { etiqueta: "Perfil", seccion: seccionesApp.perfil },
@@ -50,7 +48,7 @@ export function crearMenuNavegacion({ alHacerClick, alCerrarSesion }) {
                 },
                 hijos: [
                     { tipo: 'i', atributos: { class: 'fa-solid fa-sign-out-alt' } },
-                    'Salir'
+                    'Cerrar sesión'
                 ]
             }
         ]

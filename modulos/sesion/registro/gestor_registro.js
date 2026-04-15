@@ -9,8 +9,6 @@ import { construirUsuario } from "../../../servicios/observador_sesiones.js";
 import { aplicarTemaLocal } from "../../../servicios/preferencias_locales.js";
 
 async function completarRegistro(datos) {
-    /* La foto es opcional para el usuario, pero siempre subimos una imagen de perfil.
-       Si no selecciona una, usamos el avatar por defecto del proyecto. */
     if (!datos.foto || datos.foto.size === 0) {
         datos.foto = await crearArchivoPorDefecto();
     }

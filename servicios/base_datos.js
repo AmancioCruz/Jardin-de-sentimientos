@@ -12,8 +12,6 @@ export async function obtenerDatosUsuario(usuario) {
 
         return null;
     } catch (error) {
-        /* Si la base niega lectura devolvemos null para no romper el armado del usuario.
-           Asi la app puede seguir mostrando la sesion aunque falte informacion opcional. */
         if (error?.code === "PERMISSION_DENIED") {
             console.warn(`Sin permisos para leer usuarios/${usuario.uid} en Realtime Database.`);
             return null;

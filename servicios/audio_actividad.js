@@ -15,8 +15,7 @@ export function configurarAudioActividad(sonido = obtenerSonidoActividad()) {
 
     reproductorActividad.src = `./recursos/audio/${sonido}.mp3`;
     reproductorActividad.play().catch(() => {
-        /* El navegador puede bloquear audio o el archivo puede no existir aun.
-           La actividad debe continuar aunque la música no se reproduzca. */
+        // El audio es opcional: la actividad sigue aunque el navegador lo bloquee.
     });
 }
 

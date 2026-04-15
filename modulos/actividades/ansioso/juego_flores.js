@@ -10,18 +10,18 @@ const duracionesJuego = [
 const pensamientosBase = [
     { texto: 'agotamiento', archivo: 'agotamiento.png' },
     { texto: 'autoexigencia', archivo: 'autoexigencia.png' },
-    { texto: 'comparacion academica', archivo: 'comparacion_academica.png' },
-    { texto: 'desmotivacion', archivo: 'desmotivacion.png' },
-    { texto: 'exigencia academica', archivo: 'exigencia_academica.png' },
+    { texto: 'comparación académica', archivo: 'comparacion_academica.png' },
+    { texto: 'desmotivación', archivo: 'desmotivacion.png' },
+    { texto: 'exigencia académica', archivo: 'exigencia_academica.png' },
     { texto: 'falta de tiempo', archivo: 'falta_tiempo.png' },
-    { texto: 'frustracion', archivo: 'frustracion.png' },
+    { texto: 'frustración', archivo: 'frustracion.png' },
     { texto: 'inseguridad', archivo: 'inseguridad.png' },
     { texto: 'material pendiente', archivo: 'material_pendiente.png' },
     { texto: 'perfeccionismo', archivo: 'perfeccionismo.png' },
-    { texto: 'procrastinacion', archivo: 'procastinacion.png' },
+    { texto: 'procrastinación', archivo: 'procastinacion.png' },
     { texto: 'responsabilidades', archivo: 'responsabilidades.png' },
-    { texto: 'saturacion mental', archivo: 'saturacion_mental.png' },
-    { texto: 'sobrecarga academica', archivo: 'sobrecarga_academica.png' },
+    { texto: 'saturación mental', archivo: 'saturacion_mental.png' },
+    { texto: 'sobrecarga académica', archivo: 'sobrecarga_academica.png' },
     { texto: 'tesis', archivo: 'tesis.png' }
 ];
 
@@ -132,7 +132,7 @@ export function inicializarJuegoFlores({ alCompletar, alSalir } = {}) {
         }
 
         if (estado.progreso >= 1 && !estado.terminado) {
-            finalizarPartida(estado, 'ganado', 'Lo lograste. La flor se mantuvo creciendo durante esta pausa.');
+            finalizarPartida(estado, 'ganado', crearMensajeFinalFlor(estado));
         }
 
         dibujar(ctx, estado);
@@ -187,14 +187,14 @@ export function inicializarJuegoFlores({ alCompletar, alSalir } = {}) {
     const prepararJuego = () => mostrarSelectorDuracion();
     const tutorial = mostrarTutorialActividad({
         id: 'juego-flores',
-        titulo: 'Guía rápida del juego',
-        descripcion: 'La idea no es ganar perfecto, sino practicar una pausa mientras cuidas la flor.',
+        titulo: 'Guía rápida para proteger tu flor',
+        descripcion: 'La flor representa tu bienestar. La idea no es hacerlo perfecto, sino practicar una pausa y responder con calma.',
         pasos: [
-            { icono: 'fa-solid fa-computer-mouse', texto: 'Mueve la manguera con el cursor o con el dedo en móvil.' },
-            { icono: 'fa-solid fa-droplet', texto: 'Toca o haz clic para lanzar gotas desde la punta de la manguera.' },
-            { icono: 'fa-solid fa-seedling', texto: 'Evita que los pensamientos lleguen a la flor.' },
-            { icono: 'fa-solid fa-heart', texto: 'El marcador muestra tiempo y cuidado restante.' },
-            { icono: 'fa-solid fa-check', texto: 'La actividad solo se guarda cuando el juego termina.' }
+            { icono: 'fa-solid fa-computer-mouse', texto: 'Mueve la manguera con el cursor o con el dedo.' },
+            { icono: 'fa-solid fa-droplet', texto: 'Toca o haz clic para lanzar gotas desde la punta.' },
+            { icono: 'fa-solid fa-shield-halved', texto: 'Aleja los estresores antes de que lleguen a la flor.' },
+            { icono: 'fa-solid fa-heart-pulse', texto: 'El marcador muestra el tiempo y el estado de tu flor.' },
+            { icono: 'fa-solid fa-check', texto: 'La actividad se guarda cuando termina el juego.' }
         ],
         alCerrar: prepararJuego
     });
@@ -216,12 +216,8 @@ function crearVistaJuego(alSalir) {
                     {
                         tipo: 'div',
                         hijos: [
-                            { tipo: 'h1', hijos: ['Riega tu calma'] },
-                            {
-                                tipo: 'p',
-                                atributos: { 'data-mensaje': '' },
-                                hijos: ['Mueve la regadera y disuelve pensamientos antes de que alcancen la flor.']
-                            }
+                            { tipo: 'h1', hijos: ['Protege tu flor'] },
+                            { tipo: 'p', atributos: { 'data-mensaje': '', class: 'actividad-mensaje-sol' }, hijos: [''] }
                         ]
                     },
                     {
@@ -229,8 +225,8 @@ function crearVistaJuego(alSalir) {
                         atributos: { type: 'button', class: 'btn-actividad-salir' },
                         eventos: { click: alSalir },
                         hijos: [
-                            { tipo: 'i', atributos: { class: 'fa-solid fa-check' } },
-                            'Terminar'
+                            { tipo: 'i', atributos: { class: 'fa-solid fa-xmark' } },
+                            'Salir'
                         ]
                     }
                 ]
@@ -245,14 +241,14 @@ function crearVistaJuego(alSalir) {
             {
                 tipo: 'div',
                 atributos: { class: 'actividad-marcador', 'data-marcador': '' },
-                hijos: ['Tiempo: 1:30 | Cuidado: 5/5']
+                hijos: ['Tiempo: 1:30 | Flor: semilla']
             },
             {
                 tipo: 'div',
                 atributos: { class: 'panel-final-juego oculto', 'data-panel-final': '' },
                 hijos: [
                     { tipo: 'h2', atributos: { 'data-titulo-final': '' }, hijos: ['Momento de pausar'] },
-                    { tipo: 'p', atributos: { 'data-texto-final': '' }, hijos: ['Respira profundo y vuelve a intentarlo cuando te sientas listo.'] },
+                    { tipo: 'p', atributos: { 'data-texto-final': '' }, hijos: ['Respira profundo. Puedes volver a intentarlo cuando te sientas listo.'] },
                     {
                         tipo: 'button',
                         atributos: { type: 'button', class: 'btn-actividad-salir', 'data-boton-final': '' },
@@ -264,8 +260,18 @@ function crearVistaJuego(alSalir) {
                 tipo: 'div',
                 atributos: { class: 'panel-final-juego selector-duracion-juego oculto', 'data-panel-duracion': '' },
                 hijos: [
-                    { tipo: 'h2', hijos: ['Elige tu pausa'] },
-                    { tipo: 'p', hijos: ['Selecciona cuánto tiempo quieres cuidar la flor.'] },
+                    { tipo: 'h2', hijos: ['Instrucciones'] },
+                    {
+                        tipo: 'p',
+                        atributos: { class: 'selector-duracion-juego__texto selector-duracion-juego__texto--principal' },
+                        hijos: ['Mueve la manguera para alejar los estresores antes de que lleguen a la flor.']
+                    },
+                    {
+                        tipo: 'p',
+                        atributos: { class: 'selector-duracion-juego__texto selector-duracion-juego__texto--secundario' },
+                        hijos: ['Cuida la flor durante el tiempo que elijas.']
+                    },
+                    { tipo: 'strong', atributos: { class: 'selector-duracion-juego__pregunta' }, hijos: ['¿Cuánto tiempo quieres proteger tu flor?'] },
                     {
                         tipo: 'div',
                         atributos: { class: 'selector-duracion-juego__opciones' },
@@ -302,9 +308,10 @@ function crearEstadoJuego() {
         ultimoDisparo: 0,
         ultimoPensamiento: 0,
         progreso: 0,
-        danos: 0,
-        maximoDanos: 5,
+        impactos: 0,
         racha: 0,
+        mensajeSol: 'Elige una pausa y cuida la flor a tu ritmo.',
+        sol: { x: 24, y: 24, tamano: 96 },
         regadera: { x: 180, y: 300 },
         flor: { x: 180, y: 280, crecimiento: 0.02, brillo: 0, sacudida: 0, anchoVisible: 96, altoVisible: 170 },
         gotas: [],
@@ -432,13 +439,10 @@ function revisarColisiones(estado) {
         if (distancia(pensamiento, zonaFlor) < pensamiento.radio + zonaFlor.radio) {
             pensamiento.disolviendo = true;
             estado.racha = 0;
-            estado.danos += 1;
+            estado.impactos += 1;
+            estado.flor.crecimiento = obtenerCrecimientoAnterior(estado.flor.crecimiento);
             estado.flor.sacudida = 1;
             crearParticulasImpacto(estado, pensamiento.x, pensamiento.y);
-
-            if (estado.danos >= estado.maximoDanos) {
-                finalizarPartida(estado, 'pausa', 'La flor necesita una pausa. Respira profundo y vuelve a intentarlo cuando te sientas listo.');
-            }
         }
     });
 }
@@ -472,7 +476,8 @@ function actualizarFlor(estado, delta) {
 
 function actualizarInterfaz(estado, marcador, mensaje) {
     if (!estado.juegoIniciado) {
-        mensaje.textContent = 'Antes de empezar, selecciona una duración para esta pausa.';
+        if (mensaje) mensaje.textContent = '';
+        estado.mensajeSol = 'Elige una pausa y protege tu flor a tu ritmo.';
         return;
     }
 
@@ -480,30 +485,35 @@ function actualizarInterfaz(estado, marcador, mensaje) {
     const minutos = Math.floor(restante / 60000);
     const segundos = String(Math.floor((restante % 60000) / 1000)).padStart(2, '0');
 
-    marcador.textContent = `Tiempo: ${minutos}:${segundos} | Cuidado: ${Math.max(0, estado.maximoDanos - estado.danos)}/${estado.maximoDanos}`;
+    marcador.textContent = `Tiempo: ${minutos}:${segundos} | Flor: ${obtenerNombreEtapaFlor(estado.flor.crecimiento)}`;
 
     if (estado.mensajeFinal) {
-        mensaje.textContent = estado.mensajeFinal;
+        if (mensaje) mensaje.textContent = '';
+        estado.mensajeSol = estado.mensajeFinal;
         return;
     }
 
     if (estado.racha >= 8) {
-        mensaje.textContent = 'Buen ritmo: la flor esta brillando con tu constancia.';
+        if (mensaje) mensaje.textContent = '';
+        estado.mensajeSol = 'Buen ritmo. Tu flor se mantiene fuerte.';
         return;
     }
 
-    if (estado.danos > 0) {
-        mensaje.textContent = 'La flor recibio tension. Sigue con calma, una gota a la vez.';
+    if (estado.impactos > 0) {
+        if (mensaje) mensaje.textContent = '';
+        estado.mensajeSol = 'La flor retrocedió un poco. Sigue con calma, una gota a la vez.';
         return;
     }
 
-    mensaje.textContent = 'Mueve la regadera y disuelve pensamientos antes de que alcancen la flor.';
+    if (mensaje) mensaje.textContent = '';
+    estado.mensajeSol = 'Aleja los estresores antes de que alcancen la flor.';
 }
 
 function dibujar(ctx, estado) {
     ctx.clearRect(0, 0, estado.ancho, estado.alto);
     dibujarFondo(ctx, estado);
     dibujarProgreso(ctx, estado);
+    dibujarBurbujaSol(ctx, estado);
     dibujarFlor(ctx, estado);
     estado.particulas.forEach((particula) => dibujarParticula(ctx, particula));
     estado.gotas.forEach((gota) => dibujarGota(ctx, gota));
@@ -531,6 +541,7 @@ function dibujarSol(ctx, estado) {
     const tamano = Math.min(Math.max(estado.ancho * 0.22, 82), 126);
     const x = Math.max(20, estado.ancho * 0.08);
     const y = Math.max(18, estado.alto * 0.06);
+    estado.sol = { x, y, tamano };
 
     if (imagen?.complete && imagen.naturalWidth > 0) {
         ctx.save();
@@ -544,6 +555,40 @@ function dibujarSol(ctx, estado) {
     ctx.beginPath();
     ctx.arc(x + (tamano / 2), y + (tamano / 2), tamano / 2, 0, Math.PI * 2);
     ctx.fill();
+}
+
+function dibujarBurbujaSol(ctx, estado) {
+    if (!estado.mensajeSol) return;
+
+    const sol = estado.sol || { x: 24, y: 24, tamano: 96 };
+    const anchoMaximo = Math.min(estado.ancho * 0.46, 270);
+    const ancho = Math.max(174, anchoMaximo);
+    const xPreferido = sol.x + sol.tamano * 0.82;
+    const x = Math.min(Math.max(18, xPreferido), estado.ancho - ancho - 18);
+    const y = Math.max(18, sol.y + sol.tamano * 0.15);
+    const lineas = dividirTexto(estado.mensajeSol, 28, 3);
+    const alto = 22 + lineas.length * 17;
+
+    ctx.save();
+    ctx.fillStyle = 'rgba(255, 247, 252, 0.94)';
+    redondearRect(ctx, x, y, ancho, alto, 18);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(x + 14, y + alto * 0.55);
+    ctx.lineTo(sol.x + sol.tamano * 0.72, sol.y + sol.tamano * 0.55);
+    ctx.lineTo(x + 14, y + alto * 0.72);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.fillStyle = '#8f2451';
+    ctx.font = '800 12px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    lineas.forEach((linea, indice) => {
+        ctx.fillText(linea, x + 16, y + 20 + indice * 17);
+    });
+    ctx.restore();
 }
 
 function dibujarPasto(ctx, estado) {
@@ -752,6 +797,30 @@ function obtenerEtapaFlor(crecimiento) {
     }
 
     return { indice: 3, escala: 0.88 + (((crecimiento - 0.76) / 0.24) * 0.08) };
+}
+
+function obtenerCrecimientoAnterior(crecimiento) {
+    if (crecimiento >= 0.76) return 0.5;
+    if (crecimiento >= 0.48) return 0.24;
+    if (crecimiento >= 0.2) return 0.04;
+    return 0.02;
+}
+
+function obtenerNombreEtapaFlor(crecimiento) {
+    if (crecimiento < 0.2) return 'semilla';
+    if (crecimiento < 0.48) return 'brote';
+    if (crecimiento < 0.76) return 'botón';
+    return 'flor';
+}
+
+function crearMensajeFinalFlor(estado) {
+    const etapa = obtenerNombreEtapaFlor(estado.flor.crecimiento);
+
+    if (etapa === 'flor') {
+        return 'La pausa terminó. Tu flor alcanzó su mejor momento gracias a tu cuidado.';
+    }
+
+    return `La pausa terminó. Tu flor llegó a etapa de ${etapa}; protegerla también fue una forma de cuidarte.`;
 }
 
 function obtenerZonaColisionFlor(estado) {
@@ -963,6 +1032,28 @@ function envolverTextoCentrado(ctx, texto, x, y, anchoMaximo, altoLinea, maximoL
     lineas.slice(0, maximoLineas).forEach((linea, indice) => {
         ctx.fillText(linea, x, y + (indice * altoLinea));
     });
+}
+
+function dividirTexto(texto, maximoCaracteres = 28, maximoLineas = 3) {
+    const palabras = texto.split(' ');
+    const lineas = [];
+    let lineaActual = '';
+
+    palabras.forEach((palabra) => {
+        const intento = lineaActual ? `${lineaActual} ${palabra}` : palabra;
+
+        if (intento.length <= maximoCaracteres || !lineaActual) {
+            lineaActual = intento;
+            return;
+        }
+
+        lineas.push(lineaActual);
+        lineaActual = palabra;
+    });
+
+    if (lineaActual) lineas.push(lineaActual);
+
+    return lineas.slice(0, maximoLineas);
 }
 
 function limitar(valor, minimo, maximo) {

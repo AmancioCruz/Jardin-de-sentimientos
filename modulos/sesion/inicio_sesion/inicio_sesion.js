@@ -1,6 +1,6 @@
 import { construirElemento } from "../../../utilidades/constructor_elementos.js";
 
-export function crearInicioSesion({ alEnviar, alOlvideContrasena, alIrARegistro }) {
+export function crearInicioSesion({ alEnviar, alIrARegistro }) {
     return construirElemento({
         tipo: 'div',
         atributos: {
@@ -30,7 +30,7 @@ export function crearInicioSesion({ alEnviar, alOlvideContrasena, alIrARegistro 
                             try {
                                 await alEnviar(datos);
                             } catch (error) {
-                                mostrarErrorLogin(mensajeError, error?.message || 'No fue posible iniciar sesión. Verifica tus datos.');
+                                mostrarErrorLogin(mensajeError, error?.message || 'No fue posible iniciar sesión. Revisa tu correo y contraseña.');
                             }
                         }
                     },
@@ -93,7 +93,7 @@ export function crearInicioSesion({ alEnviar, alOlvideContrasena, alIrARegistro 
                             type: 'submit',
                             class: 'btn-primario btn-ancho'
                         },
-                        hijos: ['Iniciar sesión']
+                        hijos: ['Entrar']
                     },
                     {
                         tipo: 'div',
