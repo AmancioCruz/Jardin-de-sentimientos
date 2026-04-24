@@ -1,12 +1,14 @@
 import { contenedores } from "../../../nucleo/contenedores_dom.js";
 import { construirElemento } from "../../../utilidades/constructor_elementos.js";
 import { mostrarTutorialActividad } from "../../../componentes/tutorial_actividad/tutorial_actividad.js";
+import { activarOverlay, desactivarOverlay } from "../../../servicios/overlay.js";
 
-const duracionSesionSegundos = 60;
+const duracionSesionSegundos = 180;
 const fases = [
     { texto: 'Inhala', duracion: 4, clase: 'respiracion-inhala' },
-    { texto: 'Sostén', duracion: 2, clase: 'respiracion-sosten' },
-    { texto: 'Exhala', duracion: 6, clase: 'respiracion-exhala' }
+    { texto: 'Sostén', duracion: 4, clase: 'respiracion-sosten' },
+    { texto: 'Exhala', duracion: 4, clase: 'respiracion-exhala' },
+    { texto: 'Pausa', duracion: 4, clase: 'respiracion-pausa' }
 ];
 
 export function inicializarRespiracionGuiada({ alCompletar, alSalir } = {}) {
@@ -49,6 +51,7 @@ export function inicializarRespiracionGuiada({ alCompletar, alSalir } = {}) {
     function destruir() {
         limpiar();
         overlaySesion?.remove();
+        desactivarOverlay('respiracion-sesion');
     }
 
     function mostrarFase() {
@@ -86,6 +89,7 @@ export function inicializarRespiracionGuiada({ alCompletar, alSalir } = {}) {
         botonIniciar.classList.add('respiracion-boton-iniciado');
         botonIniciar.innerHTML = '<i class="fa-solid fa-seedling"></i> Respirando';
         overlaySesion.classList.add('oculto');
+        desactivarOverlay('respiracion-sesion');
         vista.nodo.classList.remove('respiracion-sesion-completa');
         mostrarFase();
         intervalo = setInterval(avanzar, 1000);
@@ -98,12 +102,13 @@ export function inicializarRespiracionGuiada({ alCompletar, alSalir } = {}) {
         botonIniciar.disabled = true;
         botonIniciar.classList.add('oculto');
         circulo.classList.remove(...fases.map((item) => item.clase));
-        textoFase.textContent = 'Pausa completada';
+        textoFase.textContent = 'Sesión completada';
         contador.textContent = sesionesCompletadas;
-        progreso.textContent = `${sesionesCompletadas} pausa(s) completada(s)`;
+        progreso.textContent = `${sesionesCompletadas} sesión(es) completada(s)`;
 
-        textoPanelSesion.textContent = 'Terminaste un minuto de respiración. ¿Cómo te sientes ahora?';
+        textoPanelSesion.textContent = 'Terminaste una sesión de respiración 4x4. ¿Cómo te sientes ahora?';
         overlaySesion.classList.remove('oculto');
+        activarOverlay('respiracion-sesion');
         vista.nodo.classList.add('respiracion-sesion-completa');
     }
 
@@ -112,6 +117,7 @@ export function inicializarRespiracionGuiada({ alCompletar, alSalir } = {}) {
         segundosRestantes = fases[indiceFase].duracion;
         segundosSesion = duracionSesionSegundos;
         overlaySesion.classList.add('oculto');
+        desactivarOverlay('respiracion-sesion');
         vista.nodo.classList.remove('respiracion-sesion-completa');
         mostrarFase();
         iniciar();
@@ -134,12 +140,13 @@ export function inicializarRespiracionGuiada({ alCompletar, alSalir } = {}) {
     mostrarTutorialActividad({
         id: 'respiracion-guiada',
         titulo: 'Guía rápida de respiración',
-        descripcion: 'Cada pausa dura un minuto. Al terminar puedes elegir si quieres cerrarla o repetirla.',
+        descripcion: 'La respiración 4x4 usa cuatro tiempos iguales: inhalar, sostener, exhalar y pausar. Cada sesión dura 3 minutos.',
         pasos: [
-            { icono: 'fa-solid fa-play', texto: 'Inicia para activar el ritmo de respiración.' },
-            { icono: 'fa-solid fa-circle', texto: 'El círculo te guía para inhalar, sostener y exhalar.' },
-            { icono: 'fa-solid fa-repeat', texto: 'Puedes repetir la pausa las veces que necesites.' },
-            { icono: 'fa-solid fa-check', texto: 'La actividad se guarda cuando completas la pausa y respondes la evaluación final.' }
+            { icono: 'fa-solid fa-play', texto: 'Inicia para seguir el ritmo del círculo.' },
+            { icono: 'fa-solid fa-square', texto: 'Inhala 4, sostén 4, exhala 4 y pausa 4.' },
+            { icono: 'fa-solid fa-seedling', texto: 'Practicarlo varias veces ayuda a que el ritmo se sienta más familiar.' },
+            { icono: 'fa-solid fa-repeat', texto: 'Puedes repetir la sesión las veces que necesites.' },
+            { icono: 'fa-solid fa-check', texto: 'La actividad se guarda cuando completas la sesión y respondes la evaluación final.' }
         ]
     });
 
@@ -155,10 +162,10 @@ function crearVistaRespiracion(alSalir) {
                 tipo: 'div',
                 atributos: { class: 'respiracion-tarjeta' },
                 hijos: [
-                    { tipo: 'h1', hijos: ['Pausa para respirar'] },
+                    { tipo: 'h1', hijos: ['Respiración 4x4'] },
                     {
                         tipo: 'p',
-                        hijos: ['Sigue el ritmo del círculo. No tienes que hacerlo perfecto; solo acompaña tu respiración.']
+                        hijos: ['Inhala 4 segundos, sostén 4, exhala 4 y haz una pausa de 4. El ritmo del círculo te acompaña paso a paso, y no tiene que salir perfecto: practicarlo varias veces ayuda a que sea más fácil volver a este ritmo cuando lo necesites.']
                     },
                     {
                         tipo: 'div',
@@ -182,7 +189,7 @@ function crearVistaRespiracion(alSalir) {
                     {
                         tipo: 'p',
                         atributos: { class: 'respiracion-progreso', 'data-progreso-respiracion': '' },
-                        hijos: ['Sesión 1 | 60s']
+                        hijos: [`Sesión 1 | ${duracionSesionSegundos}s`]
                     },
                     {
                         tipo: 'div',
@@ -191,7 +198,7 @@ function crearVistaRespiracion(alSalir) {
                             {
                                 tipo: 'p',
                                 atributos: { 'data-texto-panel-sesion': '' },
-                                hijos: ['Terminaste un minuto de respiración. ¿Cómo te sientes ahora?']
+                                hijos: ['Terminaste una sesión de respiración 4x4. ¿Cómo te sientes ahora?']
                             },
                             {
                                 tipo: 'div',

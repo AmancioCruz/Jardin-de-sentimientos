@@ -4,9 +4,8 @@ import { actualizarSeccion, actualizarSesion, seccionesApp } from "../../../nucl
 import { registrarUsuario } from "../../../servicios/coordinador_servicios.js";
 import { componenteTerminos } from "../../../componentes/terminos/gestor_terminos.js";
 import { componenteMenu } from "../../../componentes/menu_navegacion/gestor_menu_navegacion.js";
-import { componenteInformacionUsuario } from "../../../componentes/informacion_usuario/gestor_informacion_usuario.js";
 import { construirUsuario } from "../../../servicios/observador_sesiones.js";
-import { aplicarTemaLocal } from "../../../servicios/preferencias_locales.js";
+import { aplicarTemaLocal, guardarPreferenciaLocal } from "../../../servicios/preferencias_locales.js";
 
 async function completarRegistro(datos) {
     if (!datos.foto || datos.foto.size === 0) {
@@ -16,11 +15,11 @@ async function completarRegistro(datos) {
     const usuarioFirebase = await registrarUsuario(datos);
     const usuarioActual = await construirUsuario(usuarioFirebase);
 
+    guardarPreferenciaLocal("tema", "claro");
     aplicarTemaLocal();
     actualizarSeccion(seccionesApp.inicio);
     actualizarSesion(true);
     componenteMenu(usuarioActual);
-    componenteInformacionUsuario(usuarioActual.nombre);
     mostrarPantalla(seccionesApp.inicio, usuarioActual);
 }
 

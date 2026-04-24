@@ -1,8 +1,9 @@
-import { crearInicio } from "./inicio.js";
+﻿import { crearInicio } from "./inicio.js";
 import { registrarPantalla, mostrarPantalla } from "../../nucleo/gestor_pantallas.js";
 import { seccionesApp } from "../../nucleo/sistema_estados.js";
 import { crearEvaluacion } from "../../componentes/evaluacion/evaluacion.js";
 import { contenedores } from "../../nucleo/contenedores_dom.js";
+import { activarOverlay, desactivarOverlay } from "../../servicios/overlay.js";
 import { crearComponenteCanvas } from "../../componentes/canvas/canvas.js";
 import { subirImagenActividad } from "../../servicios/almacenamiento.js";
 import { registrarActividadUsuario } from "../../servicios/base_datos.js";
@@ -38,39 +39,63 @@ const datosEvaluacion = {
     ]
 };
 
+const definicionesActividad = {
+    'Saturado Mentalmente': {
+        nombreActividad: 'tablero',
+        nombreVisible: 'Tablero de ideas',
+        seleccion: 'Tengo la mente saturada'
+    },
+    'Ansioso': {
+        nombreActividad: 'juego',
+        nombreVisible: 'Protege tu flor',
+        seleccion: 'Me siento bajo presión'
+    },
+    'Cansado': {
+        nombreActividad: 'respiracion',
+        nombreVisible: 'Respiración guiada',
+        seleccion: 'Necesito una pausa'
+    },
+    'Pizarrón Creativo': {
+        nombreActividad: 'pizarron',
+        nombreVisible: 'Pizarrón creativo',
+        seleccion: 'No me puedo concentrar'
+    }
+};
+
 registrarPantalla(seccionesApp.inicio, {
     constructor: crearInicio,
     dependencias: {
         callbacks: {
-            alSeleccionarEstado: (estado, usuario) => manejarEstados(estado, usuario),
-            alNoEstoySeguro: (usuario) => manejarNoEstoySeguro(usuario)
+            alSeleccionarEstado: (estado, usuario) => manejarEstados(estado, usuario, crearContextoEleccion(estado)),
+            alNoEstoySeguro: (usuario) => manejarNoEstoySeguro(usuario),
+            alAbrirRecursos: (usuario) => mostrarPantalla(seccionesApp.recursos, usuario)
         }
     }
 });
 
-function manejarEstados(estado, usuario) {
+function manejarEstados(estado, usuario, contexto = null) {
     if (estado === 'Saturado Mentalmente') {
         obtenerOCrearTableroActivo({ estado });
-        abrirTablero(usuario);
+        abrirTablero(usuario, contexto);
         return;
     }
 
     if (estado === 'Ansioso') {
-        abrirJuegoFlores(usuario);
+        abrirJuegoFlores(usuario, contexto);
         return;
     }
 
     if (estado === 'Cansado') {
-        abrirRespiracionGuiada(usuario);
+        abrirRespiracionGuiada(usuario, contexto);
         return;
     }
 
     if (estado === 'Pizarrón Creativo') {
-        abrirPizarronCreativo(usuario);
+        abrirPizarronCreativo(usuario, contexto);
     }
 }
 
-export function abrirTablero(usuario = null) {
+export function abrirTablero(usuario = null, contexto = null) {
     const lienzo = crearComponenteCanvas(25);
 
     activarModoActividad(usuario);
@@ -79,44 +104,44 @@ export function abrirTablero(usuario = null) {
         tablero: obtenerTableroActivo(),
         alGuardar: (canvas) => mostrarEvaluacionCierre(usuario, {
             nombreActividad: 'tablero',
-            canvas
+            canvas,
+            contexto
         }),
         alSalir: () => salirAInicio(usuario)
     }));
 }
 
-function abrirJuegoFlores(usuario = null) {
+function abrirJuegoFlores(usuario = null, contexto = null) {
     activarModoActividad(usuario);
     registrarLimpiezaActividad(inicializarJuegoFlores({
         alCompletar: (canvas) => mostrarEvaluacionCierre(usuario, {
             nombreActividad: 'juego',
-            canvas
+            canvas,
+            contexto
         }),
         alSalir: () => salirAInicio(usuario)
     }));
 }
 
-function abrirRespiracionGuiada(usuario = null) {
+function abrirRespiracionGuiada(usuario = null, contexto = null) {
     activarModoActividad(usuario);
     registrarLimpiezaActividad(inicializarRespiracionGuiada({
         alCompletar: (datosRespiracion) => mostrarEvaluacionCierre(usuario, {
             nombreActividad: 'respiracion',
             canvas: crearImagenResumenActividad('Respiración guiada', `${datosRespiracion.sesiones} pausa(s) completada(s)`),
-            detalles: {
-                sesiones: datosRespiracion.sesiones,
-                duracionTotalSegundos: datosRespiracion.duracionTotalSegundos
-            }
+            contexto
         }),
         alSalir: () => salirAInicio(usuario)
     }));
 }
 
-function abrirPizarronCreativo(usuario = null) {
+function abrirPizarronCreativo(usuario = null, contexto = null) {
     activarModoActividad(usuario);
     registrarLimpiezaActividad(inicializarPizarronCreativo({
         alGuardar: (canvas) => mostrarEvaluacionCierre(usuario, {
             nombreActividad: 'pizarron',
-            canvas
+            canvas,
+            contexto
         }),
         alSalir: () => salirAInicio(usuario)
     }));
@@ -137,6 +162,7 @@ function salirAInicio(usuario = null) {
     limpiarDatosActividadTemporal();
     desactivarProteccionActividad();
     document.getElementById('evaluacion-cierre-actividad')?.remove();
+    desactivarOverlay('evaluacion-cierre-actividad');
     document.body.classList.remove('actividad-activa');
     contenedores.contenido.classList.remove('actividad-activa');
     mostrarPantalla(seccionesApp.inicio, usuario);
@@ -176,6 +202,7 @@ function limpiarActividadSinGuardar() {
     limpiarDatosActividadTemporal();
     desactivarProteccionActividad();
     document.getElementById('evaluacion-cierre-actividad')?.remove();
+    desactivarOverlay('evaluacion-cierre-actividad');
     document.body.classList.remove('actividad-activa');
     contenedores.contenido.classList.remove('actividad-activa');
 }
@@ -192,6 +219,7 @@ function limpiarDatosAlCerrarPagina() {
 
 function mostrarEvaluacionCierre(usuario = null, actividad = {}) {
     document.getElementById('evaluacion-cierre-actividad')?.remove();
+    desactivarOverlay('evaluacion-cierre-actividad');
 
     const opciones = [
         { texto: 'Me siento más tranquilo', icono: 'fa-solid fa-seedling' },
@@ -204,6 +232,7 @@ function mostrarEvaluacionCierre(usuario = null, actividad = {}) {
     });
 
     document.body.appendChild(evaluacion);
+    activarOverlay('evaluacion-cierre-actividad');
 }
 
 function construirEvaluacionCierre(opciones, alContinuar) {
@@ -253,15 +282,20 @@ async function guardarRegistroActividad(usuario, actividad = {}, respuesta = '',
     const fechaActividad = new Date();
 
     try {
-        const imagen = await subirImagenActividad(usuario, actividad.nombreActividad, actividad.canvas, fechaActividad);
+        const canvasCompuesto = crearImagenCompuestaActividad({
+            actividad,
+            respuesta,
+            comentario,
+            fechaActividad
+        });
+        const imagen = await subirImagenActividad(usuario, actividad.nombreActividad, canvasCompuesto, fechaActividad);
         const registro = crearDatosRegistroActividad({
-            uid: usuario.uid,
             nombreActividad: actividad.nombreActividad,
             respuesta,
             comentario,
             imagen,
             fechaActividad,
-            detalles: actividad.detalles
+            contexto: actividad.contexto
         });
 
         await registrarActividadUsuario(usuario.uid, registro);
@@ -273,11 +307,10 @@ async function guardarRegistroActividad(usuario, actividad = {}, respuesta = '',
     }
 }
 
-function crearDatosRegistroActividad({ uid, nombreActividad, respuesta, comentario, imagen, fechaActividad, detalles }) {
+function crearDatosRegistroActividad({ nombreActividad, respuesta, comentario, imagen, fechaActividad, contexto }) {
     const { fecha, hora } = obtenerFechaHoraLegible(fechaActividad);
 
     return {
-        uid,
         nombreActividad,
         respuesta,
         comentario: comentario || '',
@@ -285,8 +318,9 @@ function crearDatosRegistroActividad({ uid, nombreActividad, respuesta, comentar
         hora,
         imagenPath: imagen?.ruta || '',
         imagenUrl: imagen?.url || '',
+        imagenCompuesta: true,
         creadoEn: fechaActividad.getTime(),
-        ...(detalles || {})
+        contexto: normalizarContextoRegistro(contexto)
     };
 }
 
@@ -327,9 +361,226 @@ function crearImagenResumenActividad(titulo, subtitulo = 'Pausa completada') {
     return canvas;
 }
 
+function crearImagenCompuestaActividad({ actividad = {}, respuesta = '', comentario = '', fechaActividad = new Date() }) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = 1600;
+    canvas.height = 900;
+
+    const colores = {
+        fondo: '#eef2e9',
+        tarjeta: '#fffef9',
+        panelImagen: '#f7f2e7',
+        borde: 'rgba(22, 78, 63, 0.10)',
+        sombra: 'rgba(22, 78, 63, 0.12)',
+        titulo: '#164e3f',
+        cuerpo: '#31584e',
+        secundario: 'rgba(49, 88, 78, 0.72)'
+    };
+
+    dibujarRectanguloRedondeado(ctx, 0, 0, canvas.width, canvas.height, 0, colores.fondo);
+    dibujarTarjetaConSombra(ctx, 36, 36, canvas.width - 72, canvas.height - 72, 34, colores.tarjeta, colores.sombra);
+
+    const areaImagen = {
+        x: 74,
+        y: 74,
+        w: 760,
+        h: 752
+    };
+    dibujarRectanguloRedondeado(ctx, areaImagen.x, areaImagen.y, areaImagen.w, areaImagen.h, 28, colores.panelImagen);
+    dibujarRectanguloRedondeado(ctx, areaImagen.x + 22, areaImagen.y + 22, areaImagen.w - 44, areaImagen.h - 44, 24, '#f2ebdc');
+
+    dibujarCanvasActividadEnPanel(ctx, actividad.canvas, {
+        x: areaImagen.x + 36,
+        y: areaImagen.y + 36,
+        w: areaImagen.w - 72,
+        h: areaImagen.h - 72
+    });
+
+    const areaTextoX = 880;
+    const areaTextoW = 620;
+    const nombreActividad = formatearNombreActividadParaImagen(actividad.nombreActividad);
+    const momentoHumano = formatearFechaHoraHumanaImagen(fechaActividad);
+    const resumen = construirResumenImagenActividad(actividad, respuesta);
+
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = colores.titulo;
+    ctx.font = '800 64px sans-serif';
+    dibujarTextoAjustado(ctx, nombreActividad, areaTextoX, 138, areaTextoW, 78, 2, colores.titulo);
+
+    ctx.fillStyle = colores.secundario;
+    ctx.font = '700 28px sans-serif';
+    dibujarTextoAjustado(ctx, momentoHumano, areaTextoX, 286, areaTextoW, 40, 2, colores.secundario);
+
+    ctx.fillStyle = colores.cuerpo;
+    ctx.font = '700 28px sans-serif';
+    dibujarTextoAjustado(ctx, resumen, areaTextoX, 382, areaTextoW, 46, 6, colores.cuerpo);
+
+    if (comentario?.trim()) {
+        ctx.fillStyle = colores.secundario;
+        ctx.font = '600 24px sans-serif';
+        dibujarTextoAjustado(
+            ctx,
+            `Tambien escribiste: "${comentario.trim()}".`,
+            areaTextoX,
+            640,
+            areaTextoW,
+            40,
+            4,
+            colores.secundario
+        );
+    }
+
+    return canvas;
+}
+
+function dibujarCanvasActividadEnPanel(ctx, origen, area) {
+    if (!origen) return;
+
+    const anchoOrigen = origen.width || origen.videoWidth || origen.naturalWidth || area.w;
+    const altoOrigen = origen.height || origen.videoHeight || origen.naturalHeight || area.h;
+    const escala = Math.min(area.w / anchoOrigen, area.h / altoOrigen);
+    const ancho = anchoOrigen * escala;
+    const alto = altoOrigen * escala;
+    const x = area.x + (area.w - ancho) / 2;
+    const y = area.y + (area.h - alto) / 2;
+
+    ctx.drawImage(origen, x, y, ancho, alto);
+}
+
+function dibujarTextoAjustado(ctx, texto, x, y, maxWidth, lineHeight, maxLineas, color) {
+    const lineas = partirTextoEnLineas(ctx, texto, maxWidth, maxLineas);
+    ctx.fillStyle = color;
+    lineas.forEach((linea, indice) => {
+        ctx.fillText(linea, x, y + (indice * lineHeight));
+    });
+}
+
+function partirTextoEnLineas(ctx, texto, maxWidth, maxLineas = 4) {
+    const palabras = String(texto || '').split(/\s+/).filter(Boolean);
+    const lineas = [];
+    let actual = '';
+
+    palabras.forEach((palabra) => {
+        const prueba = actual ? `${actual} ${palabra}` : palabra;
+        if (ctx.measureText(prueba).width <= maxWidth) {
+            actual = prueba;
+            return;
+        }
+
+        if (actual) {
+            lineas.push(actual);
+        }
+        actual = palabra;
+    });
+
+    if (actual) {
+        lineas.push(actual);
+    }
+
+    if (lineas.length <= maxLineas) return lineas;
+
+    const recortadas = lineas.slice(0, maxLineas);
+    const ultima = recortadas[maxLineas - 1];
+    recortadas[maxLineas - 1] = ultima.length > 3 ? `${ultima.slice(0, -3)}...` : `${ultima}...`;
+    return recortadas;
+}
+
+function dibujarTarjetaConSombra(ctx, x, y, w, h, radio, color, sombra) {
+    ctx.save();
+    ctx.shadowColor = sombra;
+    ctx.shadowBlur = 28;
+    ctx.shadowOffsetY = 16;
+    dibujarRectanguloRedondeado(ctx, x, y, w, h, radio, color);
+    ctx.restore();
+}
+
+function dibujarRectanguloRedondeado(ctx, x, y, w, h, radio, color) {
+    ctx.beginPath();
+    ctx.moveTo(x + radio, y);
+    ctx.lineTo(x + w - radio, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + radio);
+    ctx.lineTo(x + w, y + h - radio);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - radio, y + h);
+    ctx.lineTo(x + radio, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - radio);
+    ctx.lineTo(x, y + radio);
+    ctx.quadraticCurveTo(x, y, x + radio, y);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+}
+
+function construirResumenImagenActividad(actividad = {}, respuesta = '') {
+    const actividadNombre = formatearNombreActividadParaImagen(actividad.nombreActividad);
+    const contexto = actividad?.contexto || {};
+    const respuestaLimpia = respuesta?.trim();
+
+    if (contexto?.origen === 'evaluacion') {
+        if (respuestaLimpia) {
+            return `No sabías cómo te sentías, así que respondiste una evaluación breve. La app te sugirió ${actividadNombre} y al terminar respondiste: "${respuestaLimpia}".`;
+        }
+
+        return `No sabías cómo te sentías, así que respondiste una evaluación breve. La app te sugirió ${actividadNombre}.`;
+    }
+
+    if (contexto?.resumen) {
+        return respuestaLimpia
+            ? `${contexto.resumen} Al terminar respondiste: "${respuestaLimpia}".`
+            : contexto.resumen;
+    }
+
+    const accion = obtenerResumenAccionImagen(actividad.nombreActividad);
+    return respuestaLimpia
+        ? `Guardaste este momento para ${accion}. Al terminar respondiste: "${respuestaLimpia}".`
+        : `Guardaste este momento para ${accion}.`;
+}
+
+function obtenerResumenAccionImagen(nombreActividad = '') {
+    const acciones = {
+        tablero: 'ordenar lo que pensabas y sentías',
+        juego: 'protegerte de lo que te estaba presiónando',
+        respiracion: 'darte una pausa y recuperar el ritmo',
+        pizarron: 'expresar tus ideas y sentimientos de forma visual'
+    };
+
+    return acciones[nombreActividad] || 'acompañar este momento';
+}
+
+function formatearNombreActividadParaImagen(nombre = '') {
+    const nombres = {
+        tablero: 'Tablero de ideas',
+        juego: 'Protege tu flor',
+        respiracion: 'Respiración guiada',
+        pizarron: 'Pizarrón creativo'
+    };
+
+    return nombres[nombre] || nombre || 'Actividad';
+}
+
+function formatearFechaHoraHumanaImagen(fecha) {
+    const fechaTexto = new Intl.DateTimeFormat('es-MX', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long'
+    }).format(fecha);
+
+    const horaTexto = new Intl.DateTimeFormat('es-MX', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    }).format(fecha);
+
+    const fechaCapitalizada = fechaTexto.charAt(0).toUpperCase() + fechaTexto.slice(1);
+    return `${fechaCapitalizada} · ${horaTexto}`;
+}
+
 function manejarNoEstoySeguro(usuario = null) {
     const evaluacion = crearEvaluacion(datosEvaluacion, (respuestas) => {
-        manejarEstados(obtenerEstadoSugerido(respuestas), usuario);
+        const estadoSugerido = obtenerEstadoSugerido(respuestas);
+        manejarEstados(estadoSugerido, usuario, crearContextoEvaluacion(respuestas, estadoSugerido));
     });
     evaluacion.montar(contenedores.contenido, true);
 }
@@ -348,3 +599,101 @@ function obtenerEstadoSugerido(respuestas) {
 
     return mapaEstados[entradaMayor?.[0]] || 'Saturado Mentalmente';
 }
+
+function crearContextoEleccion(estado = '') {
+    const definicion = obtenerDefinicionActividadPorEstado(estado);
+    if (!definicion) return null;
+
+    return {
+        origen: 'eleccion',
+        resumen: `Elegiste "${definicion.seleccion}", por eso usaste ${definicion.nombreVisible}.`
+    };
+}
+
+function crearContextoEvaluacion(respuestas = {}, estadoSugerido = '') {
+    const definicion = obtenerDefinicionActividadPorEstado(estadoSugerido);
+    const aspectos = obtenerAspectosDominantesEvaluacion(respuestas);
+    const preguntas = datosEvaluacion.preguntas.map((pregunta) => ({
+        id: pregunta.id,
+        texto: pregunta.texto,
+        respuesta: Number(respuestas?.[pregunta.id] || 0)
+    }));
+
+    return {
+        origen: 'evaluacion',
+        resumen: definicion
+            ? `No sabías cómo te sentías, así que respondiste una evaluación breve. Lo que más apareció fue ${unirAspectosEvaluacion(aspectos)}, por eso la app te sugirió ${definicion.nombreVisible}.`
+            : 'No sabías cómo te sentías, así que respondiste una evaluación breve para encontrar una actividad que pudiera ayudarte.',
+        evaluacion: {
+            actividadSugerida: definicion?.nombreActividad || '',
+            respuestas: { ...respuestas },
+            preguntas
+        }
+    };
+}
+
+function obtenerAspectosDominantesEvaluacion(respuestas = {}) {
+    const etiquetas = {
+        estres: 'presión',
+        concentracion: 'dificultad para concentrarte',
+        cansancio: 'cansancio',
+        ansiedad: 'inquietud',
+        tiempo: 'falta de tiempo',
+        orden: 'dificultad para ordenar ideas'
+    };
+
+    const valores = Object.values(respuestas).map((valor) => Number(valor) || 0);
+    const maximo = Math.max(...valores, 0);
+    const dominantes = Object.entries(respuestas)
+        .filter(([, valor]) => Number(valor) === maximo && maximo > 0)
+        .map(([clave]) => etiquetas[clave])
+        .filter(Boolean);
+
+    return dominantes.length ? dominantes : ['lo que estabas viviendo'];
+}
+
+function unirAspectosEvaluacion(aspectos = []) {
+    if (aspectos.length <= 1) return aspectos[0] || 'lo que estabas viviendo';
+    if (aspectos.length === 2) return `${aspectos[0]} y ${aspectos[1]}`;
+    return `${aspectos.slice(0, -1).join(', ')} y ${aspectos[aspectos.length - 1]}`;
+}
+
+function normalizarContextoRegistro(contexto = null) {
+    if (!contexto || typeof contexto !== 'object') return null;
+
+    const normalizado = {
+        origen: contexto.origen || 'eleccion',
+        resumen: contexto.resumen || ''
+    };
+
+    if (contexto.origen === 'evaluacion' && contexto.evaluacion) {
+        normalizado.evaluacion = {
+            actividadSugerida: contexto.evaluacion.actividadSugerida || '',
+            respuestas: { ...(contexto.evaluacion.respuestas || {}) },
+            preguntas: Array.isArray(contexto.evaluacion.preguntas) ? contexto.evaluacion.preguntas : []
+        };
+    }
+
+    return normalizado;
+}
+
+function obtenerDefinicionActividadPorEstado(estado = '') {
+    if (definicionesActividad[estado]) {
+        return definicionesActividad[estado];
+    }
+
+    if (estado.includes('Saturado')) return definicionesActividad['Saturado Mentalmente'];
+    if (estado.includes('Ansioso')) return definicionesActividad['Ansioso'];
+    if (estado.includes('Cansado')) return definicionesActividad['Cansado'];
+    if (estado.toLowerCase().includes('pizarr')) {
+        return {
+            nombreActividad: 'pizarron',
+            nombreVisible: 'Pizarrón creativo',
+            seleccion: 'No me puedo concentrar'
+        };
+    }
+
+    return null;
+}
+
+

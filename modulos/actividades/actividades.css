@@ -3,19 +3,21 @@
 .actividad-tablero,
 .actividad-pizarron {
     position: relative;
-    width: min(100%, 62rem);
+    width: 100%;
     height: 100%;
     min-height: 0;
-    border-radius: clamp(0.75rem, 2vw, 1.25rem);
+    max-width: var(--ancho-panel-app);
+    border-radius: var(--radio-xl);
     overflow: hidden;
+    transition: transform var(--duracion-ui-media) var(--curva-ui), border-color var(--duracion-ui-media) var(--curva-ui), background var(--duracion-ui-media) var(--curva-ui), box-shadow var(--duracion-ui-media) var(--curva-ui);
 }
 
 .actividad-juego {
     display: grid;
     grid-template-rows: auto minmax(0, 1fr);
-    background: #fffef9;
-    border: 1px solid rgba(22, 78, 63, 0.1);
-    box-shadow: 0 14px 34px rgba(22, 78, 63, 0.12);
+    background: var(--panel-app-fondo);
+    border: 1px solid var(--panel-app-borde);
+    box-shadow: var(--panel-app-sombra);
 }
 
 .actividad-flores {
@@ -26,9 +28,9 @@
 .actividad-pizarron {
     display: grid;
     grid-template-rows: minmax(0, 1fr) auto;
-    background: #f7f5ee;
-    border: 1px solid rgba(22, 78, 63, 0.1);
-    box-shadow: 0 14px 34px rgba(22, 78, 63, 0.12);
+    background: var(--panel-app-fondo);
+    border: 1px solid var(--panel-app-borde);
+    box-shadow: var(--panel-app-sombra);
 }
 
 .tablero-lienzo-area {
@@ -44,32 +46,36 @@
 
 .actividad-panel-superior {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: var(--espacio-m);
-    padding: clamp(0.75rem, 2vw, 1rem);
-    background: rgba(255, 255, 255, 0.92);
-    border-bottom: 1px solid rgba(22, 78, 63, 0.08);
+    padding: 24px 24px 16px;
+    background: transparent;
+    border-bottom: 1px solid var(--linea-suave);
 }
 
 .actividad-panel-superior > div:first-child {
     min-width: 0;
+    display: grid;
+    gap: 8px;
 }
 
 .actividad-panel-superior h1,
 .respiracion-tarjeta h1 {
     margin: 0;
     color: var(--verde);
-    font-size: clamp(1.25rem, 4vw, 1.85rem);
-    line-height: 1.15;
+    font-size: clamp(1.4rem, 3vw, var(--tamano-texto-2xl));
+    line-height: var(--alto-linea-titulo);
+    letter-spacing: -0.02em;
+    font-weight: var(--peso-bold);
 }
 
 .actividad-panel-superior p,
 .respiracion-tarjeta p {
-    margin: 0.2rem 0 0;
+    margin: 0;
     color: var(--texto-sutil);
-    font-size: clamp(0.82rem, 2.2vw, 0.98rem);
-    line-height: 1.35;
+    font-size: var(--tamano-texto-m);
+    line-height: var(--alto-linea-cuerpo);
 }
 
 .actividad-mensaje-sol {
@@ -100,10 +106,10 @@
     bottom: clamp(0.75rem, 2vw, 1rem);
     padding: 0.45rem 0.75rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.86);
+    background: rgba(255, 255, 255, 0.84);
     color: var(--verde);
     font-size: var(--tamano-texto-s);
-    font-weight: 800;
+    font-weight: var(--peso-semibold);
     box-shadow: var(--sombra-suave);
 }
 
@@ -126,25 +132,25 @@
     max-width: calc(100% - 2rem);
     box-sizing: border-box;
     display: grid;
-    justify-items: center;
-    gap: var(--espacio-s);
-    padding: var(--espacio-l);
-    border: 1px solid rgba(22, 78, 63, 0.14);
+    justify-items: start;
+    gap: var(--espacio-m);
+    padding: var(--padding-panel-interno);
+    border: 1px solid var(--tarjeta-borde);
     border-radius: var(--radio-grande);
-    background: rgba(255, 255, 255, 0.94);
-    box-shadow: 0 20px 54px rgba(22, 78, 63, 0.18);
-    text-align: center;
+    background: var(--tarjeta-fondo);
+    box-shadow: 0 20px 54px rgba(22, 78, 63, 0.16);
+    text-align: left;
     transform: translate(-50%, -50%);
-    animation: none;
     opacity: 1;
+    transition: border-color var(--duracion-ui-media) var(--curva-ui), background var(--duracion-ui-media) var(--curva-ui), box-shadow var(--duracion-ui-media) var(--curva-ui);
 }
 
 .panel-final-juego h2 {
     margin: 0;
     width: 100%;
     color: var(--verde);
-    font-size: clamp(1.25rem, 5vw, 1.65rem);
-    line-height: 1.15;
+    font-size: clamp(1.4rem, 5vw, var(--tamano-texto-2xl));
+    line-height: var(--alto-linea-titulo);
     overflow-wrap: anywhere;
 }
 
@@ -152,8 +158,8 @@
     margin: 0;
     width: 100%;
     color: var(--texto-sutil);
-    font-weight: 700;
-    line-height: 1.45;
+    font-weight: var(--peso-medium);
+    line-height: var(--alto-linea-cuerpo);
     overflow-wrap: anywhere;
 }
 
@@ -163,14 +169,14 @@
 
 .selector-duracion-juego__texto--principal {
     color: var(--texto);
-    font-size: clamp(0.95rem, 2.8vw, 1.05rem);
-    font-weight: 850;
+    font-size: var(--tamano-texto-m);
+    font-weight: var(--peso-semibold);
 }
 
 .selector-duracion-juego__texto--secundario {
     color: rgba(33, 49, 44, 0.68);
-    font-size: clamp(0.86rem, 2.5vw, 0.95rem);
-    font-weight: 650;
+    font-size: var(--tamano-texto-s);
+    font-weight: var(--peso-medium);
 }
 
 .selector-duracion-juego__opciones {
@@ -185,8 +191,8 @@
     display: block;
     width: 100%;
     color: var(--verde);
-    font-weight: 900;
-    font-size: clamp(0.98rem, 3vw, 1.08rem);
+    font-weight: var(--peso-semibold);
+    font-size: var(--tamano-texto-l);
     line-height: 1.3;
 }
 
@@ -201,13 +207,14 @@
 
 .btn-actividad-salir {
     flex: 0 0 auto;
-    min-height: 2.6rem;
-    padding: 0 0.95rem;
+    min-height: 2.85rem;
+    padding: 0 1rem;
     border-radius: 999px;
     background: var(--verde);
     color: #fff;
-    box-shadow: var(--sombra-suave);
+    box-shadow: var(--tarjeta-sombra);
     font-size: var(--tamano-texto-s);
+    font-weight: var(--peso-semibold);
 }
 
 .pizarron-acciones {
@@ -215,8 +222,8 @@
     align-items: center;
     gap: 0.45rem;
     padding: 0.6rem;
-    background: rgba(255, 255, 255, 0.94);
-    border-color: rgba(22, 78, 63, 0.08);
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--linea-suave);
     overflow-x: auto;
     scrollbar-width: thin;
 }
@@ -281,7 +288,7 @@
     gap: 0.35rem;
     padding: 0.25rem;
     border-radius: 999px;
-    background: rgba(244, 241, 234, 0.72);
+    background: rgba(244, 241, 234, 0.78);
     border: 1px solid transparent;
 }
 
@@ -318,7 +325,7 @@
     color: var(--texto);
     box-shadow: 0 8px 18px rgba(22, 78, 63, 0.08);
     font-size: var(--tamano-texto-xs);
-    font-weight: 800;
+    font-weight: var(--peso-medium);
 }
 
 .btn-pizarron-herramienta,
@@ -384,6 +391,61 @@
     background: transparent;
 }
 
+.control-pizarron--fondo {
+    position: relative;
+    display: inline-grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 6.75rem;
+    padding: 0.35rem 0.7rem;
+    white-space: nowrap;
+    overflow: visible;
+    --color-fondo-actual: #fffef9;
+}
+
+.icono-color-fondo-pizarron {
+    width: 1.15rem;
+    height: 1.15rem;
+    display: inline-block;
+    border-radius: 0.28rem;
+    border: 1px solid rgba(22, 78, 63, 0.18);
+    background: var(--color-fondo-actual);
+    flex: 0 0 auto;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.control-pizarron--fondo .input-color-fondo-pizarron {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    opacity: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    background: transparent;
+    pointer-events: none;
+}
+
+.control-pizarron--fondo .input-color-fondo-pizarron::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.control-pizarron--fondo .input-color-fondo-pizarron::-webkit-color-swatch {
+    border: none;
+    background: transparent;
+}
+
+.control-pizarron--fondo .input-color-fondo-pizarron::-moz-color-swatch {
+    border: none;
+}
+
 .control-pizarron--rango {
     min-width: 8.5rem;
 }
@@ -424,13 +486,12 @@
 
 .actividad-respiracion {
     display: grid;
-    place-items: center;
-    padding: clamp(1rem, 4vw, 2rem);
-    background:
-        radial-gradient(circle at 50% 35%, rgba(131, 201, 244, 0.28), transparent 28%),
-        linear-gradient(180deg, #fffef9, #edf7f0);
-    border: 1px solid rgba(22, 78, 63, 0.08);
-    box-shadow: 0 14px 34px rgba(22, 78, 63, 0.12);
+    align-items: start;
+    justify-items: center;
+    padding: var(--padding-panel-app);
+    background: var(--panel-app-fondo);
+    border: 1px solid var(--panel-app-borde);
+    box-shadow: var(--panel-app-sombra);
 }
 
 .actividad-respiracion {
@@ -438,11 +499,11 @@
 }
 
 .respiracion-tarjeta {
-    width: min(100%, 34rem);
+    width: min(100%, 32rem);
     display: grid;
-    justify-items: center;
-    gap: clamp(1rem, 4vw, 1.6rem);
-    text-align: center;
+    justify-items: start;
+    gap: var(--espacio-m);
+    text-align: left;
 }
 
 .actividad-respiracion.respiracion-sesion-completa .respiracion-circulo,
@@ -455,6 +516,7 @@
 }
 
 .respiracion-circulo {
+    justify-self: center;
     width: clamp(11rem, 45vw, 17rem);
     height: clamp(11rem, 45vw, 17rem);
     display: grid;
@@ -462,8 +524,7 @@
     align-content: center;
     gap: 0.25rem;
     border-radius: 50%;
-    background:
-        radial-gradient(circle, rgba(255, 255, 255, 0.92) 0 45%, rgba(223, 241, 232, 0.72) 46% 100%);
+    background: #eef4ef;
     border: 1px solid rgba(22, 78, 63, 0.12);
     box-shadow:
         inset 0 0 34px rgba(31, 111, 91, 0.14),
@@ -474,7 +535,7 @@
 
 .respiracion-circulo span {
     font-size: clamp(1.05rem, 4vw, 1.5rem);
-    font-weight: 800;
+    font-weight: var(--peso-bold);
 }
 
 .respiracion-circulo strong {
@@ -485,33 +546,43 @@
 .respiracion-acciones {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 0.55rem;
     flex-wrap: wrap;
 }
 
 .respiracion-progreso {
     color: var(--verde);
-    font-weight: 900;
+    font-weight: var(--peso-bold);
+}
+
+.respiracion-practica {
+    max-width: 31rem;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid rgba(47, 127, 195, 0.14);
+    border-radius: var(--radio-borde);
+    background: rgba(224, 241, 255, 0.48);
+    color: var(--texto);
+    font-weight: var(--peso-medium);
 }
 
 .respiracion-panel-sesion {
     width: min(100%, 24rem);
     box-sizing: border-box;
     display: grid;
-    gap: 0.75rem;
-    padding: 1rem;
-    border: 1px solid rgba(22, 78, 63, 0.12);
+    gap: var(--espacio-m);
+    padding: var(--padding-panel-interno);
+    border: 1px solid var(--tarjeta-borde);
     border-radius: var(--radio-borde);
-    background: rgba(255, 255, 255, 0.96);
-    box-shadow: var(--sombra-suave);
+    background: var(--tarjeta-fondo);
+    box-shadow: var(--tarjeta-sombra);
     backdrop-filter: blur(10px);
-    text-align: center;
+    text-align: left;
 }
 
 .respiracion-panel-sesion p {
     color: var(--texto);
-    font-weight: 850;
+    font-weight: var(--peso-medium);
 }
 
 .respiracion-panel-sesion__acciones {
@@ -540,34 +611,36 @@
     display: grid;
     place-items: center;
     padding: var(--espacio-m);
-    background: rgba(12, 24, 20, 0.42);
+    background: var(--capa-modal);
     backdrop-filter: blur(6px);
 }
 
 .evaluacion-cierre-actividad__tarjeta {
     width: min(100%, 24rem);
     display: grid;
-    gap: var(--espacio-s);
-    padding: clamp(1rem, 4vw, 1.35rem);
-    border: 1px solid rgba(22, 78, 63, 0.14);
+    gap: var(--espacio-m);
+    padding: var(--padding-panel-interno);
+    border: 1px solid var(--tarjeta-borde);
     border-radius: var(--radio-grande);
-    background: rgba(255, 255, 255, 0.96);
+    background: var(--tarjeta-fondo);
     box-shadow: 0 24px 70px rgba(7, 22, 18, 0.28);
-    text-align: center;
+    text-align: left;
+    transition: border-color var(--duracion-ui-media) var(--curva-ui), background var(--duracion-ui-media) var(--curva-ui), box-shadow var(--duracion-ui-media) var(--curva-ui);
 }
 
 .evaluacion-cierre-actividad__tarjeta h2 {
     margin: 0;
     color: var(--verde);
-    font-size: clamp(1.25rem, 5vw, 1.65rem);
-    line-height: 1.15;
+    font-size: clamp(1.35rem, 5vw, var(--tamano-texto-xl));
+    line-height: var(--alto-linea-titulo);
+    font-weight: var(--peso-bold);
 }
 
 .evaluacion-cierre-actividad__tarjeta p {
     margin: 0;
     color: var(--texto-sutil);
-    font-weight: 700;
-    line-height: 1.35;
+    font-weight: var(--peso-medium);
+    line-height: var(--alto-linea-cuerpo);
 }
 
 .evaluacion-cierre-actividad__opciones {
@@ -582,7 +655,7 @@
     text-align: left;
     color: var(--texto);
     font-size: var(--tamano-texto-s);
-    font-weight: 800;
+    font-weight: var(--peso-medium);
 }
 
 .evaluacion-cierre-actividad__comentario textarea {
@@ -595,8 +668,8 @@
     background: #fffdf8;
     color: var(--texto);
     font: inherit;
-    font-weight: 650;
-    line-height: 1.35;
+    font-weight: var(--peso-regular);
+    line-height: var(--alto-linea-cuerpo);
     outline: none;
 }
 
@@ -617,7 +690,7 @@
     background: #fffdf8;
     color: var(--texto);
     box-shadow: 0 8px 18px rgba(22, 78, 63, 0.08);
-    font-weight: 800;
+    font-weight: var(--peso-semibold);
 }
 
 .evaluacion-cierre-actividad__opcion:first-child {
@@ -632,7 +705,7 @@
     display: grid;
     place-items: center;
     padding: var(--espacio-m);
-    background: rgba(12, 24, 20, 0.34);
+    background: var(--capa-modal);
     backdrop-filter: blur(5px);
 }
 
@@ -640,12 +713,14 @@
     position: relative;
     width: min(100%, 26rem);
     display: grid;
-    gap: 0.75rem;
-    padding: clamp(1rem, 4vw, 1.35rem);
-    border: 1px solid color-mix(in srgb, var(--color-tutorial, var(--verde)) 22%, transparent);
+    gap: var(--espacio-m);
+    padding: var(--padding-panel-interno);
+    border: 1px solid rgba(22, 78, 63, 0.14);
     border-radius: var(--radio-grande);
-    background: rgba(255, 255, 255, 0.97);
+    background: var(--tarjeta-fondo);
     box-shadow: 0 24px 70px rgba(7, 22, 18, 0.28);
+    text-align: left;
+    transition: border-color var(--duracion-ui-media) var(--curva-ui), background var(--duracion-ui-media) var(--curva-ui), box-shadow var(--duracion-ui-media) var(--curva-ui);
 }
 
 .tutorial-actividad--tablero {
@@ -671,15 +746,16 @@
 .tutorial-actividad__tarjeta h2 {
     margin: 0;
     color: var(--color-tutorial, var(--verde));
-    font-size: clamp(1.2rem, 4vw, 1.55rem);
-    line-height: 1.15;
+    font-size: clamp(1.3rem, 4vw, var(--tamano-texto-xl));
+    line-height: var(--alto-linea-titulo);
+    font-weight: var(--peso-bold);
 }
 
 .tutorial-actividad__tarjeta p {
     margin: 0;
-    color: color-mix(in srgb, var(--color-tutorial, var(--verde)) 34%, var(--texto) 66%);
-    font-weight: 700;
-    line-height: 1.4;
+    color: var(--texto-sutil);
+    font-weight: var(--peso-medium);
+    line-height: var(--alto-linea-cuerpo);
 }
 
 .tutorial-actividad__cerrar {
@@ -699,9 +775,9 @@
     grid-template-columns: 1.9rem 1fr;
     align-items: center;
     gap: 0.55rem;
-    color: color-mix(in srgb, var(--color-tutorial, var(--verde)) 28%, var(--texto) 72%);
-    font-weight: 800;
-    line-height: 1.35;
+    color: var(--texto);
+    font-weight: var(--peso-medium);
+    line-height: 1.5;
 }
 
 .tutorial-actividad__lista i {
@@ -715,14 +791,13 @@
 }
 
 .tutorial-actividad__accion {
-    justify-self: end;
+    justify-self: start;
 }
 
 .respiracion-inhala {
     transform: scale(1.12);
     color: #2f7fc3;
-    background:
-        radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 42%, rgba(131, 201, 244, 0.42) 43% 100%);
+    background: #d8ebf8;
     box-shadow:
         inset 0 0 36px rgba(47, 127, 195, 0.18),
         0 22px 54px rgba(47, 127, 195, 0.16);
@@ -731,8 +806,7 @@
 .respiracion-sosten {
     transform: scale(1.12);
     color: #9a650f;
-    background:
-        radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 42%, rgba(255, 210, 90, 0.36) 43% 100%);
+    background: #f7ecd0;
     box-shadow:
         inset 0 0 36px rgba(205, 139, 34, 0.2),
         0 22px 54px rgba(205, 139, 34, 0.14);
@@ -741,11 +815,19 @@
 .respiracion-exhala {
     transform: scale(0.88);
     color: #167e58;
-    background:
-        radial-gradient(circle, rgba(255, 255, 255, 0.96) 0 44%, rgba(125, 231, 185, 0.34) 45% 100%);
+    background: #dcefe5;
     box-shadow:
         inset 0 0 32px rgba(22, 126, 88, 0.18),
         0 18px 44px rgba(22, 126, 88, 0.13);
+}
+
+.respiracion-pausa {
+    transform: scale(0.88);
+    color: #7a541d;
+    background: #f5ead2;
+    box-shadow:
+        inset 0 0 32px rgba(205, 139, 34, 0.18),
+        0 18px 44px rgba(205, 139, 34, 0.13);
 }
 
 @media (max-width: 767px) {
@@ -754,23 +836,37 @@
     .actividad-tablero,
     .actividad-pizarron {
         width: 100%;
-        border-radius: 0.85rem;
+        border-radius: 1.35rem;
     }
 
     .actividad-panel-superior {
-        align-items: flex-start;
-        gap: 0.65rem;
-        padding: 0.75rem;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.95rem 1rem 0.9rem;
+        text-align: center;
     }
 
-    .actividad-panel-superior h1 {
-        font-size: clamp(1.15rem, 7vw, 1.45rem);
+    .actividad-panel-superior > div:first-child {
+        width: 100%;
+        display: grid;
+        justify-items: center;
+        text-align: center;
+    }
+
+    .actividad-panel-superior h1,
+    .respiracion-tarjeta h1 {
+        font-size: 1.55rem;
+        line-height: 1.1;
         overflow-wrap: normal;
     }
 
-    .actividad-panel-superior p {
-        font-size: 0.82rem;
-        line-height: 1.3;
+    .actividad-panel-superior p,
+    .respiracion-tarjeta p {
+        max-width: 19rem;
+        font-size: 0.98rem;
+        line-height: 1.55;
+        text-align: center;
     }
 
     .btn-actividad-salir {
@@ -786,7 +882,8 @@
 
     .respiracion-panel-sesion {
         width: min(100%, 21rem);
-        padding: 0.85rem;
+        padding: 1rem;
+        border-radius: 1.15rem;
     }
 
     .respiracion-panel-sesion__acciones {
@@ -797,6 +894,30 @@
         grid-template-rows: auto minmax(24rem, 1fr) auto;
     }
 
+    .respiracion-tarjeta {
+        width: min(100%, 26rem);
+    }
+
+    .panel-final-juego,
+    .selector-duracion-juego,
+    .evaluacion-cierre-actividad__tarjeta {
+        gap: 0.7rem;
+        padding: 1rem;
+        border-radius: 1.15rem;
+    }
+
+    .respiracion-practica,
+    .actividad-marcador {
+        text-align: center;
+    }
+
+    .respiracion-practica {
+        padding: 0.72rem 0.85rem;
+        border-radius: 0.95rem;
+        font-size: 0.92rem;
+        line-height: 1.5;
+    }
+
     .btn-pizarron-herramienta span,
     .control-pizarron span {
         display: none;
@@ -804,20 +925,51 @@
 
     .pizarron-barra {
         max-width: none;
+        gap: 0.35rem;
     }
 
     .pizarron-menu-flotante {
-        left: var(--espacio-s);
-        right: var(--espacio-s);
+        left: 0.6rem;
+        right: 0.6rem;
         max-width: none;
+        gap: 0.35rem;
     }
 
     .control-pizarron--rango {
         min-width: 6.4rem;
     }
+    .pizarron-acciones {
+        justify-content: center;
+        padding: 0.45rem;
+    }
+
+    .grupo-pizarron {
+        padding: 0.2rem;
+        gap: 0.25rem;
+    }
+
+    .btn-pizarron-herramienta,
+    .btn-pizarron-toggle,
+    .btn-pizarron-mini,
+    .control-pizarron {
+        min-height: 2.05rem;
+        font-size: 0.76rem;
+    }
 }
 
 @media (min-width: 768px) {
+    .actividad-juego,
+    .actividad-respiracion,
+    .actividad-tablero,
+    .actividad-pizarron {
+        width: 100%;
+        height: min(100%, 46rem);
+    }
+
+    .respiracion-tarjeta {
+        width: min(100%, 34rem);
+    }
+
     .pizarron-menu-flotante {
         max-width: calc(100% - 2rem);
     }
@@ -832,22 +984,11 @@
     }
 }
 
-@media (min-width: 768px) {
-    .actividad-juego,
-    .actividad-respiracion,
-    .actividad-tablero,
-    .actividad-pizarron {
-        width: min(100%, 68rem);
-        height: min(100%, 46rem);
-    }
-}
-
 @media (min-width: 768px) and (max-width: 1199px) {
     .actividad-juego,
     .actividad-respiracion,
     .actividad-tablero,
     .actividad-pizarron {
-        width: min(100%, 56rem);
         height: min(100%, 42rem);
     }
 }

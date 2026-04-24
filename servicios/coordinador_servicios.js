@@ -3,7 +3,7 @@ import { EliminarUsuarioAuth, RegistrarUsuarioAuth } from "./autenticacion.js";
 import { registrarDatosUsuario } from "./base_datos.js";
 
 export async function registrarUsuario(datosUsuario) {
-    const { foto, nombre, correo, programa, semestre, terminos, contrasena } = datosUsuario;
+    const { foto, nombre, correo, nivelAcademico, programa, semestre, terminos, contrasena } = datosUsuario;
     let usuarioAuth = null;
 
     try {
@@ -16,6 +16,7 @@ export async function registrarUsuario(datosUsuario) {
         await registrarDatosUsuario(uid, {
             nombre,
             correo,
+            nivelAcademico,
             programa,
             semestre,
             terminos

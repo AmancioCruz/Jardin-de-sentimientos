@@ -1,6 +1,8 @@
 :root {
   --verde: #164e3f;
   --verde-claro: #1f6f5b;
+  --verde-oscuro: #12392f;
+  --verde-profundo: #12392f;
   --verde-suave: #dff1e8;
   --acento: #c96f4a;
   --acento-fuerte: #b85a33;
@@ -9,43 +11,76 @@
   --superficie: #ffffff;
   --superficie-suave: #f8f5ef;
   --texto: #21312c;
-  --texto-sutil: #66756f;
+  --texto-sutil: #5a6963;
   --borde: #dde6df;
-  --sombra-suave: 0 16px 40px rgba(22, 78, 63, 0.08);
-  --sombra-media: 0 20px 48px rgba(22, 78, 63, 0.14);
+  --sombra-suave: 0 14px 32px rgba(22, 78, 63, 0.08);
+  --sombra-media: 0 18px 40px rgba(22, 78, 63, 0.12);
+  --panel-app-fondo: #f8f2e9;
+  --panel-app-borde: rgba(22, 78, 63, 0.08);
+  --panel-app-sombra: 0 18px 38px rgba(22, 78, 63, 0.08);
+  --tarjeta-fondo: #fffbf6;
+  --tarjeta-borde: rgba(22, 78, 63, 0.08);
+  --tarjeta-sombra: 0 12px 26px rgba(22, 78, 63, 0.06);
+  --linea-suave: rgba(22, 78, 63, 0.08);
+  --capa-modal: rgba(12, 24, 20, 0.42);
+  --capa-modal-fuerte: rgba(12, 24, 20, 0.52);
 
   --altura-cabecera: 3.75rem;
   --ancho-sidebar: 15rem;
   --ancho-minimo-app: 320px;
   --radio-borde: 1rem;
   --radio-grande: 1.5rem;
-  --espacio-xs: 0.25rem;
-  --espacio-s: 0.5rem;
+  --radio-xl: 1.75rem;
+  --espacio-2xs: 0.25rem;
+  --espacio-xs: 0.5rem;
+  --espacio-s: 0.75rem;
   --espacio-m: 1rem;
   --espacio-l: 1.5rem;
   --espacio-xl: 2rem;
-  --espacio-2xl: 3rem;
-  --espacio-3xl: 4rem;
+  --espacio-2xl: 2.5rem;
+  --espacio-3xl: 3rem;
 
-  --fuente: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
+  --fuente: "Inter", "Segoe UI", system-ui, sans-serif;
+  --tamano-texto-caption: 0.75rem;
   --tamano-texto-xs: 0.75rem;
   --tamano-texto-s: 0.875rem;
   --tamano-texto-m: 1rem;
-  --tamano-texto-l: 1.125rem;
-  --tamano-texto-xl: 1.6rem;
-  --tamano-texto-2xl: 2.1rem;
+  --tamano-texto-l: 1.25rem;
+  --tamano-texto-xl: 1.5rem;
+  --tamano-texto-2xl: 2rem;
+  --peso-regular: 400;
+  --peso-medium: 500;
+  --peso-semibold: 600;
+  --peso-bold: 700;
+  --alto-linea-cuerpo: 1.6;
+  --alto-linea-titulo: 1.15;
+  --ancho-panel-app: 92rem;
+  --ancho-formulario: 32rem;
+  --padding-panel-app: clamp(1rem, 2vw, 1.5rem);
+  --padding-panel-interno: clamp(1rem, 2vw, 1.5rem);
+  --duracion-ui-rapida: 0.18s;
+  --duracion-ui-media: 0.28s;
+  --duracion-ui-lenta: 0.4s;
+  --curva-ui: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 [data-theme="dark"] {
   --fondo: #101714;
-  --fondo-elevado: #13201b;
-  --superficie: #18241f;
-  --superficie-suave: #1d2c25;
-  --texto: #edf4f0;
-  --texto-sutil: #9eb0a8;
-  --borde: #2a3933;
-  --sombra-suave: 0 16px 40px rgba(0, 0, 0, 0.28);
-  --sombra-media: 0 20px 48px rgba(0, 0, 0, 0.34);
+  --fondo-elevado: #16201c;
+  --superficie: #1a2621;
+  --superficie-suave: #223029;
+  --texto: #f1f6f3;
+  --texto-sutil: #b3c0ba;
+  --borde: #33423c;
+  --sombra-suave: 0 14px 34px rgba(0, 0, 0, 0.28);
+  --sombra-media: 0 18px 40px rgba(0, 0, 0, 0.34);
+  --panel-app-fondo: #18251f;
+  --panel-app-borde: rgba(223, 241, 232, 0.12);
+  --panel-app-sombra: 0 20px 42px rgba(0, 0, 0, 0.24);
+  --tarjeta-fondo: #213029;
+  --tarjeta-borde: rgba(223, 241, 232, 0.14);
+  --tarjeta-sombra: 0 16px 28px rgba(0, 0, 0, 0.16);
+  --linea-suave: rgba(223, 241, 232, 0.12);
 }
 
 [data-theme="dark"] body {
@@ -59,8 +94,8 @@
 [data-theme="dark"] .actividad-tablero,
 [data-theme="dark"] .actividad-pizarron,
 [data-theme="dark"] .actividad-respiracion {
-  background: rgba(24, 36, 31, 0.96);
-  border-color: rgba(223, 241, 232, 0.1);
+  background: #213029;
+  border-color: rgba(223, 241, 232, 0.14);
 }
 
 [data-theme="dark"] .titulo-formulario,
@@ -85,9 +120,9 @@
 [data-theme="dark"] .btn-pizarron-mini,
 [data-theme="dark"] .btn-pizarron-herramienta,
 [data-theme="dark"] .control-pizarron {
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: #273630;
   color: var(--texto);
-  border-color: rgba(223, 241, 232, 0.12);
+  border-color: rgba(223, 241, 232, 0.16);
 }
 
 [data-theme="dark"] .campo input,
@@ -109,6 +144,51 @@
   color: #b8c7c0;
 }
 
+[data-theme="dark"] .etiqueta-pantalla--inicio {
+  background: rgba(22, 126, 88, 0.22);
+  color: #89efc2;
+}
+
+[data-theme="dark"] .etiqueta-pantalla--perfil {
+  background: rgba(201, 111, 74, 0.22);
+  color: #ffc3a8;
+}
+
+[data-theme="dark"] .etiqueta-pantalla--bitacora {
+  background: rgba(245, 158, 11, 0.22);
+  color: #ffd481;
+}
+
+[data-theme="dark"] .etiqueta-pantalla--sesion {
+  background: rgba(91, 141, 239, 0.22);
+  color: #b7d1ff;
+}
+
+[data-theme="dark"] .etiqueta-pantalla--registro {
+  background: rgba(47, 127, 195, 0.22);
+  color: #9ed4ff;
+}
+
+[data-theme="dark"] .etiqueta-pantalla--configuracion {
+  background: rgba(91, 141, 239, 0.22);
+  color: #b7d1ff;
+}
+
+[data-theme="dark"] .etiqueta-pantalla--ayuda {
+  background: rgba(239, 83, 103, 0.2);
+  color: #ff9dac;
+}
+
+[data-theme="dark"] .etiqueta-pantalla--apoyo {
+  background: rgba(47, 127, 195, 0.22);
+  color: #9ed4ff;
+}
+
+[data-theme="dark"] .etiqueta-pantalla--espacio {
+  background: rgba(201, 111, 74, 0.22);
+  color: #ffc3a8;
+}
+
 [data-theme="dark"] .barra-navegacion-lateral,
 [data-theme="dark"] .cabecera-principal {
   box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28);
@@ -121,9 +201,9 @@
 [data-theme="dark"] .tutorial-actividad__tarjeta,
 [data-theme="dark"] .bitacora-detalle__tarjeta,
 [data-theme="dark"] .evaluacion-cierre-actividad__tarjeta {
-  background: rgba(24, 36, 31, 0.98);
+  background: #213029;
   color: var(--texto);
-  border-color: rgba(223, 241, 232, 0.12);
+  border-color: rgba(223, 241, 232, 0.16);
 }
 
 [data-theme="dark"] .panel-tamano-nota,
@@ -306,6 +386,12 @@
   color: #edf4f0;
 }
 
+[data-theme="dark"] .respiracion-practica {
+  background: rgba(47, 127, 195, 0.14);
+  border-color: rgba(135, 195, 242, 0.2);
+  color: #edf4f0;
+}
+
 [data-theme="dark"] .mensaje-error-formulario,
 [data-theme="dark"] .mensaje-error-nota {
   background: rgba(127, 29, 29, 0.32);
@@ -356,16 +442,30 @@
   background: #fffef9;
 }
 
+[data-theme="dark"] .recurso-tarjeta,
+[data-theme="dark"] .contacto-apoyo,
+[data-theme="dark"] .bitacora-resumen__tarjeta,
+[data-theme="dark"] .bitacora-momento__boton {
+  background: rgba(24, 36, 31, 0.96);
+  border-color: rgba(223, 241, 232, 0.12);
+}
+
 html,
 body {
   min-height: 100vh;
   min-width: var(--ancho-minimo-app);
   width: 100%;
   font-family: var(--fuente);
+  font-size: var(--tamano-texto-m);
+  font-weight: var(--peso-regular);
   background: var(--fondo);
   color: var(--texto);
-  line-height: 1.6;
+  line-height: var(--alto-linea-cuerpo);
   transition: background 0.3s ease, color 0.3s ease;
+}
+
+body {
+  text-rendering: optimizeLegibility;
 }
 
 .animado {

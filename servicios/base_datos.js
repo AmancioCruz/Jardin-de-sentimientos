@@ -46,10 +46,7 @@ export async function registrarActividadUsuario(uid, datosActividad) {
         const referenciaLista = ref(configuracionesFirebase.basedatos, `usuarios/${uid}/actividades`);
         const referenciaActividad = push(referenciaLista);
 
-        await set(referenciaActividad, {
-            uid,
-            ...datosActividad
-        });
+        await set(referenciaActividad, datosActividad);
 
         return referenciaActividad.key;
     } catch (error) {

@@ -561,27 +561,27 @@ function dibujarBurbujaSol(ctx, estado) {
     if (!estado.mensajeSol) return;
 
     const sol = estado.sol || { x: 24, y: 24, tamano: 96 };
-    const anchoMaximo = Math.min(estado.ancho * 0.46, 270);
-    const ancho = Math.max(174, anchoMaximo);
-    const xPreferido = sol.x + sol.tamano * 0.82;
+    const anchoMaximo = Math.min(estado.ancho * 0.44, 258);
+    const ancho = Math.max(172, anchoMaximo);
+    const xPreferido = sol.x + sol.tamano + 20;
     const x = Math.min(Math.max(18, xPreferido), estado.ancho - ancho - 18);
-    const y = Math.max(18, sol.y + sol.tamano * 0.15);
+    const y = Math.max(18, sol.y + 8);
     const lineas = dividirTexto(estado.mensajeSol, 28, 3);
     const alto = 22 + lineas.length * 17;
 
     ctx.save();
-    ctx.fillStyle = 'rgba(255, 247, 252, 0.94)';
+    ctx.fillStyle = 'rgba(254, 241, 248, 0.97)';
     redondearRect(ctx, x, y, ancho, alto, 18);
     ctx.fill();
 
     ctx.beginPath();
-    ctx.moveTo(x + 14, y + alto * 0.55);
-    ctx.lineTo(sol.x + sol.tamano * 0.72, sol.y + sol.tamano * 0.55);
-    ctx.lineTo(x + 14, y + alto * 0.72);
+    ctx.moveTo(x, y + alto * 0.42);
+    ctx.lineTo(sol.x + sol.tamano * 0.9, sol.y + sol.tamano * 0.56);
+    ctx.lineTo(x, y + alto * 0.64);
     ctx.closePath();
     ctx.fill();
 
-    ctx.fillStyle = '#8f2451';
+    ctx.fillStyle = '#8a2f58';
     ctx.font = '800 12px sans-serif';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';

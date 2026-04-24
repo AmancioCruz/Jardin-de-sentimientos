@@ -1,0 +1,200 @@
+.recursos-apoyo {
+    display: grid;
+    gap: var(--espacio-l);
+    width: 100%;
+    min-height: 100%;
+    padding: var(--padding-panel-app);
+    align-content: start;
+    background: var(--panel-app-fondo);
+    border: 1px solid var(--panel-app-borde);
+    border-radius: var(--radio-xl);
+    box-shadow: var(--panel-app-sombra);
+    overflow: auto;
+}
+
+.recursos-apoyo__encabezado,
+.recursos-apoyo__bloque {
+    display: grid;
+    gap: var(--espacio-m);
+}
+
+.recursos-apoyo h1,
+.recursos-apoyo h2,
+.recursos-apoyo h3,
+.recursos-apoyo p {
+    margin: 0;
+}
+
+.recursos-apoyo__encabezado > p:last-child,
+.recursos-apoyo__titulo-seccion p,
+.recurso-tarjeta > p {
+    color: var(--texto-sutil);
+    line-height: 1.58;
+}
+
+.recursos-apoyo__encabezado {
+    width: 100%;
+    max-width: none;
+}
+
+.recurso-tarjeta__meta {
+    font-size: var(--tamano-texto-xs);
+    font-weight: var(--peso-semibold);
+    color: #2f7fc3;
+}
+
+.recursos-apoyo__practica {
+    width: 100%;
+    max-width: none;
+    padding: 1rem 1.05rem;
+    border: 1px solid rgba(239, 83, 103, 0.16);
+    border-radius: 1.15rem;
+    background: rgba(255, 241, 240, 0.72);
+    color: var(--texto);
+    font-weight: var(--peso-medium);
+    line-height: var(--alto-linea-cuerpo);
+}
+
+.recursos-apoyo__titulo-seccion {
+    display: grid;
+    gap: 0.25rem;
+}
+
+.recursos-apoyo__titulo-seccion h2 {
+    color: var(--verde);
+    font-size: var(--tamano-texto-xl);
+    font-weight: var(--peso-semibold);
+}
+
+.recursos-apoyo__tarjetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    gap: var(--espacio-m);
+}
+
+.recurso-tarjeta {
+    border: 1px solid var(--tarjeta-borde);
+    border-radius: var(--radio-grande);
+    background: var(--tarjeta-fondo);
+    box-shadow: var(--tarjeta-sombra);
+}
+
+.recurso-tarjeta {
+    display: grid;
+    gap: var(--espacio-m);
+    padding: var(--padding-panel-interno);
+}
+
+.recurso-tarjeta__titulo {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.recurso-tarjeta__titulo i {
+    width: 3rem;
+    height: 3rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: rgba(22, 78, 63, 0.07);
+    color: var(--verde);
+}
+
+.recurso-tarjeta h2 {
+    color: var(--verde);
+    font-size: var(--tamano-texto-l);
+    font-weight: var(--peso-semibold);
+}
+
+.recurso-tarjeta ol {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0;
+    padding-left: 1.2rem;
+    color: var(--texto);
+    line-height: var(--alto-linea-cuerpo);
+    font-weight: var(--peso-medium);
+}
+
+.recurso-tarjeta__fundamento {
+    padding: 0.75rem 0.85rem;
+    border-radius: 0.9rem;
+    background: rgba(224, 241, 255, 0.34);
+    border: 1px solid rgba(47, 127, 195, 0.12);
+    color: var(--texto);
+    font-size: var(--tamano-texto-s);
+    font-weight: var(--peso-medium);
+}
+
+[data-theme="dark"] .recursos-apoyo h1,
+[data-theme="dark"] .recursos-apoyo__titulo-seccion h2,
+[data-theme="dark"] .recurso-tarjeta h2 {
+    color: #b7efd2;
+}
+
+[data-theme="dark"] .recursos-apoyo__encabezado > p:last-child,
+[data-theme="dark"] .recursos-apoyo__titulo-seccion p,
+[data-theme="dark"] .recurso-tarjeta > p {
+    color: #b8c7c0;
+}
+
+[data-theme="dark"] .recurso-tarjeta__meta {
+    color: #9ed4ff;
+}
+
+[data-theme="dark"] .recursos-apoyo__practica {
+    background: rgba(239, 83, 103, 0.16);
+    border-color: rgba(248, 113, 113, 0.24);
+    color: #edf4f0;
+}
+
+[data-theme="dark"] .recurso-tarjeta {
+    background: var(--tarjeta-fondo);
+    border-color: var(--tarjeta-borde);
+    box-shadow: var(--tarjeta-sombra);
+}
+
+[data-theme="dark"] .recurso-tarjeta ol,
+[data-theme="dark"] .recurso-tarjeta__fundamento {
+    color: #edf4f0;
+}
+
+[data-theme="dark"] .recurso-tarjeta__titulo i {
+    background: rgba(183, 239, 210, 0.14);
+    color: #7de7b9;
+}
+
+[data-theme="dark"] .recurso-tarjeta__fundamento {
+    background: rgba(47, 127, 195, 0.14);
+    border: 1px solid rgba(223, 241, 232, 0.08);
+}
+
+@media (max-width: 767px) {
+    .recursos-apoyo__encabezado,
+    .recursos-apoyo__titulo-seccion,
+    .recursos-apoyo__practica {
+        justify-items: center;
+        text-align: center;
+    }
+
+    .recurso-tarjeta {
+        gap: 0.85rem;
+    }
+
+    .recurso-tarjeta__titulo {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .recurso-tarjeta > p,
+    .recurso-tarjeta__fundamento {
+        text-align: center;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    .recursos-apoyo__encabezado .etiqueta-pantalla {
+        justify-self: start;
+    }
+}

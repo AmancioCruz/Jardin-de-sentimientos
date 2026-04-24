@@ -1,157 +1,338 @@
 .bitacora-contenedor {
-    width: min(100%, 92rem);
     min-height: 100%;
     display: grid;
     align-content: start;
-    gap: clamp(1.1rem, 3vw, 2rem);
-    padding: clamp(1rem, 4vw, 2rem);
+    gap: var(--espacio-l);
+    padding: 0;
 }
 
-.bitacora-encabezado {
+.bitacora-encabezado,
+.bitacora-recorrido,
+.bitacora-recorrido__encabezado,
+.bitacora-listado,
+.bitacora-bloque {
     display: grid;
-    justify-items: center;
-    gap: 0.35rem;
-    text-align: center;
+    gap: var(--espacio-m);
 }
 
-.bitacora-encabezado h1 {
+.bitacora-encabezado,
+.bitacora-recorrido__encabezado {
+    max-width: 46rem;
+}
+
+.bitacora-encabezado .etiqueta-pantalla,
+.bitacora-encabezado h1,
+.bitacora-encabezado p,
+.bitacora-recorrido__encabezado h2,
+.bitacora-recorrido__encabezado p {
     margin: 0;
+}
+
+.bitacora-recorrido {
+    gap: clamp(0.95rem, 2.8vw, 1.2rem);
+}
+
+.bitacora-recorrido__encabezado h2 {
+    color: var(--texto);
+    font-size: var(--tamano-texto-xl);
+    font-weight: var(--peso-semibold);
+    line-height: var(--alto-linea-titulo);
 }
 
 .bitacora-encabezado p,
-.bitacora-estado {
-    margin: 0;
+.bitacora-recorrido__encabezado p,
+.bitacora-estado,
+.bitacora-momento__meta,
+.bitacora-momento__estado,
+.bitacora-bloque__encabezado span,
+.bitacora-detalle__info p {
     color: var(--texto-sutil);
-    font-weight: 700;
+    line-height: var(--alto-linea-cuerpo);
 }
 
-.bitacora-galeria {
-    width: 100%;
+.bitacora-resumen {
     display: grid;
-    gap: clamp(1.4rem, 4vw, 2.25rem);
+    gap: 0.8rem;
 }
 
-.bitacora-grupo-fecha {
+.bitacora-resumen__tarjetas {
     display: grid;
-    gap: 0.85rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
 }
 
-.bitacora-fecha {
-    display: flex;
+.bitacora-resumen__tarjeta,
+.bitacora-estado {
+    padding: 1rem 1.05rem;
+    border: 1px solid var(--tarjeta-borde);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.76);
+}
+
+.bitacora-resumen__tarjeta {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
-    justify-content: space-between;
-    gap: var(--espacio-m);
-    padding-inline: 0.15rem;
+    gap: 0.75rem;
+    color: var(--texto);
+    line-height: 1.4;
 }
 
-.bitacora-fecha h2 {
-    margin: 0;
+.bitacora-resumen__valor {
     color: var(--verde);
-    font-size: clamp(1rem, 3vw, 1.25rem);
-    font-weight: 900;
-    letter-spacing: -0.02em;
-    text-transform: capitalize;
+    font-size: var(--tamano-texto-l);
+    font-weight: var(--peso-semibold);
+    line-height: var(--alto-linea-titulo);
 }
 
-.bitacora-fecha span {
-    flex: 0 0 auto;
+.bitacora-resumen__contenido {
+    min-width: 0;
+    display: grid;
+    gap: 0.1rem;
+    align-content: center;
+}
+
+.bitacora-resumen__icono {
+    width: 2.35rem;
+    height: 2.35rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    font-size: 1rem;
+    border: 1px solid rgba(22, 78, 63, 0.08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.bitacora-resumen__icono--no-seguro {
+    background: rgba(59, 130, 246, 0.12);
+    color: #2563eb;
+}
+
+.bitacora-resumen__icono--respiracion {
+    background: rgba(14, 165, 233, 0.12);
+    color: #0ea5e9;
+}
+
+.bitacora-resumen__icono--pizarron {
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+}
+
+.bitacora-resumen__icono--juego {
+    background: rgba(244, 63, 94, 0.12);
+    color: #f43f5e;
+}
+
+.bitacora-resumen__icono--tablero {
+    background: rgba(245, 158, 11, 0.12);
+    color: #d97706;
+}
+
+.bitacora-resumen__icono--general {
+    background: rgba(31, 111, 91, 0.1);
+    color: var(--verde);
+}
+
+.bitacora-resumen__icono--semana {
+    background: rgba(59, 130, 246, 0.12);
+    color: #2563eb;
+}
+
+.bitacora-resumen__detalle {
     color: var(--texto-sutil);
     font-size: var(--tamano-texto-s);
-    font-weight: 800;
+    font-weight: var(--peso-medium);
+    line-height: 1.45;
 }
 
-.bitacora-mosaico {
+.bitacora-estado {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
-    grid-auto-flow: dense;
-    gap: clamp(0.75rem, 2vw, 1rem);
+    place-items: center;
+    min-height: 8rem;
+    text-align: center;
 }
 
-.bitacora-tarjeta {
+.bitacora-estado--ligero {
+    min-height: auto;
+}
+
+.bitacora-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.bitacora-filtro {
+    min-height: 2.2rem;
+    padding: 0.45rem 0.82rem;
+    border: 1px solid rgba(22, 78, 63, 0.12);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.74);
+    color: var(--texto);
+    font-size: var(--tamano-texto-s);
+    font-weight: var(--peso-medium);
+}
+
+.bitacora-filtro--icono {
+    width: 2.5rem;
+    min-width: 2.5rem;
+    padding: 0;
+    display: grid;
+    place-items: center;
+}
+
+.bitacora-filtro__icono {
+    width: 1.9rem;
+    height: 1.9rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    font-size: var(--tamano-texto-s);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.bitacora-filtro.activo {
+    background: rgba(31, 111, 91, 0.12);
+    border-color: rgba(31, 111, 91, 0.22);
+    color: var(--verde);
+}
+
+.bitacora-filtro--icono.activo .bitacora-filtro__icono {
+    box-shadow: none;
+}
+
+.bitacora-bloque__encabezado {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.bitacora-bloque__encabezado h3,
+.bitacora-bloque__encabezado span {
+    margin: 0;
+}
+
+.bitacora-bloque__encabezado h3 {
+    color: var(--verde);
+    font-size: var(--tamano-texto-l);
+    font-weight: var(--peso-semibold);
+}
+
+.bitacora-bloque__encabezado span {
+    margin-left: auto;
+    text-align: right;
+    font-size: 0.78rem;
+    font-weight: var(--peso-medium);
+    color: rgba(72, 95, 87, 0.76);
+    white-space: nowrap;
+}
+
+.bitacora-lista-momentos {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+.bitacora-momento {
     min-width: 0;
-    overflow: hidden;
-    border: 1px solid rgba(22, 78, 63, 0.1);
-    border-radius: clamp(0.8rem, 2vw, 1.05rem);
-    background: var(--superficie);
-    box-shadow: 0 12px 28px rgba(22, 78, 63, 0.12);
+}
+
+.bitacora-momento__boton {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 3.25rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--tarjeta-borde);
+    border-radius: var(--radio-borde);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: var(--tarjeta-sombra);
+    text-align: left;
     transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
-.bitacora-tarjeta:nth-child(6n + 1),
-.bitacora-tarjeta:nth-child(6n + 4) {
-    grid-row: span 2;
+.bitacora-momento__boton:hover {
+    transform: translateY(-2px);
+    border-color: rgba(31, 111, 91, 0.18);
+    box-shadow: 0 18px 36px rgba(22, 78, 63, 0.14);
 }
 
-.bitacora-tarjeta:hover {
-    transform: translateY(-3px);
-    border-color: rgba(31, 111, 91, 0.24);
-    box-shadow: 0 18px 38px rgba(22, 78, 63, 0.18);
-}
-
-.bitacora-tarjeta__imagen {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    min-height: 12rem;
-    aspect-ratio: 4 / 3;
-    display: block;
-    overflow: hidden;
-    border-radius: inherit;
-    background: #fffef9;
-}
-
-.bitacora-tarjeta:nth-child(6n + 1) .bitacora-tarjeta__imagen,
-.bitacora-tarjeta:nth-child(6n + 4) .bitacora-tarjeta__imagen {
-    aspect-ratio: 3 / 4;
-}
-
-.bitacora-tarjeta__imagen img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.24s ease, filter 0.24s ease;
-}
-
-.bitacora-tarjeta:hover .bitacora-tarjeta__imagen img {
-    transform: scale(1.035);
-    filter: saturate(1.04);
-}
-
-.bitacora-tarjeta__imagen > span:not(.bitacora-tarjeta__etiqueta):not(.bitacora-tarjeta__hora),
-.bitacora-detalle__sin-imagen {
-    width: 100%;
-    height: 100%;
+.bitacora-momento__vista {
+    width: 3.25rem;
+    height: 3.25rem;
     display: grid;
     place-items: center;
-    padding: var(--espacio-m);
-    color: var(--texto-sutil);
-    font-weight: 800;
 }
 
-.bitacora-tarjeta__etiqueta,
-.bitacora-tarjeta__hora {
-    position: absolute;
-    z-index: 2;
+.bitacora-momento__icono {
+    width: 2.75rem;
+    height: 2.75rem;
+    display: grid;
+    place-items: center;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.9);
+    font-size: 1.15rem;
+}
+
+.bitacora-momento__contenido {
+    min-width: 0;
+    display: grid;
+    gap: 0.22rem;
+    align-content: start;
+}
+
+.bitacora-momento__titulo,
+.bitacora-momento__meta,
+.bitacora-momento__estado {
+    margin: 0;
+}
+
+.bitacora-momento__titulo {
+    color: var(--texto);
+    font-size: var(--tamano-texto-m);
+    font-weight: var(--peso-semibold);
+    line-height: 1.35;
+}
+
+.bitacora-momento__meta {
+    font-size: var(--tamano-texto-s);
+    font-weight: var(--peso-medium);
+}
+
+.bitacora-momento__estado {
+    color: var(--texto);
+    font-size: var(--tamano-texto-s);
+    font-weight: var(--peso-medium);
+    line-height: 1.55;
+    max-width: 56rem;
+}
+
+.bitacora-momento__flecha {
+    width: 2.1rem;
+    height: 2.1rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    border: 1px solid rgba(22, 78, 63, 0.12);
     color: var(--verde);
-    box-shadow: 0 8px 18px rgba(22, 78, 63, 0.12);
-    backdrop-filter: blur(8px);
-    font-size: var(--tamano-texto-xs);
-    font-weight: 900;
+    background: rgba(255, 255, 255, 0.7);
 }
 
-.bitacora-tarjeta__etiqueta {
-    left: 0.7rem;
-    bottom: 0.7rem;
-    padding: 0.42rem 0.65rem;
+.bitacora-acciones {
+    display: flex;
+    justify-content: flex-start;
 }
 
-.bitacora-tarjeta__hora {
-    top: 0.7rem;
-    right: 0.7rem;
-    padding: 0.36rem 0.58rem;
+.bitacora-ver-mas {
+    min-height: 3rem;
+    padding-inline: 1.35rem;
+    border-color: rgba(22, 78, 63, 0.14);
+    background: rgba(255, 255, 255, 0.82);
+    color: var(--verde);
+    font-weight: var(--peso-semibold);
 }
 
 .bitacora-detalle {
@@ -161,7 +342,7 @@
     display: grid;
     place-items: center;
     padding: var(--espacio-m);
-    background: rgba(12, 24, 20, 0.48);
+    background: var(--capa-modal-fuerte);
     backdrop-filter: blur(6px);
 }
 
@@ -174,10 +355,15 @@
     grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
     gap: clamp(0.9rem, 3vw, 1.35rem);
     padding: clamp(0.8rem, 3vw, 1.2rem);
-    border: 1px solid rgba(22, 78, 63, 0.12);
+    border: 1px solid var(--tarjeta-borde);
     border-radius: var(--radio-grande);
     background: rgba(255, 255, 255, 0.97);
     box-shadow: 0 24px 70px rgba(7, 22, 18, 0.28);
+}
+
+.bitacora-detalle__tarjeta--solo-imagen {
+    width: min(100%, 70rem);
+    grid-template-columns: 1fr;
 }
 
 .bitacora-detalle__cerrar {
@@ -203,6 +389,29 @@
     background: #fffef9;
 }
 
+.bitacora-detalle__tarjeta--solo-imagen img {
+    max-height: min(84vh, 900px);
+    background: transparent;
+}
+
+.bitacora-detalle__sin-imagen {
+    width: 100%;
+    min-height: 18rem;
+    display: grid;
+    place-items: center;
+    padding: var(--espacio-m);
+    border-radius: var(--radio-borde);
+    background: #fffef9;
+    color: var(--texto-sutil);
+    font-weight: var(--peso-semibold);
+}
+
+.bitacora-detalle__tarjeta--solo-imagen .bitacora-detalle__sin-imagen {
+    min-height: auto;
+    max-height: min(84vh, 900px);
+    background: transparent;
+}
+
 .bitacora-detalle__info {
     align-self: center;
     display: grid;
@@ -217,62 +426,198 @@
 
 .bitacora-detalle__info h2 {
     color: var(--verde);
-    font-size: clamp(1.35rem, 4vw, 1.9rem);
-    font-weight: 900;
+    font-size: clamp(1.5rem, 4vw, var(--tamano-texto-2xl));
+    font-weight: var(--peso-bold);
     letter-spacing: -0.03em;
 }
 
 .bitacora-detalle__info p {
-    color: var(--texto-sutil);
-    font-weight: 700;
+    font-weight: var(--peso-medium);
 }
 
 .bitacora-detalle__info strong {
     color: var(--texto);
 }
 
-.bitacora-detalle__descargar {
-    grid-column: 2;
-    justify-self: start;
+
+@media (max-width: 1199px) {
+    .bitacora-recorrido {
+        gap: 24px;
+    }
+
+    .bitacora-recorrido__encabezado {
+        justify-items: start;
+        text-align: left;
+    }
+
+    .bitacora-recorrido__encabezado h2 {
+        font-size: 24px;
+        line-height: 1.15;
+    }
+
+    .bitacora-resumen {
+        gap: 16px;
+    }
+
+    .bitacora-resumen__tarjetas {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .bitacora-resumen__tarjeta {
+        grid-template-columns: 40px minmax(0, 1fr);
+        gap: 16px;
+        padding: 16px;
+        text-align: left;
+    }
+
+    .bitacora-resumen__icono {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .bitacora-resumen__valor {
+        font-size: 24px;
+        line-height: 1.1;
+    }
+
+    .bitacora-resumen__detalle {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .bitacora-filtros {
+        row-gap: 16px;
+        column-gap: 8px;
+    }
+
+    .bitacora-filtro {
+        min-height: 36px;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .bitacora-filtro__icono {
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+    }
+
+    .bitacora-bloque {
+        gap: 16px;
+    }
+
+    .bitacora-bloque__encabezado {
+        align-items: center;
+        gap: 16px;
+        flex-wrap: nowrap;
+    }
+
+    .bitacora-bloque__encabezado h3 {
+        font-size: 20px;
+        line-height: 1.2;
+    }
+
+    .bitacora-bloque__encabezado span {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .bitacora-lista-momentos {
+        gap: 16px;
+    }
+
+    .bitacora-momento__boton {
+        grid-template-columns: 40px minmax(0, 1fr) 24px;
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .bitacora-momento__vista {
+        width: 40px;
+        height: 40px;
+    }
+
+    .bitacora-momento__icono {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+
+    .bitacora-momento__contenido {
+        gap: 8px;
+    }
+
+    .bitacora-momento__titulo {
+        font-size: 16px;
+        line-height: 1.35;
+    }
+
+    .bitacora-momento__meta {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .bitacora-momento__estado {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .bitacora-momento__flecha {
+        width: 24px;
+        height: 24px;
+        align-self: center;
+    }
+
+    .bitacora-acciones {
+        justify-content: flex-start;
+    }
+
+    .bitacora-ver-mas {
+        min-height: 40px;
+        padding-inline: 16px;
+    }
 }
 
 @media (max-width: 767px) {
-    .bitacora-contenedor {
-        padding: var(--espacio-m);
+    .bitacora-resumen__tarjetas {
+        grid-template-columns: 1fr;
     }
 
-    .bitacora-fecha {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 0.15rem;
+    .bitacora-filtros {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.5rem;
+        align-items: stretch;
     }
 
-    .bitacora-mosaico {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.65rem;
+    .bitacora-filtro {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
     }
 
-    .bitacora-tarjeta:nth-child(n) {
-        grid-row: auto;
+    .bitacora-filtro:nth-child(1),
+    .bitacora-filtro:nth-child(2) {
+        grid-column: span 2;
     }
 
-    .bitacora-tarjeta__imagen,
-    .bitacora-tarjeta:nth-child(n) .bitacora-tarjeta__imagen {
-        min-height: 8.5rem;
-        aspect-ratio: 1 / 1;
+    .bitacora-filtro--icono {
+        width: 100%;
+        min-width: 0;
     }
 
-    .bitacora-tarjeta__hora {
-        display: none;
+    .bitacora-bloque__encabezado {
+        align-items: center;
     }
 
-    .bitacora-tarjeta__etiqueta {
-        left: 0.45rem;
-        bottom: 0.45rem;
-        max-width: calc(100% - 0.9rem);
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    .bitacora-lista-momentos {
+        grid-template-columns: 1fr;
+    }
+
+    .bitacora-momento__boton {
+        grid-template-columns: 40px minmax(0, 1fr) 24px;
     }
 
     .bitacora-detalle__tarjeta {
@@ -283,8 +628,86 @@
         padding-right: 0;
     }
 
-    .bitacora-detalle__descargar {
-        grid-column: auto;
-        justify-self: stretch;
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    .bitacora-lista-momentos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+[data-theme="dark"] .bitacora-encabezado p,
+[data-theme="dark"] .bitacora-recorrido__encabezado p,
+[data-theme="dark"] .bitacora-estado,
+[data-theme="dark"] .bitacora-bloque__encabezado span,
+[data-theme="dark"] .bitacora-momento__meta,
+[data-theme="dark"] .bitacora-detalle__info p {
+    color: #b8c7c0;
+}
+
+[data-theme="dark"] .bitacora-bloque__encabezado span {
+    color: rgba(223, 241, 232, 0.72);
+}
+
+[data-theme="dark"] .bitacora-recorrido__encabezado h2,
+[data-theme="dark"] .bitacora-bloque__encabezado h3,
+[data-theme="dark"] .bitacora-detalle__info h2 {
+    color: #b7efd2;
+}
+
+[data-theme="dark"] .bitacora-resumen__tarjeta,
+[data-theme="dark"] .bitacora-estado,
+[data-theme="dark"] .bitacora-momento__boton,
+[data-theme="dark"] .bitacora-filtro {
+    background: rgba(24, 36, 31, 0.96);
+    border-color: rgba(223, 241, 232, 0.12);
+}
+
+[data-theme="dark"] .bitacora-resumen__detalle {
+    color: #b8c7c0;
+}
+
+[data-theme="dark"] .bitacora-resumen__valor {
+    color: #dff1e8;
+}
+
+[data-theme="dark"] .bitacora-resumen__icono {
+    background: rgba(240, 197, 107, 0.14);
+    border-color: rgba(240, 197, 107, 0.18);
+    color: #f0c56b;
+    box-shadow: none;
+}
+
+[data-theme="dark"] .bitacora-resumen__tarjeta,
+[data-theme="dark"] .bitacora-momento__titulo,
+[data-theme="dark"] .bitacora-momento__estado,
+[data-theme="dark"] .bitacora-filtro {
+    color: #edf4f0;
+}
+
+[data-theme="dark"] .bitacora-momento__flecha {
+    background: rgba(72, 122, 102, 0.18);
+    border-color: rgba(223, 241, 232, 0.12);
+    color: #dff1e8;
+}
+
+[data-theme="dark"] .bitacora-ver-mas {
+    background: rgba(24, 36, 31, 0.96);
+    border-color: rgba(223, 241, 232, 0.12);
+    color: #dff1e8;
+}
+
+[data-theme="dark"] .bitacora-filtro.activo {
+    background: rgba(72, 122, 102, 0.28);
+    color: #dff1e8;
+}
+
+@media (max-width: 767px) {
+    .bitacora-encabezado,
+    .bitacora-recorrido__encabezado,
+    .bitacora-resumen__tarjeta,
+    .bitacora-estado {
+        justify-items: start;
+        text-align: left;
     }
 }

@@ -1,146 +1,105 @@
 import { construirElemento } from "../../utilidades/constructor_elementos.js";
-import { guardarPreferenciaLocal, obtenerPreferenciasLocales } from "../../servicios/preferencias_locales.js";
 
 export function crearPerfil({ usuario }) {
-    const preferencias = obtenerPreferenciasLocales();
-
     return construirElemento({
-        tipo: 'div',
+        tipo: "section",
         atributos: {
-            id: 'contenedor-perfil',
-            class: 'perfil-contenedor'
+            id: "contenedor-perfil",
+            class: "perfil-contenedor"
         },
         hijos: [
-            {
-                tipo: 'h1',
-                atributos: { class: 'titulo-seccion-app perfil-titulo' },
-                hijos: ['Perfil']
-            },
-            {
-                tipo: 'section',
-                atributos: {
-                    class: 'tarjeta-app seccion-informacion',
-                    'aria-label': 'Información personal'
-                },
-                hijos: [
-                    {
-                        tipo: 'h3',
-                        atributos: { class: 'subtitulo-seccion' },
-                        hijos: ['Información personal']
-                    },
-                    {
-                        tipo: 'div',
-                        atributos: { class: 'dato-perfil-imagen' },
-                        hijos: [
-                            {
-                                tipo: 'img',
-                                atributos: {
-                                    class: 'imagen-perfil',
-                                    src: usuario.urlImagen,
-                                    alt: 'Foto de perfil'
-                                }
-                            }
-                        ]
-                    },
-
-                    crearDato('Nombre', usuario.nombre),
-                    crearDato('Correo', usuario.correo),
-                    crearDato('Programa', usuario.programa),
-                    crearDato('Semestre', usuario.semestre)
-                ]
-            },
-            {
-                tipo: 'section',
-                atributos: {
-                    class: 'tarjeta-app seccion-configuracion',
-                    'aria-label': 'Configuraciones'
-                },
-                hijos: [
-                    {
-                        tipo: 'h3',
-                        atributos: { class: 'subtitulo-seccion' },
-                        hijos: ['Preferencias']
-                    },
-
-                    crearSelectorPreferencia({
-                        etiqueta: 'Sonido durante actividades',
-                        id: 'preferencia-sonido',
-                        valor: preferencias.sonido,
-                        opciones: [
-                            { valor: 'silencio', texto: 'Silencio' },
-                            { valor: 'lluvia', texto: 'Lluvia' },
-                            { valor: 'bosque', texto: 'Bosque' },
-                            { valor: 'olas', texto: 'Olas' }
-                        ],
-                        alCambiar: (valor) => guardarPreferenciaLocal('sonido', valor)
-                    }),
-                    crearSelectorPreferencia({
-                        etiqueta: 'Tema visual',
-                        id: 'preferencia-tema',
-                        valor: preferencias.tema,
-                        opciones: [
-                            { valor: 'claro', texto: 'Claro' },
-                            { valor: 'oscuro', texto: 'Oscuro' }
-                        ],
-                        alCambiar: (valor) => guardarPreferenciaLocal('tema', valor)
-                    })
-                ]
-            }
+            crearEncabezadoPerfil(),
+            crearBloqueInformacion(usuario)
         ]
     });
 }
 
-function crearSelectorPreferencia({ etiqueta, id, valor, opciones, alCambiar }) {
+export function crearBloqueInformacion(usuario) {
     return {
-        tipo: 'div',
-        atributos: { class: 'dato-perfil dato-perfil--selector' },
+        tipo: "section",
+        atributos: {
+            class: "perfil-seccion",
+            "aria-label": "Información personal"
+        },
         hijos: [
             {
-                tipo: 'label',
-                atributos: { class: 'etiqueta-dato', for: id },
-                hijos: [etiqueta]
-            },
-            {
-                tipo: 'select',
-                atributos: {
-                    class: 'select-preferencia selector-perfil',
-                    id
-                },
-                eventos: {
-                    change: (evento) => {
-                        if (typeof alCambiar === 'function') {
-                            alCambiar(evento.target.value);
-                        }
-                    }
-                },
-                hijos: opciones.map((opcion) => ({
-                    tipo: 'option',
-                    atributos: {
-                        value: opcion.valor,
-                        selected: opcion.valor === valor
+                tipo: "div",
+                atributos: { class: "perfil-identidad" },
+                hijos: [
+                    {
+                        tipo: "div",
+                        atributos: { class: "perfil-identidad__foto" },
+                        hijos: [
+                            {
+                                tipo: "img",
+                                atributos: {
+                                    class: "imagen-perfil",
+                                    src: usuario.urlImagen,
+                                    alt: "Foto de perfil"
+                                }
+                            }
+                        ]
                     },
-                    hijos: [opcion.texto]
-                }))
+                    {
+                        tipo: "div",
+                        atributos: { class: "perfil-identidad__contenido" },
+                        hijos: [
+                            {
+                                tipo: "h2",
+                                atributos: { class: "perfil-identidad__titulo" },
+                                hijos: ["Este soy yo"]
+                            },
+                            {
+                                tipo: "strong",
+                                atributos: { class: "perfil-identidad__nombre" },
+                                hijos: [usuario.nombre || "Sin nombre"]
+                            },
+                            {
+                                tipo: "p",
+                                atributos: { class: "perfil-identidad__frase" },
+                                hijos: ["Este espacio también es para ti."]
+                            },
+                            {
+                                tipo: "div",
+                                atributos: { class: "perfil-resumen-textual" },
+                                hijos: [
+                                    {
+                                        tipo: "p",
+                                        hijos: [crearDescripcionPerfil(usuario)]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     };
 }
 
-function crearDato(etiqueta, valor) {
+function crearEncabezadoPerfil() {
     return {
-        tipo: 'div',
-        atributos: { class: 'dato-perfil' },
+        tipo: "header",
+        atributos: { class: "perfil-encabezado" },
         hijos: [
             {
-                tipo: 'label',
-                atributos: { class: 'etiqueta-dato' },
-                hijos: [etiqueta]
-            },
-            {
-                tipo: 'span',
-                atributos: { class: 'valor-dato' },
-                hijos: [valor || 'No especificado']
+                tipo: "p",
+                atributos: { class: "etiqueta-pantalla etiqueta-pantalla--perfil" },
+                hijos: ["Mi espacio"]
             }
         ]
     };
+}
+
+function crearDescripcionPerfil(usuario) {
+    const nivelAcademico = usuario?.nivelAcademico || "";
+    const programa = usuario?.programa || "un programa no especificado";
+    const semestre = usuario?.semestre || (nivelAcademico === "licenciatura" ? "un nivel no especificado" : "un semestre no especificado");
+    const correo = usuario?.correo || "un correo no especificado";
+
+    if (nivelAcademico === "licenciatura") {
+        return `En la app apareces como estudiante de ${programa}, en nivel ${semestre}, con el correo ${correo}.`;
+    }
+
+    return `En la app apareces como estudiante de ${programa}, en ${semestre}, con el correo ${correo}.`;
 }

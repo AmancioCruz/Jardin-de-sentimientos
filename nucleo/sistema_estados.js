@@ -2,8 +2,12 @@ export const seccionesApp = {
     inicioSesion: 'Inicio Sesion',
     registro: 'Registro',
     inicio: 'Inicio',
+    espacio: 'Mi Espacio',
+    configuracion: 'Configuracion',
     perfil: 'Perfil',
-    bitacora: 'Bitacora'
+    bitacora: 'Bitacora',
+    recursos: 'Recursos',
+    ayuda: 'Ayuda'
 };
 
 let _estado = {

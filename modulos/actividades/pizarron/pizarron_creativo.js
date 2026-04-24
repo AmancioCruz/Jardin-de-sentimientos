@@ -1,4 +1,4 @@
-import { contenedores } from "../../../nucleo/contenedores_dom.js";
+﻿import { contenedores } from "../../../nucleo/contenedores_dom.js";
 import { construirElemento } from "../../../utilidades/constructor_elementos.js";
 import { mostrarTutorialActividad } from "../../../componentes/tutorial_actividad/tutorial_actividad.js";
 
@@ -16,6 +16,7 @@ export function inicializarPizarronCreativo({ alGuardar, alSalir } = {}) {
             estado.arrastrandoImagen = null;
             estado.colorFondo = '#fffef9';
             if (estado.inputFondo) estado.inputFondo.value = estado.colorFondo;
+            actualizarControlFondoPizarron(estado);
             dibujarPizarron(estado);
             actualizarEstadoGuardadoPizarron(estado);
             actualizarBotonEliminarSeleccion(estado);
@@ -43,6 +44,7 @@ export function inicializarPizarronCreativo({ alGuardar, alSalir } = {}) {
     conectarControles(vista.nodo, estado);
     conectarEventosCanvas(estado);
     ajustarCanvas(estado);
+    actualizarControlFondoPizarron(estado);
     dibujarPizarron(estado);
     actualizarEstadoGuardadoPizarron(estado);
     mostrarTutorialActividad({
@@ -98,7 +100,14 @@ function crearVistaPizarron({ alGuardar, alSalir, alLimpiar }) {
                             'data-toggle-menu-pizarron': ''
                         },
                         hijos: [
-                            { tipo: 'i', atributos: { class: 'fa-solid fa-paintbrush', 'data-icono-menu-pizarron': '' } },
+                            {
+                                tipo: 'i',
+                                atributos: {
+                                    class: 'fa-solid fa-paintbrush',
+                                    'data-icono-menu-pizarron': '',
+                                    'data-icono-clase': 'fa-solid fa-paintbrush'
+                                }
+                            },
                             { tipo: 'span', hijos: ['Pincel'], atributos: { 'data-texto-menu-pizarron': '' } },
                             { tipo: 'i', atributos: { class: 'fa-solid fa-chevron-down btn-pizarron-toggle__chevron' } }
                         ]
@@ -255,16 +264,18 @@ function crearBotonModo(modo, icono, texto, activo = false) {
 function crearControlFondo() {
     return {
         tipo: 'label',
-        atributos: { class: 'control-pizarron control-pizarron--fondo' },
+        atributos: { class: 'control-pizarron control-pizarron--fondo', 'data-control-fondo': '' },
         hijos: [
             { tipo: 'span', hijos: ['Fondo'] },
+            { tipo: 'span', atributos: { class: 'icono-color-fondo-pizarron', 'aria-hidden': 'true' } },
             {
                 tipo: 'input',
                 atributos: {
                     type: 'color',
                     value: '#fffef9',
+                    class: 'input-color-fondo-pizarron',
                     title: 'Color de fondo',
-                    'aria-label': 'Color de fondo del pizarrÃ³n',
+                    'aria-label': 'Color de fondo del pizarrón',
                     'data-color-fondo': ''
                 }
             }
@@ -333,9 +344,16 @@ function conectarControles(nodo, estado) {
         estado.colorFondo = evento.target.value;
         estado.modo = 'seleccionar';
         estado.herramienta = null;
+        actualizarControlFondoPizarron(estado);
         dibujarPizarron(estado);
         actualizarEstadoGuardadoPizarron(estado);
         actualizarInterfazPizarron(estado);
+    });
+
+    nodo.querySelector('[data-control-fondo]')?.addEventListener('click', (evento) => {
+        evento.preventDefault();
+        estado.inputFondo?.showPicker?.();
+        estado.inputFondo?.click();
     });
 
     nodo.querySelector('[data-modo-pizarron="imagen"]').addEventListener('click', () => {
@@ -415,13 +433,13 @@ function actualizarInterfazPizarron(estado) {
     estado.controles.panel?.classList.toggle('oculto', !estado.menuAbierto);
     estado.botonMenu?.classList.toggle('activo', estado.menuAbierto);
     estado.botonMenu?.setAttribute('aria-expanded', String(estado.menuAbierto));
-    estado.iconoMenu?.setAttribute('class', resumen.icono);
+    estado.iconoMenu = actualizarIconoMenuPizarron(estado.iconoMenu, resumen.icono, estado.botonMenu);
     estado.textoMenu?.replaceChildren(document.createTextNode(resumen.texto));
 
     const mostrarRelleno = estado.modo === 'dibujar' && herramientasConRelleno.has(estado.herramienta);
     estado.controles.configuracion?.querySelector('[data-config-relleno]')?.classList.toggle('oculto', !mostrarRelleno);
     estado.controles.configuracion?.querySelector('[data-config-linea] span')?.replaceChildren(
-        document.createTextNode(mostrarRelleno ? 'Contorno' : 'Linea')
+        document.createTextNode(mostrarRelleno ? 'Contorno' : 'Línea')
     );
 
     if (estado.canvas) {
@@ -432,13 +450,44 @@ function actualizarInterfazPizarron(estado) {
     actualizarBotonEliminarSeleccion(estado);
 }
 
+function actualizarControlFondoPizarron(estado) {
+    const control = estado.menu?.querySelector('[data-control-fondo]');
+    if (!control) return;
+
+    control.style.setProperty('--color-fondo-actual', estado.colorFondo || '#fffef9');
+}
+
+function actualizarIconoMenuPizarron(iconoActual, claseNueva, contenedor) {
+    const iconoExistente = contenedor?.querySelector('[data-icono-menu-pizarron]') || iconoActual;
+    if (!iconoExistente) return iconoActual;
+
+    const claseNormalizada = String(claseNueva || '').trim();
+    const claseActual = String(iconoExistente.getAttribute('data-icono-clase') || '').trim();
+    if (claseActual === claseNormalizada) {
+        return iconoExistente;
+    }
+
+    const nuevoIcono = document.createElement('i');
+    nuevoIcono.className = claseNormalizada;
+    nuevoIcono.setAttribute('data-icono-menu-pizarron', '');
+    nuevoIcono.setAttribute('data-icono-clase', claseNormalizada);
+    iconoExistente.replaceWith(nuevoIcono);
+
+    if (window.FontAwesome?.dom?.i2svg && contenedor) {
+        window.FontAwesome.dom.i2svg({ node: contenedor });
+        return contenedor.querySelector('[data-icono-menu-pizarron]') || nuevoIcono;
+    }
+
+    return nuevoIcono;
+}
+
 function obtenerResumenMenuPizarron(estado) {
     const datosHerramientas = {
         pincel: { texto: 'Pincel', icono: 'fa-solid fa-paintbrush' },
-        linea: { texto: 'Linea', icono: 'fa-solid fa-minus' },
-        circulo: { texto: 'Circulo', icono: 'fa-regular fa-circle' },
+        linea: { texto: 'Línea', icono: 'fa-solid fa-minus' },
+        circulo: { texto: 'Círculo', icono: 'fa-regular fa-circle' },
         cuadro: { texto: 'Cuadro', icono: 'fa-regular fa-square' },
-        triangulo: { texto: 'Triangulo', icono: 'fa-solid fa-caret-up' }
+        triangulo: { texto: 'Triángulo', icono: 'fa-solid fa-caret-up' }
     };
 
     if (estado.modo === 'seleccionar') {
@@ -991,3 +1040,5 @@ function envolverTexto(ctx, texto, x, y, anchoMaximo, altoLinea, maximoLineas) {
         ctx.fillText(linea, x, yInicial + (indice * altoLinea));
     });
 }
+
+

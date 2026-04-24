@@ -1,4 +1,5 @@
 import { construirElemento } from "../../../utilidades/constructor_elementos.js";
+import { activarOverlay, desactivarOverlay } from "../../../servicios/overlay.js";
 
 const limitePreocupacion = 8;
 const limiteAccion = 10;
@@ -77,7 +78,7 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
                 hijos: [
                     {
                         tipo: 'legend',
-                        hijos: ['¿Quieres hacer algo con esto ahora?']
+                        hijos: ['¿Puedes hacer algo con esto en este momento?']
                     },
                     {
                         tipo: 'label',
@@ -116,7 +117,7 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
                 hijos: [
                     {
                         tipo: 'span',
-                        hijos: [`¿Qué te ayudaría en este momento? Max. ${limiteAccion} palabras`]
+                        hijos: [`¿Qué podrías hacer ahora? Max. ${limiteAccion} palabras`]
                     },
                     {
                         tipo: 'input',
@@ -135,7 +136,7 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
                 hijos: [
                     {
                         tipo: 'p',
-                        hijos: ['No tienes que resolverlo ahora. Nombrarlo también puede ayudarte a entenderlo.']
+                        hijos: ['Si ahora no puedes hacer nada, nombrarlo también puede ayudarte a entenderlo.']
                     },
                     {
                         tipo: 'label',
@@ -204,6 +205,11 @@ export function crearFormularioTextoNota({ alGuardar } = {}) {
 function abrir(nodo, contenido = {}) {
     if (!nodo) return;
 
+    activarOverlay('panel-texto-nota', {
+        usarBackdrop: true,
+        zIndex: 1000,
+        alClickBackdrop: () => cerrar(nodo)
+    });
     nodo.classList.remove('oculto');
     ocultarErrorNota(nodo);
     llenarFormulario(nodo, contenido);
@@ -213,6 +219,7 @@ function abrir(nodo, contenido = {}) {
 
 function cerrar(nodo) {
     nodo?.classList.add('oculto');
+    desactivarOverlay('panel-texto-nota');
 }
 
 function manejarEnvio(formulario, alGuardar) {
@@ -277,7 +284,7 @@ function validarDatos(datos) {
     }
 
     if (datos.estaEnMisManos && !datos.accion) {
-        return 'Escribe algo pequeño que podría ayudarte ahora.';
+        return 'Escribe algo pequeño que podrías hacer ahora.';
     }
 
     if (datos.estaEnMisManos && contarPalabras(datos.accion) > limiteAccion) {

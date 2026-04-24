@@ -1,0 +1,453 @@
+.ayuda-contactos {
+    display: grid;
+    gap: var(--espacio-l);
+    width: 100%;
+    min-height: 100%;
+    padding: var(--padding-panel-app);
+    align-content: start;
+    border: 1px solid var(--panel-app-borde);
+    border-radius: var(--radio-xl);
+    background: var(--panel-app-fondo);
+    box-shadow: var(--panel-app-sombra);
+    overflow: auto;
+}
+
+.ayuda-contactos__encabezado,
+.ayuda-contactos__resumen,
+.ayuda-contactos__grupo-directorio {
+    display: grid;
+    gap: var(--espacio-m);
+}
+
+.ayuda-contactos__encabezado {
+    max-width: 46rem;
+}
+
+.ayuda-contactos h1,
+.ayuda-contactos h2,
+.ayuda-contactos h3,
+.ayuda-contactos p {
+    margin: 0;
+}
+
+.ayuda-contactos__titulo-tarjeta,
+.ayuda-contactos__titulo-seccion h2,
+.ayuda-contactos__grupo-directorio h3,
+.ayuda-contactos__fila-sede h3 {
+    color: var(--verde);
+}
+
+.ayuda-contactos__titulo-tarjeta {
+    font-size: var(--tamano-texto-l);
+    font-weight: var(--peso-semibold);
+    line-height: var(--alto-linea-titulo);
+    letter-spacing: 0;
+}
+
+.ayuda-contactos__titulo-seccion {
+    display: grid;
+    gap: 0.42rem;
+}
+
+.ayuda-contactos__titulo-seccion h2 {
+    font-size: var(--tamano-texto-l);
+    font-weight: var(--peso-semibold);
+    line-height: var(--alto-linea-titulo);
+}
+
+.ayuda-contactos__titulo-seccion p {
+    color: var(--texto-sutil);
+    font-size: var(--tamano-texto-m);
+    line-height: var(--alto-linea-cuerpo);
+    max-width: 42rem;
+}
+
+.ayuda-contactos__resumen {
+    align-items: stretch;
+}
+
+.ayuda-contactos__tarjeta {
+    display: grid;
+    gap: var(--espacio-m);
+    padding: var(--padding-panel-interno);
+    border: 1px solid var(--tarjeta-borde);
+    border-radius: var(--radio-grande);
+    background: var(--tarjeta-fondo);
+    box-shadow: var(--tarjeta-sombra);
+}
+
+.ayuda-contactos__lista-contactos,
+.ayuda-contactos__lista-sede,
+.ayuda-contactos__lista-directorio {
+    display: grid;
+    gap: 0;
+}
+
+.ayuda-contactos__dato,
+.ayuda-contactos__fila-sede {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1.15rem 0;
+    border-bottom: 1px solid var(--linea-suave);
+}
+
+.ayuda-contactos__dato:first-child,
+.ayuda-contactos__fila-sede:first-child {
+    padding-top: 0;
+}
+
+.ayuda-contactos__dato:last-child,
+.ayuda-contactos__fila-sede:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.ayuda-contactos__dato-etiqueta {
+    color: var(--texto-sutil);
+    font-size: var(--tamano-texto-s);
+    font-weight: var(--peso-medium);
+    line-height: 1.45;
+    margin-bottom: 0.1rem;
+}
+
+.ayuda-contactos__dato-valor,
+.ayuda-contactos__enlace,
+.contacto-apoyo__telefono,
+.ayuda-contactos__fila-sede p {
+    color: var(--texto);
+    font-size: var(--tamano-texto-s);
+    line-height: var(--alto-linea-cuerpo);
+    text-decoration: none;
+}
+
+.ayuda-contactos__lista-sede .ayuda-contactos__dato-valor,
+.ayuda-contactos__fila-sede h3 {
+    font-size: var(--tamano-texto-m);
+    font-weight: var(--peso-semibold);
+    line-height: 1.5;
+}
+
+.ayuda-contactos__enlace:hover,
+.contacto-apoyo__telefono:hover {
+    text-decoration: underline;
+}
+
+.ayuda-contactos__grupo-directorio {
+    gap: 0.85rem;
+}
+
+.ayuda-contactos__grupo-directorio + .ayuda-contactos__grupo-directorio {
+    margin-top: 1rem;
+}
+
+.ayuda-contactos__grupo-directorio-titulo {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    align-items: center;
+    gap: 0.9rem;
+}
+
+.ayuda-contactos__grupo-directorio-icono,
+.contacto-apoyo__telefono-icono {
+    width: 3rem;
+    height: 3rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: rgba(22, 78, 63, 0.07);
+    color: var(--verde);
+}
+
+.ayuda-contactos__grupo-directorio-titulo h3 {
+    font-size: var(--tamano-texto-l);
+    font-weight: var(--peso-semibold);
+    line-height: var(--alto-linea-titulo);
+}
+
+.ayuda-contactos__grupo-directorio-titulo::after {
+    content: "";
+    display: block;
+    height: 1px;
+    background: var(--linea-suave);
+}
+
+.ayuda-contactos__fila-sede {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.ayuda-contactos__fila-sede-texto {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.ayuda-contactos__fila-sede-texto h3 {
+    font-weight: var(--peso-bold);
+    letter-spacing: -0.01em;
+}
+
+.ayuda-contactos__fila-sede-telefono {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    align-items: center;
+    gap: 0.8rem;
+    padding-top: 0.28rem;
+}
+
+.contacto-apoyo__telefono {
+    font-size: var(--tamano-texto-s);
+    font-weight: var(--peso-medium);
+    line-height: 1.5;
+}
+
+.ayuda-contactos__nota {
+    padding: 1rem 1.05rem;
+    border-radius: 1.15rem;
+    background: rgba(255, 241, 240, 0.72);
+    border: 1px solid rgba(239, 83, 103, 0.16);
+    color: var(--texto);
+    font-size: var(--tamano-texto-m);
+    font-weight: var(--peso-medium);
+    line-height: var(--alto-linea-cuerpo);
+}
+
+@media (min-width: 1200px) {
+    .ayuda-contactos__lista-directorio {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0 1.25rem;
+    }
+
+    .ayuda-contactos__grupo-directorio:last-child .ayuda-contactos__lista-directorio {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+[data-theme="dark"] .ayuda-contactos {
+    background: var(--panel-app-fondo);
+    border-color: var(--panel-app-borde);
+    box-shadow: var(--panel-app-sombra);
+}
+
+[data-theme="dark"] .ayuda-contactos h1,
+[data-theme="dark"] .ayuda-contactos__titulo-tarjeta,
+[data-theme="dark"] .ayuda-contactos__titulo-seccion h2,
+[data-theme="dark"] .ayuda-contactos__grupo-directorio h3,
+[data-theme="dark"] .ayuda-contactos__fila-sede h3 {
+    color: #b7efd2;
+}
+
+[data-theme="dark"] .ayuda-contactos__titulo-seccion p,
+[data-theme="dark"] .ayuda-contactos__dato-etiqueta {
+    color: #b8c7c0;
+}
+
+[data-theme="dark"] .ayuda-contactos__tarjeta {
+    background: var(--tarjeta-fondo);
+    border-color: var(--tarjeta-borde);
+    box-shadow: var(--tarjeta-sombra);
+}
+
+[data-theme="dark"] .ayuda-contactos__dato,
+[data-theme="dark"] .ayuda-contactos__fila-sede {
+    border-bottom-color: var(--linea-suave);
+}
+
+[data-theme="dark"] .ayuda-contactos__dato-valor,
+[data-theme="dark"] .ayuda-contactos__enlace,
+[data-theme="dark"] .contacto-apoyo__telefono,
+[data-theme="dark"] .ayuda-contactos__fila-sede p {
+    color: #edf4f0;
+}
+
+[data-theme="dark"] .ayuda-contactos__grupo-directorio-icono,
+[data-theme="dark"] .contacto-apoyo__telefono-icono {
+    background: rgba(223, 241, 232, 0.08);
+    color: #b7efd2;
+}
+
+[data-theme="dark"] .ayuda-contactos__grupo-directorio-titulo::after {
+    background: var(--linea-suave);
+}
+
+[data-theme="dark"] .ayuda-contactos__nota {
+    background: rgba(239, 83, 103, 0.16);
+    border-color: rgba(248, 113, 113, 0.24);
+    color: #ffe1e5;
+}
+
+@media (max-width: 1199px) {
+    .ayuda-contactos {
+        gap: 24px;
+        padding: 24px 16px;
+    }
+
+    .ayuda-contactos__encabezado,
+    .ayuda-contactos__resumen,
+    .ayuda-contactos__grupo-directorio,
+    .ayuda-contactos__titulo-seccion {
+        gap: 16px;
+    }
+
+    .ayuda-contactos__encabezado {
+        max-width: none;
+        justify-items: start;
+        text-align: left;
+    }
+
+    .ayuda-contactos__encabezado .etiqueta-pantalla {
+        justify-self: start;
+        margin: 0;
+    }
+
+    .ayuda-contactos .titulo-seccion-app {
+        font-size: 32px;
+        line-height: 1.05;
+        text-align: left;
+    }
+
+    .ayuda-contactos__titulo-tarjeta,
+    .ayuda-contactos__titulo-seccion h2 {
+        font-size: 24px;
+        line-height: 1.15;
+    }
+
+    .ayuda-contactos__titulo-seccion p,
+    .ayuda-contactos__dato-valor,
+    .ayuda-contactos__enlace,
+    .ayuda-contactos__fila-sede p,
+    .contacto-apoyo__telefono {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .ayuda-contactos__dato-etiqueta {
+        font-size: 14px;
+        line-height: 1.4;
+        margin-bottom: 0;
+    }
+
+    .ayuda-contactos__tarjeta {
+        gap: 16px;
+        padding: 24px 16px;
+        align-content: start;
+    }
+
+    .ayuda-contactos__dato,
+    .ayuda-contactos__fila-sede {
+        gap: 8px;
+        padding: 16px 0;
+    }
+
+    .ayuda-contactos__lista-sede .ayuda-contactos__dato-valor {
+        font-size: 20px;
+        line-height: 1.3;
+    }
+
+    .ayuda-contactos__grupo-directorio {
+        gap: 16px;
+    }
+
+    .ayuda-contactos__grupo-directorio + .ayuda-contactos__grupo-directorio {
+        margin-top: 24px;
+    }
+
+    .ayuda-contactos__grupo-directorio-titulo {
+        grid-template-columns: 32px minmax(0, 1fr);
+        gap: 16px;
+        justify-content: start;
+    }
+
+    .ayuda-contactos__grupo-directorio-titulo::after {
+        display: none;
+    }
+
+    .ayuda-contactos__grupo-directorio-icono {
+        width: 32px;
+        height: 32px;
+    }
+
+    .ayuda-contactos__grupo-directorio-titulo h3 {
+        font-size: 20px;
+        line-height: 1.2;
+    }
+
+    .ayuda-contactos__fila-sede {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ayuda-contactos__fila-sede-texto {
+        gap: 8px;
+    }
+
+    .ayuda-contactos__fila-sede-texto h3 {
+        font-size: 20px;
+        line-height: 1.2;
+    }
+
+    .ayuda-contactos__fila-sede p {
+        font-size: 14px;
+        line-height: 1.4;
+        color: var(--texto-sutil);
+    }
+
+    .ayuda-contactos__fila-sede-telefono {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+        padding-top: 0;
+    }
+
+    .contacto-apoyo__telefono-icono {
+        display: none;
+    }
+
+    .contacto-apoyo__telefono {
+        font-size: 16px;
+        font-weight: var(--peso-medium);
+    }
+
+    .ayuda-contactos__nota {
+        width: 100%;
+        margin-top: 8px;
+        padding: 16px;
+        font-size: 16px;
+        line-height: 1.6;
+        text-align: left;
+    }
+}
+
+@media (max-width: 767px) {
+    .ayuda-contactos__resumen,
+    .ayuda-contactos__lista-directorio {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    .ayuda-contactos {
+        padding: 24px;
+    }
+
+    .ayuda-contactos__resumen {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .ayuda-contactos__tarjeta {
+        height: 100%;
+    }
+
+    .ayuda-contactos__lista-sede .ayuda-contactos__dato {
+        gap: 8px;
+    }
+
+    .ayuda-contactos__lista-sede .ayuda-contactos__dato-valor {
+        font-size: 16px;
+        font-weight: var(--peso-medium);
+        line-height: 1.6;
+        color: var(--texto);
+    }
+
+    .ayuda-contactos__lista-directorio {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0 24px;
+    }
+}

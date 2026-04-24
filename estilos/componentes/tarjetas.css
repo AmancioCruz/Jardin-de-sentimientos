@@ -1,10 +1,11 @@
 /* Tarjetas reutilizables para formularios, perfil, evaluaciones y modales. */
 .tarjeta-app {
   width: 100%;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
+  background: var(--tarjeta-fondo);
+  border: 1px solid var(--tarjeta-borde);
   border-radius: var(--radio-grande);
-  box-shadow: var(--sombra-suave);
+  box-shadow: var(--tarjeta-sombra);
+  transition: transform var(--duracion-ui-media) var(--curva-ui), box-shadow var(--duracion-ui-media) var(--curva-ui), border-color var(--duracion-ui-media) var(--curva-ui), background var(--duracion-ui-media) var(--curva-ui);
 }
 
 .tarjeta-app--elevada {
@@ -20,24 +21,85 @@
 .titulo-seccion,
 .titulo-pantalla {
   color: var(--verde);
-  font-weight: 800;
-  text-align: center;
+  font-weight: var(--peso-bold);
+  text-align: left;
   letter-spacing: -0.03em;
+  line-height: var(--alto-linea-titulo);
 }
 
 .titulo-formulario {
-  font-size: var(--tamano-texto-2xl);
+  font-size: clamp(1.75rem, 4vw, var(--tamano-texto-2xl));
 }
 
 .titulo-pantalla {
-  font-size: clamp(1.5rem, 4vw, var(--tamano-texto-2xl));
+  font-size: clamp(1.75rem, 4vw, var(--tamano-texto-2xl));
+}
+
+.etiqueta-pantalla {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  margin: 0;
+  padding: 0.4rem 0.78rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: var(--peso-medium);
+  letter-spacing: 0.01em;
+  text-transform: none;
+  line-height: 1.1;
+}
+
+.etiqueta-pantalla--inicio {
+  background: rgba(22, 126, 88, 0.12);
+  color: #167e58;
+}
+
+.etiqueta-pantalla--perfil {
+  background: rgba(201, 111, 74, 0.12);
+  color: #b85a33;
+}
+
+.etiqueta-pantalla--bitacora {
+  background: rgba(245, 158, 11, 0.14);
+  color: #b66907;
+}
+
+.etiqueta-pantalla--sesion {
+  background: rgba(91, 141, 239, 0.14);
+  color: #3f6fd4;
+}
+
+.etiqueta-pantalla--registro {
+  background: rgba(47, 127, 195, 0.12);
+  color: #2f7fc3;
+}
+
+.etiqueta-pantalla--configuracion {
+  background: rgba(91, 141, 239, 0.14);
+  color: #3f6fd4;
+}
+
+.etiqueta-pantalla--ayuda {
+  background: rgba(239, 83, 103, 0.12);
+  color: #ef5367;
+}
+
+.etiqueta-pantalla--apoyo {
+  background: rgba(47, 127, 195, 0.12);
+  color: #2f7fc3;
+}
+
+.etiqueta-pantalla--espacio {
+  background: rgba(201, 111, 74, 0.12);
+  color: #b85a33;
 }
 
 .subtitulo-seccion {
   font-size: var(--tamano-texto-l);
   color: var(--verde);
   margin: var(--espacio-xl) 0 var(--espacio-m);
-  font-weight: 800;
+  font-weight: var(--peso-semibold);
   padding-left: var(--espacio-m);
   border-left: 4px solid var(--acento);
 }
@@ -47,11 +109,202 @@
   font-size: var(--tamano-texto-s);
 }
 
+@media (max-width: 767px) {
+  .titulo-formulario,
+  .titulo-seccion,
+  .titulo-pantalla {
+    text-align: center;
+  }
+
+  .etiqueta-pantalla {
+    justify-self: end;
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
+
 .enlace-app {
   color: var(--acento);
-  font-weight: 700;
+  font-weight: var(--peso-semibold);
 }
 
 .enlace-app:hover {
   color: var(--acento-fuerte);
+}
+
+.inicio-contenedor,
+.perfil-contenedor,
+.mi-espacio,
+.bitacora-contenedor,
+.configuracion-contenedor,
+.ayuda-contactos,
+.recursos-apoyo {
+  width: 100%;
+  max-width: var(--ancho-panel-app);
+  margin: 0 auto;
+}
+
+.inicio-contenedor,
+.mi-espacio,
+.configuracion-contenedor,
+.ayuda-contactos,
+.recursos-apoyo,
+.bitacora-contenedor {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(22, 78, 63, 0.4) rgba(22, 78, 63, 0.08);
+}
+
+.inicio-contenedor::-webkit-scrollbar,
+.mi-espacio::-webkit-scrollbar,
+.configuracion-contenedor::-webkit-scrollbar,
+.ayuda-contactos::-webkit-scrollbar,
+.recursos-apoyo::-webkit-scrollbar,
+.bitacora-contenedor::-webkit-scrollbar {
+  width: 0.8rem;
+}
+
+.inicio-contenedor::-webkit-scrollbar-track,
+.mi-espacio::-webkit-scrollbar-track,
+.configuracion-contenedor::-webkit-scrollbar-track,
+.ayuda-contactos::-webkit-scrollbar-track,
+.recursos-apoyo::-webkit-scrollbar-track,
+.bitacora-contenedor::-webkit-scrollbar-track {
+  background: rgba(22, 78, 63, 0.06);
+  border-radius: 999px;
+  margin-block: 0.75rem;
+}
+
+.inicio-contenedor::-webkit-scrollbar-thumb,
+.mi-espacio::-webkit-scrollbar-thumb,
+.configuracion-contenedor::-webkit-scrollbar-thumb,
+.ayuda-contactos::-webkit-scrollbar-thumb,
+.recursos-apoyo::-webkit-scrollbar-thumb,
+.bitacora-contenedor::-webkit-scrollbar-thumb {
+  background: rgba(22, 78, 63, 0.58);
+  border: 0.18rem solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+
+.inicio-contenedor::-webkit-scrollbar-thumb:hover,
+.mi-espacio::-webkit-scrollbar-thumb:hover,
+.configuracion-contenedor::-webkit-scrollbar-thumb:hover,
+.ayuda-contactos::-webkit-scrollbar-thumb:hover,
+.recursos-apoyo::-webkit-scrollbar-thumb:hover,
+.bitacora-contenedor::-webkit-scrollbar-thumb:hover {
+  background: rgba(22, 78, 63, 0.72);
+  background-clip: padding-box;
+}
+
+[data-theme="dark"] .inicio-contenedor,
+[data-theme="dark"] .mi-espacio,
+[data-theme="dark"] .configuracion-contenedor,
+[data-theme="dark"] .ayuda-contactos,
+[data-theme="dark"] .recursos-apoyo,
+[data-theme="dark"] .bitacora-contenedor {
+  scrollbar-color: rgba(183, 239, 210, 0.34) rgba(223, 241, 232, 0.07);
+}
+
+[data-theme="dark"] .inicio-contenedor::-webkit-scrollbar-track,
+[data-theme="dark"] .mi-espacio::-webkit-scrollbar-track,
+[data-theme="dark"] .configuracion-contenedor::-webkit-scrollbar-track,
+[data-theme="dark"] .ayuda-contactos::-webkit-scrollbar-track,
+[data-theme="dark"] .recursos-apoyo::-webkit-scrollbar-track,
+[data-theme="dark"] .bitacora-contenedor::-webkit-scrollbar-track {
+  background: rgba(223, 241, 232, 0.06);
+}
+
+[data-theme="dark"] .inicio-contenedor::-webkit-scrollbar-thumb,
+[data-theme="dark"] .mi-espacio::-webkit-scrollbar-thumb,
+[data-theme="dark"] .configuracion-contenedor::-webkit-scrollbar-thumb,
+[data-theme="dark"] .ayuda-contactos::-webkit-scrollbar-thumb,
+[data-theme="dark"] .recursos-apoyo::-webkit-scrollbar-thumb,
+[data-theme="dark"] .bitacora-contenedor::-webkit-scrollbar-thumb {
+  background: rgba(183, 239, 210, 0.36);
+  background-clip: padding-box;
+}
+
+[data-theme="dark"] .inicio-contenedor::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .mi-espacio::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .configuracion-contenedor::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .ayuda-contactos::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .recursos-apoyo::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .bitacora-contenedor::-webkit-scrollbar-thumb:hover {
+  background: rgba(183, 239, 210, 0.5);
+  background-clip: padding-box;
+}
+
+.inicio-encabezado,
+.perfil-encabezado,
+.mi-espacio__encabezado,
+.bitacora-encabezado,
+.configuracion-encabezado,
+.ayuda-contactos__encabezado,
+.recursos-apoyo__encabezado {
+  display: grid;
+  gap: var(--espacio-m);
+  max-width: 44rem;
+}
+
+.inicio-encabezado h1,
+.inicio-encabezado p,
+.perfil-encabezado h1,
+.perfil-encabezado p,
+.mi-espacio__encabezado h1,
+.mi-espacio__encabezado p,
+.bitacora-encabezado h1,
+.bitacora-encabezado p,
+.configuracion-encabezado h1,
+.configuracion-encabezado p,
+.ayuda-contactos__encabezado h1,
+.ayuda-contactos__encabezado p,
+.recursos-apoyo__encabezado h1,
+.recursos-apoyo__encabezado p {
+  margin: 0;
+}
+
+.inicio-encabezado .etiqueta-pantalla,
+.perfil-encabezado .etiqueta-pantalla,
+.mi-espacio__encabezado .etiqueta-pantalla,
+.bitacora-encabezado .etiqueta-pantalla,
+.configuracion-encabezado .etiqueta-pantalla,
+.ayuda-contactos__encabezado .etiqueta-pantalla,
+.recursos-apoyo__encabezado .etiqueta-pantalla {
+  margin: 0;
+}
+
+.inicio-encabezado .titulo-seccion-app,
+.perfil-encabezado .titulo-seccion-app,
+.mi-espacio__encabezado .titulo-seccion-app,
+.bitacora-encabezado .titulo-seccion-app,
+.configuracion-encabezado .titulo-seccion-app,
+.ayuda-contactos__encabezado .titulo-seccion-app,
+.recursos-apoyo__encabezado .titulo-seccion-app {
+  text-align: left;
+}
+
+.inicio-encabezado p,
+.perfil-encabezado p,
+.mi-espacio__encabezado p,
+.bitacora-encabezado p,
+.configuracion-encabezado p,
+.ayuda-contactos__encabezado p,
+.recursos-apoyo__encabezado p {
+  color: var(--texto-sutil);
+  font-size: var(--tamano-texto-m);
+  line-height: var(--alto-linea-cuerpo);
+}
+
+.perfil-seccion,
+.configuracion-seccion,
+.ayuda-contactos__principal,
+.contacto-apoyo,
+.recurso-tarjeta,
+.bitacora-resumen__tarjeta,
+.bitacora-momento__boton {
+  border: 1px solid var(--tarjeta-borde);
+  border-radius: var(--radio-borde);
+  background: var(--tarjeta-fondo);
+  box-shadow: var(--tarjeta-sombra);
+  transition: transform var(--duracion-ui-media) var(--curva-ui), box-shadow var(--duracion-ui-media) var(--curva-ui), border-color var(--duracion-ui-media) var(--curva-ui), background var(--duracion-ui-media) var(--curva-ui);
 }

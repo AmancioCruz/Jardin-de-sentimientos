@@ -4,21 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="estilos/estilo.css">
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js?v=20260409"></script>
-    <title>Jardín de Sentimientos</title>
-    <link rel="icon" type="image/svg+xml" href="recursos/imagenes/spa.svg">
-    <link rel="mask-icon" color="#164E3F" href="recursos/imagenes/spa.svg">
+    <title>Jard&iacute;n de Sentimientos</title>
+    <link rel="icon" type="image/svg+xml" href="recursos/iconos/Icono_Logo.svg">
+    <link rel="mask-icon" color="#164E3F" href="recursos/iconos/Icono_Logo.svg">
     <meta name="theme-color" content="#164E3F">
 </head>
 
 <body>
-    <header class="cabecera-principal" id="cabecera-principal">
-        <div class="logo">
-            <div class="logo-icono">
-                <i class="fa-solid fa-spa"></i>
-            </div>
-            <h2 class="logo-texto">Jardín de Sentimientos</h2>
+    <header class="cabecera-principal cabecera-principal--sin-sesion" id="cabecera-principal">
+        <button type="button" class="cabecera-principal__menu" data-app-menu-toggle aria-label="Abrir men&uacute;"
+            aria-expanded="false" aria-controls="menu-navegacion-panel" hidden>
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <h1 class="cabecera-principal__titulo">Jard&iacute;n de Sentimientos</h1>
+        <div class="cabecera-principal__logo logo" aria-label="Jard&iacute;n de Sentimientos">
+            <span class="logo-icono" aria-hidden="true"></span>
         </div>
     </header>
 

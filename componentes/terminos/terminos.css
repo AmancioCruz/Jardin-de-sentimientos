@@ -1,22 +1,31 @@
 .consentimiento-contenedor {
+    position: fixed;
+    inset: var(--altura-cabecera) 0 0;
     width: 100%;
-    min-height: 100%;
+    height: calc(100dvh - var(--altura-cabecera));
     display: flex;
+    align-items: center;
     justify-content: center;
-    position: absolute;
-    top: 0;
-    z-index: 100;
-    padding: var(--espacio-s);
-    background: rgba(244, 241, 234, 0.92);
+    z-index: 1200;
+    padding: 16px;
+    overflow: hidden;
+    background: var(--capa-modal);
     backdrop-filter: blur(8px);
 }
 
 .card-consentimiento {
     width: 100%;
     max-width: 720px;
-    padding: clamp(1rem, 4vw, 2rem);
+    height: 100%;
+    max-height: 100%;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
     overflow: auto;
-    max-height: calc(100vh - 1rem);
+    border-radius: var(--radio-grande);
+    border: 1px solid rgba(22, 78, 63, 0.1);
+    background: rgba(255, 255, 255, 0.96);
+    transition: border-color var(--duracion-ui-media) var(--curva-ui), background var(--duracion-ui-media) var(--curva-ui), box-shadow var(--duracion-ui-media) var(--curva-ui);
 }
 
 .btn-regresar-terminos {
@@ -25,14 +34,14 @@
 }
 
 .consentimiento-titulo {
-    font-size: var(--tamano-texto-xl);
-    font-weight: 600;
+    font-size: var(--tamano-texto-2xl);
+    font-weight: var(--peso-bold);
     margin-bottom: var(--espacio-s);
     color: var(--verde);
 }
 
 .consentimiento-proyecto {
-    font-size: var(--tamano-texto-s);
+    font-size: var(--tamano-texto-m);
     color: var(--texto-sutil);
     margin-bottom: var(--espacio-l);
 }
@@ -49,25 +58,43 @@
 }
 
 .consentimiento-seccion h3 {
-    font-size: var(--tamano-texto-m);
-    font-weight: 600;
+    font-size: var(--tamano-texto-l);
+    font-weight: var(--peso-semibold);
     margin-bottom: var(--espacio-xs);
     color: var(--texto);
 }
 
 .consentimiento-seccion p {
-    font-size: var(--tamano-texto-s);
+    font-size: var(--tamano-texto-m);
     color: var(--texto-sutil);
-    line-height: 1.5;
+    line-height: var(--alto-linea-cuerpo);
     white-space: pre-line;
 }
 
 @media (min-width: 768px) {
     .consentimiento-contenedor {
-        padding: var(--espacio-l);
+        padding: 24px;
     }
+}
 
-    .card-consentimiento {
-        max-height: calc(100vh - 2rem);
-    }
+[data-theme="dark"] .consentimiento-contenedor {
+    background: rgba(5, 12, 10, 0.64);
+}
+
+[data-theme="dark"] .card-consentimiento {
+    background: rgba(24, 36, 31, 0.98);
+    border-color: rgba(223, 241, 232, 0.12);
+}
+
+[data-theme="dark"] .consentimiento-titulo {
+    color: #b7efd2;
+}
+
+[data-theme="dark"] .consentimiento-proyecto,
+[data-theme="dark"] .consentimiento-seccion p {
+    color: #b8c7c0;
+}
+
+[data-theme="dark"] .consentimiento-seccion {
+    border-top-color: rgba(223, 241, 232, 0.12);
 }

@@ -2,8 +2,8 @@
 .formulario-app {
   display: flex;
   flex-direction: column;
-  gap: var(--espacio-l);
-  padding: clamp(1.35rem, 4vw, 2.2rem);
+  gap: var(--espacio-m);
+  padding: clamp(1.25rem, 4vw, 2rem);
 }
 
 .grupo-campo,
@@ -16,7 +16,7 @@
 .etiqueta-campo {
   display: block;
   font-size: var(--tamano-texto-s);
-  font-weight: 700;
+  font-weight: var(--peso-medium);
   margin-bottom: var(--espacio-xs);
   color: var(--texto);
 }
@@ -29,10 +29,10 @@
   align-items: center;
   width: 100%;
   border: 1px solid var(--borde);
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.84);
+  border-radius: var(--radio-borde);
+  background: rgba(255, 255, 255, 0.8);
   overflow: hidden;
-  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+  transition: border-color var(--duracion-ui-rapida) var(--curva-ui), box-shadow var(--duracion-ui-rapida) var(--curva-ui), background var(--duracion-ui-rapida) var(--curva-ui), transform var(--duracion-ui-rapida) var(--curva-ui);
 }
 
 .campo i,
@@ -51,24 +51,26 @@
 .select-preferencia {
   width: 100%;
   min-height: 3.25rem;
-  padding: 0.95rem 1rem 0.95rem 0.25rem;
+  padding: 0.9rem 1rem 0.9rem 0.25rem;
   border: none;
   border-radius: 0;
   background: transparent;
   font-size: var(--tamano-texto-m);
-  line-height: 1.2;
+  line-height: 1.5;
+  transition: color var(--duracion-ui-rapida) var(--curva-ui), background var(--duracion-ui-rapida) var(--curva-ui), box-shadow var(--duracion-ui-rapida) var(--curva-ui);
 }
 
 .select-preferencia {
   border: 1px solid var(--borde);
-  border-radius: 1rem;
-  background-color: rgba(255, 255, 255, 0.84);
+  border-radius: var(--radio-borde);
+  background-color: rgba(255, 255, 255, 0.8);
   padding-left: 1rem;
   padding-right: 2.5rem;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2366756f' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
+  transition: border-color var(--duracion-ui-rapida) var(--curva-ui), box-shadow var(--duracion-ui-rapida) var(--curva-ui), background-color var(--duracion-ui-rapida) var(--curva-ui), color var(--duracion-ui-rapida) var(--curva-ui);
 }
 
 .campo:focus-within,
@@ -97,13 +99,20 @@
 }
 
 .texto-formulario {
-  text-align: center;
+  text-align: left;
   font-size: var(--tamano-texto-s);
   color: var(--texto-sutil);
+  line-height: var(--alto-linea-cuerpo);
 }
 
 .fila-formulario {
   display: flex;
   flex-direction: column;
   gap: var(--espacio-s);
+}
+
+@media (max-width: 767px) {
+  .texto-formulario {
+    text-align: center;
+  }
 }

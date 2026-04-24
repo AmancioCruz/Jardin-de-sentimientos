@@ -1,6 +1,7 @@
 import { Elemento } from "../utilidades/modelos/elemento.js";
 import { contenedores } from "./contenedores_dom.js";
 import { actualizarSeccion } from "./sistema_estados.js";
+import { limpiarOverlaysActivos } from "../servicios/overlay.js";
 
 const pantallasRegistradas = new Map();
 
@@ -63,4 +64,5 @@ function limpiarCapasGlobales() {
     document.getElementById('tutorial-actividad')?.remove();
     document.getElementById('panel-texto-nota')?.remove();
     document.querySelectorAll('.fantasma-sticker').forEach((fantasma) => fantasma.remove());
+    limpiarOverlaysActivos();
 }

@@ -39,7 +39,7 @@ export function crearEvaluacion(config = {}, alEnviar) {
         preguntas: config.preguntas || evaluacion.preguntas
     };
 
-    const elementosPreguntas = datos.preguntas.map(pregunta =>
+    const elementosPreguntas = datos.preguntas.map((pregunta) =>
         crearPreguntaLikert(
             pregunta.texto,
             crearOpcionesLikert(pregunta.id, datos.escala.maximo),
@@ -58,14 +58,14 @@ export function crearEvaluacion(config = {}, alEnviar) {
 }
 
 const contenedorEvaluacion = (contenido) => construirElemento({
-    tipo: 'div',
-    atributos: { class: 'contenedor-evaluacion' },
+    tipo: "div",
+    atributos: { class: "contenedor-evaluacion" },
     hijos: Array.isArray(contenido) ? contenido : [contenido]
 });
 
 const componenteFormularioEvaluacion = ({ titulo, instruccion, preguntas, alEnviar }) => construirElemento({
-    tipo: 'form',
-    atributos: { class: 'formulario-app tarjeta-app tarjeta-app--elevada formulario-evaluacion' },
+    tipo: "form",
+    atributos: { class: "formulario-app tarjeta-app tarjeta-app--elevada formulario-evaluacion" },
     eventos: {
         submit: (e) => {
             e.preventDefault();
@@ -73,59 +73,59 @@ const componenteFormularioEvaluacion = ({ titulo, instruccion, preguntas, alEnvi
             const formData = new FormData(e.target);
             const respuestas = {};
 
-            for (let [key, value] of formData.entries()) {
+            for (const [key, value] of formData.entries()) {
                 respuestas[key] = Number(value);
             }
 
-            const error = e.target.querySelector('[data-error-evaluacion]');
+            const error = e.target.querySelector("[data-error-evaluacion]");
 
             if (Object.keys(respuestas).length < preguntas.length) {
                 if (error) {
-                    error.textContent = 'Responde todas las preguntas para continuar.';
-                    error.classList.remove('oculto');
+                    error.textContent = "Responde todas las preguntas para continuar.";
+                    error.classList.remove("oculto");
                 }
                 return;
             }
 
-            error?.classList.add('oculto');
+            error?.classList.add("oculto");
 
-            if (alEnviar && typeof alEnviar === 'function') {
+            if (alEnviar && typeof alEnviar === "function") {
                 alEnviar(respuestas);
             }
         }
     },
     hijos: [
         {
-            tipo: 'h2',
-            atributos: { class: 'titulo-formulario titulo-evaluacion' },
+            tipo: "h2",
+            atributos: { class: "titulo-formulario titulo-evaluacion" },
             hijos: [titulo]
         },
         {
-            tipo: 'p',
-            atributos: { class: 'instruccion-evaluacion' },
+            tipo: "p",
+            atributos: { class: "instruccion-evaluacion" },
             hijos: [instruccion]
         },
         {
-            tipo: 'p',
+            tipo: "p",
             atributos: {
-                class: 'mensaje-error-evaluacion oculto',
-                'data-error-evaluacion': '',
-                role: 'status',
-                'aria-live': 'polite'
+                class: "mensaje-error-evaluacion oculto",
+                "data-error-evaluacion": "",
+                role: "status",
+                "aria-live": "polite"
             }
         },
         ...preguntas,
         {
-            tipo: 'div',
-            atributos: { class: 'acciones-evaluacion' },
+            tipo: "div",
+            atributos: { class: "acciones-evaluacion" },
             hijos: [
                 {
-                    tipo: 'button',
+                    tipo: "button",
                     atributos: {
-                        type: 'submit',
-                        class: 'btn-primario btn-ancho'
+                        type: "submit",
+                        class: "btn-primario btn-ancho"
                     },
-                    hijos: ['Continuar']
+                    hijos: ["Continuar"]
                 }
             ]
         }
@@ -133,25 +133,25 @@ const componenteFormularioEvaluacion = ({ titulo, instruccion, preguntas, alEnvi
 });
 
 const crearPreguntaLikert = (textoPregunta, opcionesLikert, escala) => construirElemento({
-    tipo: 'div',
-    atributos: { class: 'pregunta-evaluacion' },
+    tipo: "div",
+    atributos: { class: "pregunta-evaluacion" },
     hijos: [
         {
-            tipo: 'p',
-            atributos: { class: 'texto-pregunta' },
+            tipo: "p",
+            atributos: { class: "texto-pregunta" },
             hijos: [textoPregunta]
         },
         {
-            tipo: 'div',
-            atributos: { class: 'likert-numerico' },
+            tipo: "div",
+            atributos: { class: "likert-numerico" },
             hijos: opcionesLikert
         },
         {
-            tipo: 'div',
-            atributos: { class: 'likert-extremos' },
+            tipo: "div",
+            atributos: { class: "likert-extremos" },
             hijos: [
-                { tipo: 'span', hijos: [escala.de] },
-                { tipo: 'span', hijos: [escala.a] }
+                { tipo: "span", hijos: [escala.de] },
+                { tipo: "span", hijos: [escala.a] }
             ]
         }
     ]
@@ -164,23 +164,23 @@ const crearOpcionesLikert = (nombre, cantidad = 5) => {
         const valor = i + 1;
 
         opciones.push(construirElemento({
-            tipo: 'label',
+            tipo: "label",
             hijos: [
                 {
-                    tipo: 'input',
+                    tipo: "input",
                     atributos: {
-                        type: 'radio',
+                        type: "radio",
                         name: nombre,
                         value: String(valor)
                     },
                     eventos: {
                         change: (evento) => {
-                            evento.currentTarget.closest('form')?.querySelector('[data-error-evaluacion]')?.classList.add('oculto');
+                            evento.currentTarget.closest("form")?.querySelector("[data-error-evaluacion]")?.classList.add("oculto");
                         }
                     }
                 },
                 {
-                    tipo: 'span',
+                    tipo: "span",
                     hijos: [String(valor)]
                 }
             ]
