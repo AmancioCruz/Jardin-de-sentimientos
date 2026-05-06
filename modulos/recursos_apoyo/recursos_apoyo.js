@@ -4,7 +4,7 @@ const recursosRapidos = [
     {
         titulo: "Ver, tocar y escuchar",
         icono: "fa-solid fa-hand-sparkles",
-        descripcion: "Sirve para bajar un poco la intensidad cuando la mente va muy rápido o se siente dispersa.",
+        descripcion: "Ayuda a volver al presente cuando la mente va muy rápido o se siente dispersa.",
         duracion: "1 a 3 minutos",
         pasos: [
             "Mira 3 cosas a tu alrededor y nómbralas despacio.",
@@ -12,19 +12,19 @@ const recursosRapidos = [
             "Escucha 3 sonidos, aunque sean pequeños.",
             "Haz una respiración lenta antes de seguir con lo siguiente."
         ],
-        fundamento: "Estas técnicas de grounding ayudan a llevar la atención al presente y suelen usarse para reducir activación y desorientación."
+        fundamento: "Este tipo de grounding ayuda a traer la atención al presente cuando todo se siente demasiado rápido."
     },
     {
         titulo: "Tres cosas que agradezco",
         icono: "fa-solid fa-book-open",
-        descripcion: "No busca negar lo difícil. Ayuda a notar algo bueno o valioso que también estuvo presente hoy.",
+        descripcion: "Ayuda a notar algo valioso del día sin negar lo difícil que también estuvo presente.",
         duracion: "2 a 5 minutos",
         pasos: [
             "Escribe una cosa pequeña que agradeces hoy.",
             "Anota algo que alguien hizo por ti o algo que tú hiciste por ti.",
             "Cierra con una frase corta: hoy también pude notar..."
         ],
-        fundamento: "Prácticas breves de gratitud pueden ayudar a ampliar el foco de atención y equilibrar la tendencia a quedarnos solo con lo pesado."
+        fundamento: "Una pausa breve de gratitud puede ayudarte a ampliar el foco y no quedarte solo con lo pesado."
     },
     {
         titulo: "Mover el cuerpo un poco",
@@ -37,17 +37,18 @@ const recursosRapidos = [
             "Mueve brazos y piernas con suavidad.",
             "Toma agua y nota si tu cuerpo se siente un poco más suelto."
         ],
-        fundamento: "El movimiento suave puede apoyar la regulación del estrés porque ayuda a descargar tensión física y a cambiar de ritmo."
+        fundamento: "El movimiento suave puede ayudar a soltar tensión física y a cambiar un poco el ritmo interno."
     }
 ];
 
-export function crearRecursosApoyo() {
+export function crearRecursosApoyo({ alSalir } = {}) {
     return construirElemento({
         tipo: "section",
         atributos: { class: "recursos-apoyo" },
         hijos: [
             crearEncabezado(),
-            crearSeccionGuias()
+            crearSeccionGuias(),
+            crearAccionesRecursos(alSalir)
         ]
     });
 }
@@ -61,12 +62,20 @@ function crearEncabezado() {
             { tipo: "h1", atributos: { class: "titulo-seccion-app" }, hijos: ["Qué más puedo hacer ahora"] },
             {
                 tipo: "p",
-                hijos: ["Estas opciones son breves, claras y suelen ayudar a regularse un poco mejor en momentos de tensión, saturación o inquietud."]
+                hijos: [
+                    "Son opciones breves para acompañarte mejor cuando aparece tensión, saturación o inquietud, ",
+                    {
+                        tipo: "span",
+                        atributos: { class: "recursos-apoyo__frase-resaltada" },
+                        hijos: ["no tienes que hacerlas perfecto"]
+                    },
+                    ". Lo importante es probar una y ver si te ayuda en este momento."
+                ]
             },
             {
                 tipo: "p",
-                atributos: { class: "recursos-apoyo__practica" },
-                hijos: ["No tienes que usarlas perfecto. Funcionan mejor cuando se practican varias veces, porque así es más fácil recordarlas cuando las necesites."]
+                atributos: { class: "recursos-apoyo__acompanamiento" },
+                hijos: ["Estas actividades pueden acompañarte en algunos momentos, pero no siempre funcionan igual para todas las personas. Si sientes que el malestar sigue presente o va aumentando, tal vez te haga bien acercarte también a otros apoyos que estén disponibles para ti."]
             }
         ]
     };
@@ -77,7 +86,7 @@ function crearSeccionGuias() {
         tipo: "section",
         atributos: { class: "recursos-apoyo__bloque" },
         hijos: [
-            crearTituloSeccion("Tres herramientas concretas", "Elige solo una. Lo importante es probar algo pequeño y posible en este momento."),
+            crearTituloSeccion("Tres herramientas concretas", "Elige solo una. La idea es empezar por algo pequeño y posible ahora."),
             {
                 tipo: "div",
                 atributos: { class: "recursos-apoyo__tarjetas" },
@@ -97,21 +106,32 @@ function crearTarjetaRecurso(recurso) {
                 atributos: { class: "recurso-tarjeta__titulo" },
                 hijos: [
                     { tipo: "i", atributos: { class: recurso.icono } },
-                    { tipo: "h2", hijos: [recurso.titulo] }
+                    { tipo: "h3", hijos: [recurso.titulo] }
                 ]
             },
             { tipo: "p", hijos: [recurso.descripcion] },
             {
+                tipo: "div",
+                atributos: { class: "recurso-tarjeta__guia" },
+                hijos: [
+                    {
+                        tipo: "p",
+                        atributos: { class: "recurso-tarjeta__guia-titulo" },
+                        hijos: ["Puedes probar esto ahora:"]
+                    },
+                    {
+                        tipo: "ol",
+                        hijos: recurso.pasos.map((paso) => ({
+                            tipo: "li",
+                            hijos: [paso]
+                        }))
+                    }
+                ]
+            },
+            {
                 tipo: "p",
                 atributos: { class: "recurso-tarjeta__meta" },
                 hijos: [`Tiempo sugerido: ${recurso.duracion}`]
-            },
-            {
-                tipo: "ol",
-                hijos: recurso.pasos.map((paso) => ({
-                    tipo: "li",
-                    hijos: [paso]
-                }))
             },
             {
                 tipo: "p",
@@ -129,6 +149,30 @@ function crearTituloSeccion(titulo, descripcion) {
         hijos: [
             { tipo: "h2", hijos: [titulo] },
             { tipo: "p", hijos: [descripcion] }
+        ]
+    };
+}
+
+function crearAccionesRecursos(alSalir) {
+    return {
+        tipo: "div",
+        atributos: { class: "recursos-apoyo__acciones" },
+        hijos: [
+            {
+                tipo: "button",
+                atributos: {
+                    type: "button",
+                    class: "btn-actividad-salir recursos-apoyo__salir"
+                },
+                eventos: {
+                    click: () => {
+                        if (typeof alSalir === "function") {
+                            alSalir();
+                        }
+                    }
+                },
+                hijos: ["Salir"]
+            }
         ]
     };
 }

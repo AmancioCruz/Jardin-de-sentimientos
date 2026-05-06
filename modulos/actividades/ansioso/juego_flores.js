@@ -365,8 +365,8 @@ function generarPensamiento(estado, tiempo) {
 
     estado.pensamientos.push({
         ...plantilla,
-        x: 34 + Math.random() * Math.max(1, estado.ancho - 68),
-        y: -32,
+        x: 52 + Math.random() * Math.max(1, estado.ancho - 104),
+        y: 28,
         radio: tamano,
         ancho: tamanoSprite,
         alto: tamanoSprite,
@@ -401,6 +401,11 @@ function moverElementos(estado, delta) {
 
         pensamiento.y += pensamiento.velocidad * factor;
         pensamiento.x += (impulsoHaciaFlor + pensamiento.deriva + Math.sin((pensamiento.y + pensamiento.semilla) * 0.018) * 0.18) * factor;
+        pensamiento.x = limitar(
+            pensamiento.x,
+            (pensamiento.ancho || (pensamiento.radio * 3.1)) / 2,
+            estado.ancho - ((pensamiento.ancho || (pensamiento.radio * 3.1)) / 2)
+        );
     });
 
     estado.particulas.forEach((particula) => {
@@ -561,12 +566,12 @@ function dibujarBurbujaSol(ctx, estado) {
     if (!estado.mensajeSol) return;
 
     const sol = estado.sol || { x: 24, y: 24, tamano: 96 };
-    const anchoMaximo = Math.min(estado.ancho * 0.44, 258);
-    const ancho = Math.max(172, anchoMaximo);
+    const anchoMaximo = Math.min(estado.ancho * 0.54, 292);
+    const ancho = Math.max(188, anchoMaximo);
     const xPreferido = sol.x + sol.tamano + 20;
     const x = Math.min(Math.max(18, xPreferido), estado.ancho - ancho - 18);
-    const y = Math.max(18, sol.y + 8);
-    const lineas = dividirTexto(estado.mensajeSol, 28, 3);
+    const y = Math.max(24, sol.y + 12);
+    const lineas = dividirTexto(estado.mensajeSol, estado.ancho < 420 ? 22 : 28, 3);
     const alto = 22 + lineas.length * 17;
 
     ctx.save();
@@ -599,7 +604,6 @@ function dibujarPasto(ctx, estado) {
         const proporcion = imagen.naturalWidth / imagen.naturalHeight;
         const grupos = [
             { x: 0.08, escala: 1.05, elevacion: 0 },
-            { x: 0.46, escala: 0.82, elevacion: 4 },
             { x: 0.78, escala: 1.12, elevacion: -2 }
         ];
 

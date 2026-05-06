@@ -426,11 +426,6 @@
         padding: 24px;
     }
 
-    .ayuda-contactos__resumen {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
-    }
-
     .ayuda-contactos__tarjeta {
         height: 100%;
     }
@@ -446,8 +441,9 @@
         color: var(--texto);
     }
 
+    .ayuda-contactos__resumen,
     .ayuda-contactos__lista-directorio {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0 24px;
+        grid-template-columns: 1fr;
+        gap: 16px;
     }
 }

@@ -213,6 +213,7 @@ function renderizarFiltros(contenedor, filtroActivo, alCambiar) {
     const opciones = [
         { id: "todo", etiqueta: "Todo" },
         { id: "semana", etiqueta: "Esta semana" },
+        { id: "recomendadas", etiqueta: "Recomendadas", icono: obtenerIconoActividad("no-seguro"), clase: obtenerClaseIconoActividad("no-seguro") },
         { id: "tablero", etiqueta: "Tablero", icono: obtenerIconoActividad("tablero"), clase: obtenerClaseIconoActividad("tablero") },
         { id: "respiracion", etiqueta: "Respiración", icono: obtenerIconoActividad("respiracion"), clase: obtenerClaseIconoActividad("respiracion") },
         { id: "pizarron", etiqueta: "Pizarrón", icono: obtenerIconoActividad("pizarron"), clase: obtenerClaseIconoActividad("pizarron") },
@@ -230,12 +231,16 @@ function renderizarFiltros(contenedor, filtroActivo, alCambiar) {
 
         if (icono) {
             boton.classList.add("bitacora-filtro--icono");
+            if (id === "recomendadas") {
+                boton.classList.add("bitacora-filtro--recomendadas");
+            }
 
             const iconoNodo = document.createElement("span");
             iconoNodo.className = `bitacora-filtro__icono ${clase}`;
             iconoNodo.appendChild(crearIcono(icono));
             boton.appendChild(iconoNodo);
         } else {
+            boton.classList.add("bitacora-filtro--texto");
             boton.textContent = etiqueta;
         }
 
@@ -298,6 +303,10 @@ function crearGruposVisibles(actividades, filtroActivo) {
         return [{ titulo: "Tus momentos de esta semana", actividades }];
     }
 
+    if (filtroActivo === "recomendadas") {
+        return [{ titulo: "Tus actividades recomendadas", actividades }];
+    }
+
     return [{
         titulo: `Tus momentos en ${formatearNombreActividad(filtroActivo)}`,
         actividades
@@ -358,6 +367,7 @@ function crearTarjetaActividad(actividad) {
 function aplicarFiltro(actividades, filtro) {
     if (filtro === "todo") return actividades;
     if (filtro === "semana") return actividades.filter((actividad) => esDeEstaSemana(actividad));
+    if (filtro === "recomendadas") return actividades.filter(esActividadRecomendada);
 
     return actividades.filter((actividad) => actividad.nombreActividad === filtro);
 }
@@ -462,6 +472,9 @@ function obtenerResumenActividadLista(actividad) {
 
     const actividadNombre = formatearNombreActividad(actividad?.nombreActividad);
     const clave = obtenerClaveActividad(actividadNombre);
+    if (esActividadRecomendada(actividad)) {
+        return `La evaluación te recomendó ${actividadNombre} para acompañar este momento.`;
+    }
     const resumenes = {
         tablero: "Usaste Tablero de ideas para ordenar lo que pensabas y sentías.",
         juego: "Usaste Protege tu flor para protegerte de lo que te estaba presionando.",
@@ -496,9 +509,14 @@ function abrirDetalleActividad(actividad) {
     cerrar.setAttribute("aria-label", "Cerrar");
     cerrar.appendChild(crearIcono("fa-solid fa-xmark"));
 
+    const titulo = document.createElement("h2");
+    titulo.className = "bitacora-detalle__titulo";
+    titulo.id = "bitacora-detalle-titulo";
+    titulo.textContent = formatearNombreActividad(actividad?.nombreActividad);
+
     const medio = crearMedioDetalle(actividad);
-    tarjeta.classList.add("bitacora-detalle__tarjeta--solo-imagen");
-    tarjeta.append(cerrar, medio);
+    const info = crearInfoDetalle(actividad);
+    tarjeta.append(cerrar, titulo, medio, info);
     modal.appendChild(tarjeta);
 
     cerrar.addEventListener("click", cerrarDetalleActividad);
@@ -521,6 +539,114 @@ function crearMedioDetalle(actividad) {
     imagen.src = actividad.imagenUrl;
     imagen.alt = `Actividad ${formatearNombreActividad(actividad.nombreActividad)}`;
     return imagen;
+}
+
+function crearInfoDetalle(actividad) {
+    const info = document.createElement("div");
+    info.className = "bitacora-detalle__info";
+
+    const meta = document.createElement("p");
+    meta.textContent = formatearMomentoHumano(actividad);
+
+    const resumen = document.createElement("p");
+    resumen.textContent = obtenerResumenDetalleActividad(actividad);
+
+    info.append(meta, resumen);
+
+    if (esActividadRecomendada(actividad)) {
+        const bloqueRespuestas = crearBloqueDetalle(
+            "Qué respondiste",
+            obtenerResumenRespuestasEvaluacion(actividad)
+        );
+        const bloqueRecomendacion = crearBloqueDetalle(
+            "Qué se te recomendó",
+            [formatearActividadSugerida(actividad)]
+        );
+        info.append(bloqueRespuestas, bloqueRecomendacion);
+    }
+
+    const bloqueResultado = crearBloqueDetalle(
+        "Cómo terminaste",
+        obtenerResultadoActividad(actividad)
+    );
+
+    info.append(bloqueResultado);
+    return info;
+}
+
+function crearBloqueDetalle(titulo, lineas = []) {
+    const bloque = document.createElement("section");
+    bloque.className = "bitacora-detalle__bloque";
+
+    const encabezado = document.createElement("strong");
+    encabezado.textContent = titulo;
+    bloque.appendChild(encabezado);
+
+    lineas.filter(Boolean).forEach((linea) => {
+        const texto = document.createElement("p");
+        texto.textContent = linea;
+        bloque.appendChild(texto);
+    });
+
+    return bloque;
+}
+
+function obtenerResumenRespuestasEvaluacion(actividad) {
+    const preguntas = actividad?.contexto?.evaluacion?.preguntas;
+    if (!Array.isArray(preguntas) || !preguntas.length) {
+        return ["No encontramos el detalle de tus respuestas."];
+    }
+
+    const respuestasOrdenadas = [...preguntas]
+        .filter((pregunta) => Number(pregunta?.respuesta) > 0)
+        .sort((a, b) => Number(b?.respuesta || 0) - Number(a?.respuesta || 0));
+
+    if (!respuestasOrdenadas.length) {
+        return ["No encontramos el detalle de tus respuestas."];
+    }
+
+    return respuestasOrdenadas.slice(0, 3).map((pregunta) => {
+        return `${pregunta.texto} (${pregunta.respuesta}/5)`;
+    });
+}
+
+function formatearActividadSugerida(actividad) {
+    const actividadSugerida = actividad?.contexto?.evaluacion?.actividadSugerida || actividad?.nombreActividad;
+    return formatearNombreActividad(actividadSugerida);
+}
+
+function obtenerResultadoActividad(actividad) {
+    const resultado = [];
+
+    if (actividad?.respuesta?.trim()) {
+        resultado.push(actividad.respuesta.trim());
+    }
+
+    if (actividad?.comentario?.trim()) {
+        resultado.push(`También escribiste: "${actividad.comentario.trim()}".`);
+    }
+
+    return resultado.length ? resultado : ["Guardaste la actividad sin agregar un cierre escrito."];
+}
+
+function obtenerResumenDetalleActividad(actividad) {
+    const resumenContexto = limpiarTextoActividad(actividad?.contexto?.resumen || "");
+    if (resumenContexto) return resumenContexto;
+
+    const actividadNombre = formatearNombreActividad(actividad?.nombreActividad);
+    const resumenes = {
+        tablero: `Usaste ${actividadNombre} para ordenar lo que pensabas y sentías.`,
+        juego: `Usaste ${actividadNombre} para protegerte de lo que te estaba presionando.`,
+        respiracion: `Usaste ${actividadNombre} porque necesitabas una pausa.`,
+        pizarron: `Usaste ${actividadNombre} para aclarar tus ideas de forma visual.`,
+        "no-seguro": `Usaste ${actividadNombre} para encontrar algo que te ayudaría mejor en ese momento.`
+    };
+
+    return resumenes[obtenerClaveActividad(actividadNombre)] || `Usaste ${actividadNombre} para acompañar este momento.`;
+}
+
+function esActividadRecomendada(actividad) {
+    return actividad?.contexto?.origen === "evaluacion";
 }
 
 function crearIcono(clase) {

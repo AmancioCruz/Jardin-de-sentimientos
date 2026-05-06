@@ -6,48 +6,48 @@ const actividadesInicio = [
         titulo: "No sé cómo me siento",
         icono: "fa-solid fa-compass",
         clase: "btn-no-seguro",
-        descripcion: "Responde unas preguntas breves para encontrar una actividad."
+        descripcion: "Responde una breve encuesta para orientarte mejor."
     },
     {
         estado: "Saturado Mentalmente",
         titulo: "Tengo la mente saturada",
         icono: "fa-solid fa-brain",
         clase: "btn-jardin",
-        descripcion: "Quiero ordenar lo que pienso y lo que siento."
+        descripcion: "Plasma lo que tienes en mente en tres notas."
     },
     {
         estado: "Pizarrón Creativo",
         titulo: "No me puedo concentrar",
         icono: "fa-solid fa-palette",
         clase: "btn-pizarron",
-        descripcion: "Necesito aclarar mis ideas de forma visual."
+        descripcion: "Expresa tus pensamientos en una pizarra visual."
     },
     {
         estado: "Cansado",
         titulo: "Necesito una pausa",
         icono: "fa-solid fa-wind",
         clase: "btn-respiraciones",
-        descripcion: "Necesito una pausa tranquila para recuperar energía."
+        descripcion: "Sigue una pausa guiada para recuperar el ritmo."
     },
     {
         estado: "Ansioso",
         titulo: "Me siento bajo presión",
         icono: "fa-solid fa-shield-halved",
         clase: "btn-ansioso",
-        descripcion: "Quiero proteger mi bienestar de lo que me estresa."
+        descripcion: "Aleja estresores y protege tu flor por un momento."
     },
     {
         estado: "Recursos",
         titulo: "¿Qué más puedo hacer?",
-        icono: "fa-solid fa-kit-medical",
         clase: "btn-recursos",
-        descripcion: "Herramientas simples para este momento."
+        descripcion: "Explora opciones breves para acompañarte ahora."
     }
 ];
 
 export function crearInicio({ callbacks, usuario }) {
     const { alSeleccionarEstado, alNoEstoySeguro, alAbrirRecursos } = callbacks || {};
     const nombreUsuario = usuario?.nombre || "Tu espacio";
+    const primerNombre = nombreUsuario.split(" ")[0] || nombreUsuario;
 
     return construirElemento({
         tipo: "div",
@@ -72,22 +72,6 @@ export function crearInicio({ callbacks, usuario }) {
                                         tipo: "div",
                                         atributos: { class: "inicio-encabezado" },
                                         hijos: [
-                                            {
-                                                tipo: "p",
-                                                atributos: { class: "inicio-saludo" },
-                                                hijos: ["Qué bueno verte,"]
-                                            },
-                                            {
-                                                tipo: "div",
-                                                atributos: { class: "inicio-nombre-bloque" },
-                                                hijos: [
-                                                    {
-                                                        tipo: "h1",
-                                                        atributos: { class: "titulo-seccion-app inicio-nombre" },
-                                                        hijos: [nombreUsuario]
-                                                    }
-                                                ]
-                                            },
                                             {
                                                 tipo: "h2",
                                                 atributos: { class: "inicio-titulo" },
@@ -116,7 +100,7 @@ export function crearInicio({ callbacks, usuario }) {
                                             },
                                             {
                                                 tipo: "span",
-                                                hijos: ["Haz una pausa para ti."]
+                                                hijos: [`${primerNombre}, haz una pausa para ti.`]
                                             },
                                             {
                                                 tipo: "i",
@@ -179,10 +163,10 @@ function crearBotonesActividades(actividades, callbacks, usuario) {
             }
         },
         hijos: [
-            {
+            ...(actividad.icono ? [{
                 tipo: "i",
                 atributos: { class: `${actividad.icono} estado-icono`, "aria-hidden": "true" }
-            },
+            }] : []),
             {
                 tipo: "span",
                 atributos: { class: "estado-contenido" },

@@ -123,6 +123,15 @@
     backdrop-filter: blur(8px);
 }
 
+.actividad-flores .panel-final-juego {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: min(22rem, calc(100% - 2rem));
+    height: max-content;
+    max-height: calc(100% - 1.5rem);
+}
+
 .panel-final-juego {
     position: fixed;
     left: 50%;
@@ -488,14 +497,11 @@
     display: grid;
     align-items: start;
     justify-items: center;
+    isolation: isolate;
     padding: var(--padding-panel-app);
     background: var(--panel-app-fondo);
     border: 1px solid var(--panel-app-borde);
     box-shadow: var(--panel-app-sombra);
-}
-
-.actividad-respiracion {
-    isolation: isolate;
 }
 
 .respiracion-tarjeta {
@@ -707,11 +713,13 @@
     padding: var(--espacio-m);
     background: var(--capa-modal);
     backdrop-filter: blur(5px);
+    overflow: auto;
 }
 
 .tutorial-actividad__tarjeta {
     position: relative;
     width: min(100%, 26rem);
+    max-height: calc(100dvh - 2rem);
     display: grid;
     gap: var(--espacio-m);
     padding: var(--padding-panel-interno);
@@ -720,6 +728,7 @@
     background: var(--tarjeta-fondo);
     box-shadow: 0 24px 70px rgba(7, 22, 18, 0.28);
     text-align: left;
+    overflow: auto;
     transition: border-color var(--duracion-ui-media) var(--curva-ui), background var(--duracion-ui-media) var(--curva-ui), box-shadow var(--duracion-ui-media) var(--curva-ui);
 }
 
@@ -773,7 +782,7 @@
 .tutorial-actividad__lista li {
     display: grid;
     grid-template-columns: 1.9rem 1fr;
-    align-items: center;
+    align-items: start;
     gap: 0.55rem;
     color: var(--texto);
     font-weight: var(--peso-medium);
@@ -792,6 +801,7 @@
 
 .tutorial-actividad__accion {
     justify-self: start;
+    margin-top: 0.15rem;
 }
 
 .respiracion-inhala {
@@ -830,15 +840,7 @@
         0 18px 44px rgba(205, 139, 34, 0.13);
 }
 
-@media (max-width: 767px) {
-    .actividad-juego,
-    .actividad-respiracion,
-    .actividad-tablero,
-    .actividad-pizarron {
-        width: 100%;
-        border-radius: 1.35rem;
-    }
-
+@media (max-width: 1199px) {
     .actividad-panel-superior {
         flex-direction: column;
         align-items: center;
@@ -854,6 +856,44 @@
         text-align: center;
     }
 
+    .actividad-panel-superior p {
+        text-align: center;
+    }
+
+    .actividad-flores .actividad-panel-superior {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.75rem;
+        text-align: left;
+    }
+
+    .actividad-flores .actividad-panel-superior > div:first-child {
+        flex: 1 1 auto;
+        justify-items: start;
+        text-align: left;
+    }
+
+    .actividad-flores .actividad-panel-superior p {
+        max-width: none;
+        text-align: left;
+    }
+
+    .actividad-flores .btn-actividad-salir {
+        align-self: flex-start;
+        margin-top: 0.05rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .actividad-juego,
+    .actividad-respiracion,
+    .actividad-tablero,
+    .actividad-pizarron {
+        width: 100%;
+        border-radius: 1.35rem;
+    }
+
     .actividad-panel-superior h1,
     .respiracion-tarjeta h1 {
         font-size: 1.55rem;
@@ -866,7 +906,6 @@
         max-width: 19rem;
         font-size: 0.98rem;
         line-height: 1.55;
-        text-align: center;
     }
 
     .btn-actividad-salir {
@@ -906,6 +945,52 @@
         border-radius: 1.15rem;
     }
 
+    .tutorial-actividad {
+        place-items: center;
+        padding: 0.75rem;
+    }
+
+    .tutorial-actividad__tarjeta {
+        width: 100%;
+        max-height: calc(100dvh - 1.5rem);
+        gap: 0.85rem;
+        padding: 1rem;
+        border-radius: 1.15rem;
+    }
+
+    .tutorial-actividad__tarjeta h2 {
+        font-size: 1.35rem;
+        line-height: 1.15;
+    }
+
+    .tutorial-actividad__tarjeta p {
+        font-size: 0.98rem;
+        line-height: 1.55;
+    }
+
+    .tutorial-actividad__lista {
+        gap: 0.7rem;
+    }
+
+    .tutorial-actividad__lista li {
+        grid-template-columns: 1.5rem 1fr;
+        gap: 0.75rem;
+        line-height: 1.45;
+    }
+
+    .tutorial-actividad__lista i {
+        width: 1.5rem;
+        height: 1.5rem;
+        font-size: 0.92rem;
+        background: transparent;
+    }
+
+    .tutorial-actividad__accion {
+        width: 100%;
+        justify-self: stretch;
+        justify-content: center;
+    }
+
     .respiracion-practica,
     .actividad-marcador {
         text-align: center;
@@ -921,6 +1006,16 @@
     .btn-pizarron-herramienta span,
     .control-pizarron span {
         display: none;
+    }
+
+    .control-pizarron--fondo {
+        min-width: 7.25rem;
+        padding-inline: 0.6rem;
+    }
+
+    .control-pizarron--fondo span:first-child {
+        display: inline;
+        font-size: 0.74rem;
     }
 
     .pizarron-barra {
@@ -955,6 +1050,23 @@
         min-height: 2.05rem;
         font-size: 0.76rem;
     }
+
+    .actividad-flores .panel-final-juego.selector-duracion-juego {
+        width: min(calc(100% - 1.5rem), 22rem);
+        max-width: calc(100% - 1.5rem);
+        max-height: calc(100% - 1.5rem);
+        justify-items: start;
+        text-align: left;
+    }
+
+    .actividad-flores .selector-duracion-juego__texto,
+    .actividad-flores .selector-duracion-juego__pregunta {
+        text-align: left;
+    }
+
+    .actividad-flores .selector-duracion-juego__opciones {
+        justify-content: flex-start;
+    }
 }
 
 @media (min-width: 768px) {
@@ -982,6 +1094,11 @@
     .grupo-pizarron {
         flex-wrap: wrap;
     }
+
+    .tutorial-actividad__tarjeta {
+        width: min(100%, 30rem);
+        max-height: calc(100dvh - 3rem);
+    }
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
@@ -989,6 +1106,11 @@
     .actividad-respiracion,
     .actividad-tablero,
     .actividad-pizarron {
-        height: min(100%, 42rem);
+        height: 100%;
+        min-height: 0;
+    }
+
+    .actividad-panel-superior p {
+        max-width: 24rem;
     }
 }

@@ -4,6 +4,7 @@ import { mostrarBitacora } from "../bitacora/bitacora.js";
 
 export function crearMiEspacio({ usuario } = {}) {
     const bitacora = mostrarBitacora({ usuario, mostrarEncabezado: false });
+    const nombreUsuario = usuario?.nombre || "Sin nombre";
 
     return construirElemento({
         tipo: "section",
@@ -14,7 +15,17 @@ export function crearMiEspacio({ usuario } = {}) {
                 atributos: { class: "mi-espacio__encabezado" },
                 hijos: [
                     { tipo: "p", atributos: { class: "etiqueta-pantalla etiqueta-pantalla--espacio" }, hijos: ["Mi espacio"] },
-                    { tipo: "h1", atributos: { class: "titulo-seccion-app" }, hijos: ["Tu espacio"] }
+                    {
+                        tipo: "div",
+                        atributos: { class: "mi-espacio__titulo-linea" },
+                        hijos: [
+                            {
+                                tipo: "h1",
+                                atributos: { class: "titulo-seccion-app" },
+                                hijos: [`${nombreUsuario}, este es tu espacio`]
+                            }
+                        ]
+                    }
                 ]
             },
             crearBloqueInformacion(usuario),

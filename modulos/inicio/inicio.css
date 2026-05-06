@@ -168,10 +168,14 @@
 }
 
 .estado-descripcion {
-    display: none !important;
+    display: block;
     color: var(--texto-sutil);
     font-size: var(--tamano-texto-s);
+    font-weight: var(--peso-regular);
     line-height: 1.55;
+    max-width: 16rem;
+    text-align: inherit;
+    opacity: 0.9;
 }
 
 .estado-flecha {
@@ -230,12 +234,34 @@
     color: #b53b4c;
 }
 
-.btn-recursos .estado-icono {
-    color: #6a5ac7;
+.btn-recursos .estado-texto {
+    color: #707874;
+    font-size: 0.86rem;
+    font-weight: var(--peso-medium);
 }
 
-.btn-recursos .estado-texto {
-    color: #4f4594;
+.btn-recursos {
+    min-height: 2.45rem;
+    background: transparent;
+    border-color: rgba(22, 78, 63, 0.045);
+    box-shadow: none;
+    border-radius: 0.95rem;
+}
+
+.btn-recursos::after {
+    display: none;
+}
+
+.btn-recursos .estado-flecha {
+    background: transparent;
+    border-color: transparent;
+    color: #9aa19d;
+    width: 1.35rem;
+    height: 1.35rem;
+}
+
+.btn-recursos .estado-contenido {
+    justify-items: start;
 }
 
 .inicio-nota {
@@ -262,16 +288,8 @@
     line-height: 1.45;
 }
 
-@media (min-width: 768px) and (max-width: 1199px) {
-    .inicio-contenedor {
-        height: 100%;
-        overflow: hidden;
-    }
-
+@media (max-width: 1199px) {
     .inicio-eleccion {
-        height: 100%;
-        min-height: 100%;
-        grid-template-rows: auto minmax(0, 1fr);
         gap: 24px;
     }
 
@@ -326,115 +344,12 @@
     }
 
     .evaluacion-rapida {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        grid-auto-rows: 1fr;
+        grid-template-columns: 1fr;
         gap: 16px;
-        height: 100%;
+        height: auto;
         min-height: 0;
-        align-content: stretch;
+        align-content: start;
         align-items: stretch;
-    }
-
-    .btn-estado {
-        grid-template-columns: 24px minmax(0, 1fr) 24px;
-        justify-items: stretch;
-        align-items: center;
-        align-content: center;
-        gap: 16px;
-        height: 100%;
-        min-height: 100%;
-        padding: 16px;
-        text-align: left;
-    }
-
-    .btn-estado .estado-icono {
-        width: 24px;
-        height: 24px;
-        font-size: 24px;
-    }
-
-    .estado-contenido {
-        justify-items: start;
-        align-self: center;
-    }
-
-    .btn-estado .estado-texto {
-        max-width: none;
-        font-size: 16px;
-        line-height: 1.4;
-        text-align: left;
-    }
-
-    .estado-flecha {
-        position: static;
-        width: 24px;
-        height: 24px;
-        transform: none;
-        margin-left: auto;
-    }
-}
-
-@media (max-width: 767px) {
-    .inicio-eleccion {
-        gap: 24px;
-    }
-
-    .inicio-hero {
-        gap: 16px;
-    }
-
-    .inicio-copy {
-        display: grid;
-        gap: 16px;
-    }
-
-    .inicio-encabezado {
-        gap: 16px;
-        justify-items: start;
-    }
-
-    .inicio-hero-lateral {
-        order: -1;
-        gap: 0;
-    }
-
-    .inicio-recordatorio {
-        width: 100%;
-        justify-content: flex-start;
-        padding: 8px 16px;
-        gap: 8px;
-        font-size: 14px;
-        line-height: 1.4;
-    }
-
-    .inicio-recordatorio span {
-        white-space: normal;
-    }
-
-    .inicio-nombre {
-        font-size: 1.25rem;
-        line-height: 1.1;
-        font-weight: var(--peso-medium);
-        text-align: left;
-    }
-
-    .inicio-titulo {
-        margin-top: 0;
-        font-size: 32px;
-        line-height: 1.05;
-        font-weight: var(--peso-bold);
-        text-align: left;
-    }
-
-    .inicio-descripcion {
-        max-width: 20rem;
-        font-size: 16px;
-        line-height: 1.6;
-        text-align: left;
-    }
-
-    .evaluacion-rapida {
-        gap: 16px;
     }
 
     .btn-estado {
@@ -457,6 +372,7 @@
     .estado-contenido {
         justify-items: start;
         align-self: center;
+        gap: 0.25rem;
     }
 
     .btn-estado .estado-texto {
@@ -466,12 +382,88 @@
         text-align: left;
     }
 
+    .estado-descripcion {
+        max-width: none;
+        font-size: 14px;
+        font-weight: var(--peso-regular);
+        line-height: 1.5;
+        opacity: 0.88;
+    }
+
     .estado-flecha {
         position: static;
         width: 24px;
         height: 24px;
         transform: none;
         margin-left: auto;
+    }
+
+    .btn-recursos {
+        min-height: 2.5rem;
+        grid-template-columns: minmax(0, 1fr) 24px;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .btn-recursos .estado-contenido {
+        justify-items: start;
+    }
+
+    .btn-recursos .estado-texto {
+        font-size: 0.8rem;
+        width: 100%;
+        text-align: left;
+    }
+
+    .btn-recursos .estado-descripcion {
+        font-size: 0.75rem;
+        font-weight: var(--peso-regular);
+        line-height: 1.4;
+        opacity: 0.84;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    .inicio-contenedor {
+        height: 100%;
+        overflow: auto;
+    }
+
+    .inicio-eleccion {
+        height: 100%;
+        min-height: 100%;
+        grid-template-rows: auto minmax(0, 1fr);
+    }
+
+    .inicio-descripcion {
+        max-width: 34rem;
+    }
+
+    .evaluacion-rapida {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        height: auto;
+        min-height: 0;
+        align-content: start;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 767px) {
+    .inicio-recordatorio span {
+        white-space: normal;
+    }
+
+    .inicio-descripcion {
+        max-width: 20rem;
+    }
+
+    .evaluacion-rapida {
+        gap: 16px;
+    }
+
+    .btn-recursos .estado-texto {
+        line-height: 1.35;
     }
 }
 
@@ -548,6 +540,7 @@
 
     .evaluacion-rapida {
         grid-template-columns: repeat(6, minmax(0, 1fr));
+        grid-template-rows: repeat(2, minmax(0, 1fr)) auto;
         grid-auto-rows: 1fr;
         gap: 0.75rem;
         width: 100%;
@@ -597,7 +590,7 @@
 
     .estado-contenido {
         justify-items: center;
-        gap: 0.05rem;
+        gap: 0.28rem;
     }
 
     .btn-estado .estado-texto {
@@ -608,10 +601,11 @@
     }
 
     .estado-descripcion {
-        display: none !important;
         max-width: 13rem;
         font-size: 0.84rem;
+        font-weight: var(--peso-regular);
         line-height: 1.52;
+        opacity: 0.86;
     }
 
     .evaluacion-rapida > .btn-estado:nth-child(1) .estado-icono,
@@ -663,34 +657,34 @@
 
     .evaluacion-rapida > .btn-recursos {
         grid-column: 1 / -1;
-        grid-template-columns: minmax(0, 1fr);
-        justify-items: center;
+        grid-row: 3;
+        grid-template-columns: minmax(0, 1fr) 1.4rem;
+        justify-items: stretch;
         align-items: center;
-        min-height: 100%;
-        padding: 0.85rem 1rem 0.85rem;
-        text-align: center;
-        gap: 0.5rem;
-    }
-
-    .evaluacion-rapida > .btn-recursos .estado-icono {
-        width: 3rem;
-        height: 3rem;
-        font-size: 1.35rem;
+        min-height: 2.75rem;
+        height: auto;
+        padding: 0.18rem 0.72rem;
+        text-align: left;
+        gap: 0.3rem;
     }
 
     .evaluacion-rapida > .btn-recursos .estado-contenido {
-        justify-items: center;
+        justify-items: start;
     }
 
     .evaluacion-rapida > .btn-recursos .estado-texto,
     .evaluacion-rapida > .btn-recursos .estado-descripcion {
         max-width: none;
-        text-align: center;
+        text-align: left;
+    }
+
+    .evaluacion-rapida > .btn-recursos .estado-texto {
+        font-size: 0.76rem;
     }
 
     .evaluacion-rapida > .btn-recursos .estado-flecha {
-        width: 2.2rem;
-        height: 2.2rem;
+        width: 1.2rem;
+        height: 1.2rem;
     }
 
     .inicio-nota {
@@ -756,10 +750,6 @@
     background: #312027;
 }
 
-[data-theme="dark"] .btn-recursos {
-    background: #26213a;
-}
-
 [data-theme="dark"] .btn-estado .estado-texto {
     color: #edf4f0;
 }
@@ -784,8 +774,24 @@
     color: #ff8f9e;
 }
 
+[data-theme="dark"] .btn-recursos {
+    background: transparent;
+    border-color: rgba(223, 241, 232, 0.08);
+    box-shadow: none;
+}
+
 [data-theme="dark"] .btn-recursos .estado-icono {
-    color: #b5a4ff;
+    color: #8e9a95;
+}
+
+[data-theme="dark"] .btn-recursos .estado-texto {
+    color: #bcc7c2;
+}
+
+[data-theme="dark"] .btn-recursos .estado-flecha {
+    background: transparent;
+    border-color: transparent;
+    color: #97a39e;
 }
 
 [data-theme="dark"] .estado-flecha {

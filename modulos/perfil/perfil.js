@@ -47,12 +47,7 @@ export function crearBloqueInformacion(usuario) {
                             {
                                 tipo: "h2",
                                 atributos: { class: "perfil-identidad__titulo" },
-                                hijos: ["Este soy yo"]
-                            },
-                            {
-                                tipo: "strong",
-                                atributos: { class: "perfil-identidad__nombre" },
-                                hijos: [usuario.nombre || "Sin nombre"]
+                                hijos: ["Este eres tu"]
                             },
                             {
                                 tipo: "p",

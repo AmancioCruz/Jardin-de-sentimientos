@@ -27,7 +27,7 @@ export function crearMenuNavegacion({ usuario, alHacerClick, alCerrarSesion }) {
                         tipo: "section",
                         atributos: { class: "menu-navegacion__superior" },
                         hijos: [
-                            crearResumenUsuario(usuario)
+                            crearResumenUsuario(usuario, alHacerClick)
                         ]
                     },
                     {
@@ -83,13 +83,22 @@ export function crearMenuNavegacion({ usuario, alHacerClick, alCerrarSesion }) {
     });
 }
 
-function crearResumenUsuario(usuario = {}) {
+function crearResumenUsuario(usuario = {}, alHacerClick) {
     const tieneImagen = Boolean(usuario?.urlImagen);
-    const detalleUsuario = usuario?.programa || usuario?.semestre || "Tu recorrido en la app";
+    const detalleUsuario = obtenerEtiquetaPrograma(usuario);
 
     return {
-        tipo: "section",
-        atributos: { class: "menu-navegacion__resumen" },
+        tipo: "button",
+        atributos: {
+            type: "button",
+            class: "menu-navegacion__resumen",
+            title: "Ir a Mi espacio"
+        },
+        eventos: {
+            click: typeof alHacerClick === "function"
+                ? () => alHacerClick(seccionesApp.espacio)
+                : null
+        },
         hijos: [
             {
                 tipo: "div",
@@ -126,4 +135,17 @@ function crearResumenUsuario(usuario = {}) {
             }
         ]
     };
+}
+
+function obtenerEtiquetaPrograma(usuario = {}) {
+    const programa = String(usuario?.programa || "").trim();
+    if (!programa) {
+        return usuario?.semestre || "Tu recorrido en la app";
+    }
+
+    const abreviacion = Array.from(programa)
+        .filter((caracter) => /[A-ZÁÉÍÓÚÜÑ]/.test(caracter))
+        .join("");
+
+    return abreviacion || programa;
 }

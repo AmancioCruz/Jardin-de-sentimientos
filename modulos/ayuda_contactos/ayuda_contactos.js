@@ -59,21 +59,6 @@ const directorioCbu = [
     }
 ];
 
-const correosCbu = [
-    {
-        nombre: "Servicios Universitarios de Atención Psicológica",
-        correo: "suapsi@uacj.mx"
-    },
-    {
-        nombre: "Cindy Cabral Toscano",
-        correo: "cindy.cabral@uacj.mx"
-    },
-    {
-        nombre: "Rosalinda Guerrero Moya",
-        correo: "rosalinda.guerrero@uacj.mx"
-    }
-];
-
 export function crearAyudaContactos() {
     return construirElemento({
         tipo: "section",
@@ -83,10 +68,7 @@ export function crearAyudaContactos() {
             {
                 tipo: "section",
                 atributos: { class: "ayuda-contactos__resumen" },
-                hijos: [
-                    crearBloqueContactos(),
-                    crearBloqueSedePrincipal()
-                ]
+                hijos: [crearBloqueSedePrincipal()]
             },
             crearBloqueDirectorio(),
             crearNotaSeguridad()
@@ -105,30 +87,6 @@ function crearEncabezado() {
     };
 }
 
-function crearBloqueContactos() {
-    return {
-        tipo: "section",
-        atributos: { class: "ayuda-contactos__tarjeta ayuda-contactos__tarjeta--contactos" },
-        hijos: [
-            crearTituloTarjeta("Contactos"),
-            {
-                tipo: "section",
-                atributos: { class: "ayuda-contactos__grupo" },
-                hijos: [
-                    {
-                        tipo: "div",
-                        atributos: { class: "ayuda-contactos__lista-contactos" },
-                        hijos: [
-                            crearDatoEnlace("Teléfono general", "(656) 688-3848", "tel:6566883848"),
-                            ...correosCbu.map((contacto) => crearDatoEnlace(contacto.nombre, contacto.correo, `mailto:${contacto.correo}`))
-                        ]
-                    }
-                ]
-            }
-        ]
-    };
-}
-
 function crearBloqueSedePrincipal() {
     return {
         tipo: "section",
@@ -141,7 +99,8 @@ function crearBloqueSedePrincipal() {
                 hijos: [
                     crearDatoTexto("Instituto", "ICSA / Instituto de Ciencias Sociales y Administración"),
                     crearDatoTexto("Edificio", 'Edificio "G"'),
-                    crearDatoTexto("Dirección", "Av. Heroico Colegio Militar y Av. Universidad (Zona Chamizal)")
+                    crearDatoTexto("Dirección", "Av. Heroico Colegio Militar y Av. Universidad (Zona Chamizal)"),
+                    crearDatoEnlace("Teléfono general", "(656) 688-3848", "tel:6566883848")
                 ]
             }
         ]

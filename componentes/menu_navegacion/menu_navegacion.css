@@ -80,7 +80,20 @@
 }
 
 .menu-navegacion__resumen {
+    width: 100%;
+    border: 0;
+    text-align: left;
+    cursor: pointer;
     transition: transform var(--duracion-ui-media) var(--curva-ui), background var(--duracion-ui-media) var(--curva-ui), border-color var(--duracion-ui-media) var(--curva-ui), box-shadow var(--duracion-ui-media) var(--curva-ui);
+}
+
+.menu-navegacion__resumen:hover {
+    transform: translateY(-1px);
+}
+
+.menu-navegacion__resumen:focus-visible {
+    outline: 2px solid rgba(223, 241, 232, 0.55);
+    outline-offset: 2px;
 }
 
 @media (max-width: 767px) {
